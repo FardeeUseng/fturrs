@@ -274,15 +274,15 @@
                      <h3>สมัครสมาชิก</h3>
                   </div>
                </div>
+               <?php if (count($errors) > 0) : ?>
+                  <div class="alert alert-danger">
+                     <?php foreach ($errors as $error) : ?>
+                        <?php echo $error ?>
+                     <?php endforeach ?>
+                  </div>
+               <?php endif ?>
                <div class="register-fill my-5">
                   <form action="#" method="post">
-                     <?php if (count($errors) > 0) : ?>
-                        <div class="alert alert-danger">
-                           <?php foreach ($errors as $error) : ?>
-                                 <?php echo $error ?>
-                           <?php endforeach ?>
-                        </div>
-                     <?php endif ?>
                      <div class="register-fill-items1 row mb-4">
                         <div class="register-email col-xl-6">
                            <h4>อีเมล</h4>

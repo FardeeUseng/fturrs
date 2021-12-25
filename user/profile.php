@@ -1,54 +1,32 @@
+<?php
+
+   session_start();
+   require('../dbconnect.php');
+   
+   // Start Access permission User, Staff and Admin
+
+   if(!isset($_SESSION['user_login']) and !isset($_SESSION['staff_login']) and !isset($_SESSION['admin_login'])){
+      $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ';
+      header('location:../index.php');
+   }
+   // End Access permission User, Staff and Admin
+
+?>
 <!DOCTYPE html>
 <html lang="en">
+
+<!---------- start head ---------->
+
 <head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>ระบบจองห้องประชุมออนไลน์</title>
-   <link rel="icon" href="../img/menu-logo/online-booking.png">
-   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-   <link rel="stylesheet" href="../font/tahomo.ttf">
-   <link rel="stylesheet" href="../font/SukhumvitSet-Medium.ttf">
-   <link rel="stylesheet" href="../bootstrap/js/jquery-3.6.0.min.js">
+   <?php include('../master/head-user.php') ?>
 </head>
+<!---------- End head ---------->
+
 <body>
 <style>
-   *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-   }
-   body{
-      height:100%;
-      font-family: SukhumvitSet, sans-serif;
-      background-color:#BAC9B8;
-   }
-
-   /********** Start header **********/
-   .header-container{
-      height:217px;
-      background-color:#BAC9B8;
-   }
-   .header-logo-left img{
-      width:120px;
-      height:120px;
-   }
-   .header-logo-right h1{
-      color:#585858;
-      font-size:45px;
-      font-weight:bold;
-   }
-   .header-signup-item a{
-      color:#585858;
-      font-size:30px;
-   }
-   .header-signup-item a:hover{
-      color:#3C94EC;
-      text-decoration:none;
-   }
-   /********** End header **********/
 
    /********** Start Main menu **********/
+
    .main-content{
       background-color:#E9F1E6;
    }
@@ -99,7 +77,6 @@
       text-decoration:none;
       background-color:#FCB353;
    }
-
    .login-link a{
       color:#585858;
       font-size:22px;
@@ -111,6 +88,7 @@
    /********** end Main menu **********/
 
    /********** Start Content **********/
+
    .content-title{
       height:100px;
       background-color:#BAC9B8;
@@ -141,61 +119,17 @@
    }
    /********** End Content **********/
 
-   /********** start footer **********/
-   .footer{
-      background-color:#BAC9B8;
-   }
-   .footer-link li img{
-      width:40px;
-      height:40px;
-   }
-   .footer-link li{
-      list-style: none;
-   }
-   .footer-top{
-      display:flex;
-      height:74px;
-      justify-content:center;
-      align-items:center;
-   }
-   .footer-top h3{
-      font-size:40px;
-      color:#585858;
-      font-weight:bold;
-   }
-   .footer-buttom{
-      display:flex;
-      height:74px;
-      justify-content:center;
-   }
-   .footer-link{
-      width:350px;
-      height:70px;
-      align-items:center;
-      justify-content:space-between;
-   }
-   /********** end footer **********/
-
 </style>
    
 <!---------- start header ---------->
+
 <header>
-   <div class="container-fluid">
-      <div class="header-container row">
-         <div class="header-logo d-flex col-xl-8">
-            <div class="header-logo-left col-xl-2 d-flex align-items-center pl-5">
-               <img src="../img/Ftu_logo.png">
-            </div>
-            <div class="header-logo-right col-xl-10 d-flex align-items-center">
-               <h1>FTU Room Reservation System</h1>
-            </div>
-         </div>
-      </div>
-   </div>
+   <?php include('../master/header-user.php'); ?>
 </header>
 <!---------- end header ---------->
 
 <!---------- start content ---------->
+
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
@@ -209,12 +143,15 @@
             </div>            
             <div class="profile-edit mt-3">
                <h2 class="text-center">ฟัรดี อูเซ็ง</h2>
-               <p class="text-center mt-4"><a href="#">แก้ไขข้อมูลส่วนตัว</a></p>  
+               <p class="text-center mt-4"><a href="../user/profileedit.php">แก้ไขข้อมูลส่วนตัว</a></p>  
             </div>  
             <div class="login-link mt-4 text-center">
-               <a class="text-center" href="index.php">กลับสู่หน้าหลัก</a>
+               <a class="text-center" href="../index.php">กลับสู่หน้าหลัก</a>
             </div>         
          </div>
+
+         <!----------- Start Profile Detail ---------->
+
          <div class="main-content col-xl-8">
             <div class="main-content-container">
                <div class="content-title d-flex">
@@ -255,34 +192,21 @@
                </div>
             </div>
          </div>
+         <!----------- End Profile Detail ---------->
+
       </div>
    </div>
 </div>
 <!---------- end content ---------->
 
 <!---------- start footer ---------->
+
 <footer>
-   <div class="container-fluid">
-      <div class="row">
-         <div class="col-xl">
-            <div class="footer-top">
-            <h3>Fatoni University</h3>
-         </div>
-         <div class="footer-buttom">
-            <ul class="footer-link d-flex">
-               <li><a href="#"><img src="../img/menu-logo/globe-grid.png" alt=""></a></li>
-               <li><a href="#"><img src="../img/menu-logo/facebook.png" alt=""></a></li>
-               <li><a href="#"><img src="../img/menu-logo/instagram.png" alt=""></a></li>
-               <li><a href="#"><img src="../img/menu-logo/twitter.png" alt=""></a></li>
-               <li><a href="#"><img src="../img/menu-logo/youtube.png" alt=""></a></li>
-            </ul>
-         </div>
-         </div>
-      </div>
-   </div>
+   <?php include('../master/footer-user.php'); ?>
 </footer>
 <!---------- end footer ---------->
-<script src="../bootstrap/js/bootstrap.min.js"></script>
+
+   <script src="../bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>

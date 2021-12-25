@@ -9,70 +9,73 @@
       header('location:../index.php');
    }
    // End Access permission Admin
+   
+   // Start Show Table Users
 
-   // If Post
+   $sql = "SELECT * FROM users";
+   $result = mysqli_query($connect,$sql);
+   $row = mysqli_fetch_assoc($result);
+   $id = $_GET['id'];
+   // ENd Show Table Users
 
+   // If Post for update users
    $errors = array();
    if($_POST){
+      $id = $_POST['id'];
       $email = $_POST['email'];
       $password = $_POST['password'];
       $cpassword = $_POST['confirmpassword'];
       $name = $_POST['name'];
-      $sex = $_POST['sex'];
       $phone = $_POST['phonenumber'];
-      $building = $_POST['building'];
+      $sex = $_POST['sex'];
 
       if(empty($email)){
          array_push($errors,"กรุณากรอกอีเมล");
-      }elseif(!filter_var($email,FILTER_VALIDATE_EMAIL)){
-         array_push($errors, "รูปแบบอีเมลไม่ถูกต้อง");
+      }elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+         array_push($errors,"รูปแบบอีเมลไม่ถูกต้อง");
       }elseif(empty($password)){
          array_push($errors,"กรุณากรอกรหัสผ่าน");
       }elseif($password != $cpassword){
-         array_push($errors, "รหัสผ่านไม่ตรงกัน");
-      }elseif(strlen($password) > 20 || strlen($password) < 6){
-         array_push($errors, "รหัสผ่านต้องมีความยาว 5 ถึง 20 ตัวอักษร");
+         array_push($errors,"รหัสผ่านไม่ตรงกัน");
       }elseif(empty($name)){
-         array_push($errors, "กรุณากรอกชื่อ-นามสกุล");
-      }elseif(empty($sex)){
-         array_push($errors, "กรุณาเลือกเพศ");
+         array_push($errors, "กรุณากรอกชื่อ");
       }elseif(empty($phone)){
-         array_push($errors, "กรุณากรอกเบอร์โทรศัพท์");
-      }else {
-         $check_user = "SELECT * FROM staff WHERE st_email = '$email' LIMIT 1";
-         $result = mysqli_query($connect,$check_user);
-         $row = mysqli_fetch_assoc($result);
+         array_push($errors,"กรุณากรอกเบอร์โทรศัพท์");
+      }elseif(empty($sex)){
+         array_push($error,"กรุณาเลือกเพศ");
+      }elseif(count($errors) == 0){
+         $query = "UPDATE users SET us_pass = '$password',us_name = '$name',us_sex = '$sex',us_email = '$email', us_phone = '$phone' WHERE users_Id = $id";
+         mysqli_query($connect,$query);
+         $_SESSION['success1'] = "เพิ่มข้อมูลเรียบร้อย";
+         header('location:member.php');
+      }
 
-         if($row){
-            if($row['st_email'] === '$email'){
-               array_push($errors, "มีอีเมลนี้ในระบบแล้ว");
-            }
-         }elseif (count($errors) == 0) {
+         if(count($errors) == 0){
             $rpassword = md5($password);
-            $sql = "INSERT INTO staff(bd_Id,st_pass,st_name,st_sex,st_email,st_phone) VALUES('$building','$password','$name','$sex','$email','$phone')";
-            mysqli_query($connect,$sql);
-            $_SESSION['username'] = $name;
-            $_SESSION['success'] = "Now you are Log In";
-            header('location:memberstaff.php');
+            $query = "UPDATE users SET us_pass = '$password',us_name = '$name',us_sex = '$sex',us_email = '$email', us_phone = '$phone' WHERE users_Id = $id";
+            mysqli_query($connect,$query);
+            $_SESSION['success1'] = "แก้ไขข้อมูลเรียบร้อย";
+            header('location:member.php');
          }else{
             $_SESSION['error'] = "มีบางอย่างผิดพลาด";
          }
-      }
+      
    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
-<!---------- Start head ---------->
+<!---------- start header ---------->
 
 <head>
    <?php include('../master/head-user.php') ?>
 </head>
 <!---------- End head ---------->
+
 <body>
 <style>
-   
+
    /********** Start Main menu **********/
 
    .main-content{
@@ -96,10 +99,10 @@
       font-weight: bold;
       color:#585858;
    }
-   .main-manu-items li:nth-child(10){
+   .main-manu-items li:nth-child(11){
       background-color:#3D5538;
    }
-   .main-manu-items li:nth-child(10) h3{
+   .main-manu-items li:nth-child(11) h3{
       color:#F0F8FF;
    }
    /********** End Main menu **********/
@@ -127,18 +130,18 @@
 
    /********** Start Edit Booking **********/
 
-   .addmember{
+   .edituser{
       background-color:#D7E6D5;
       width:1170px;
       margin:50px 0px;
       border-radius:3px;
    }
-   .addmember-container h3{
+   .edituser-container h3{
       font-size:40px;
       margin-bottom:25px;
       color:#585858;
    }
-   .addmember-container input,.addmember-container select{
+   .edituser-container input,.edituser-container select{
       background-color:#BAC9B8;
       border: 2px solid #3D5538;
       border-radius:6px;
@@ -150,42 +153,30 @@
       font-size:30px;
       padding-left:20px;
    }
-   .addmember-container select{
+   .edituser-container select{
       width:200px;
    }
-   .addmember-equipment{
-      display:flex;
-   }
-   .addmember-equipment-items1,.addmember-equipment-items2{
+   .edituser-equipment-items1,.addroom-equipment-items2{
       margin-left:102px;
    }
-   .addmember-equipment label{
-      font-size:30px;
-      margin:0 20px;
-      color:#585858;
-   }
-   #addmember-items{
+   #edituser-items{
       width:25px;
       height:25px
    }
-   .addmember-roomimage input{
-      padding-left:5px;
-      padding-top:2.5px;
+   .edituser-button button:nth-child(1){
+      background-color:#FBA535;
    }
-   .addmember-button button:nth-child(1){
-      background-color:#3D5538;
+   .edituser-button button:nth-child(1):hover{
+      background-color:#F6B35B;
    }
-   .addmember-button button:nth-child(1):hover{
-      background-color:#566D51;
-   }
-   .addmember-button button:nth-child(2){
+   .edituser-button button:nth-child(2){
       background-color:#F61414;
       margin-left:20px;
    }
-   .addmember-button button:nth-child(2):hover{
+   .edituser-button button:nth-child(2):hover{
       background-color:#EE5151;
    }
-   .addmember-button button{
+   .edituser-button button{
       border:none;
       border-radius:5px;
       margin-top:10px;
@@ -207,6 +198,7 @@
 
 
 <!---------- start content ---------->
+
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
@@ -215,76 +207,82 @@
                <img src="../img/menu-logo/online-booking.png" alt="">
                <h3 class="ml-3">FTU RRS</h>
             </div>
-            <ul class="main-manu-items">
-               <?php include('../master/main-menu-user.php') ?>
-            </ul>
+
+            <!---------- Start main-manu-items ---------->
+
+            <?php include('../master/main-menu-user.php') ?>
+            <!---------- End main-manu-items ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
-                     <img src="../img/menu-logo/staff.png" alt="">
+                     <img src="../img/menu-logo/team.png" alt="">
                   </div>
                   <div class="content-title-h ml-4">
-                     <h3>เพิ่มสมาชิก</h3>
+                     <h3>แก้ไขข้อมูลสมาชิก</h3>
                   </div>
                </div>
 
-               <!---------- Start if error ---------->
+               <!---------- Start If error ---------->
 
-               <?php if (count($errors) > 0) : ?>
-                  <div class="alert alert-danger">
-                     <?php foreach ($errors as $error) : ?>
-                        <?php echo $error ?>
-                     <?php endforeach ?>
+               <?php foreach($errors as $error){ ?>
+                  <div class="alert alert-danger mt-5">
+                     <?php echo "$error"; ?>
                   </div>
-               <?php endif ?>
-               <!---------- End if error ---------->
+               <?php } ?>
+               <!---------- ENd If error ---------->
+               
+               <!---------- Start Edit User ---------->
 
-               <!---------- Start Add member ---------->
-
-               <div class="addmember">
-                  <div class="addmember-container p-5">
+               <div class="edituser">                  
+                  <div class="edituser-container p-5">
                      <form action="" method="post">
-                        <div class="addmember-capacity d-flex">
+                        <input type="hidden" name="id" value="<?php echo $id ?>">
+                        <div class="edituser-email d-flex">
                            <h3>อีเมล : </h3>
-                           <input style="margin-left:181px;width:690px;" type="email" name="email" placeholder="Email">
-                        </div>
-                        <div class="addmember-nameroom d-flex">
-                           <h3>Password : </h3>
-                           <input style="margin-left:103px;width:690px;" type="password" name="password" placeholder="password">
-                        </div>
-                        <div class="addmember-nameroom d-flex">
-                           <h3>ยืนยันรหัสผ่าน : </h3>
-                           <input style="margin-left:35px;width:690px;" type="password" name="confirmpassword" placeholder="ยืนยันรหัสผ่าน">
-                        </div>
-                        <div class="addmember-coderoom d-flex">
-                           <h3>ชื่อ-นามสกุล : </h3>
-                           <input style="margin-left:63px;width:690px;" type="text" name="name" value="" placeholder="ชื่อ-นามสกุล">
-                        </div>                   
-                        <div class="addmember-coderoom d-flex">
-                           <h3>เพศ :</h3>
-                           <select name="sex" style="margin-left:200px;width:200px;">
-                              <option select>เลือก</option>
-                              <option value="male">ชาย</option>
-                              <option value="female">หญิง</option>
-                           </select>
-                        </div>                   
-                        <div class="addmember-roomimage d-flex">
-                           <h3>เบอร์โทร : </h3>
-                           <input style="margin-left:123px;width:690px;padding-left:20px;" type="number" name="phonenumber" placeholder="เบอร์โทร" >
+                           <input style="margin-left:181px;width:690px;" type="email" name="email" placeholder="Email" value="<?php echo $row['us_email']; ?>" require>
                         </div>  
-                        
-                        <!-- <div class="addroom-status d-flex disble">
+                        <div class="edituser-password d-flex">
+                           <h3>Password : </h3>
+                           <input style="margin-left:103px;width:690px;" type="text" name="password" placeholder="password" value="<?php echo $row['us_pass']; ?>" require>
+                        </div>
+                        <div class="edituser-confirmpassword d-flex">
+                           <h3>ยืนยันรหัสผ่าน : </h3>
+                           <input style="margin-left:35px;width:690px;" type="text" name="confirmpassword" placeholder="ยืนยันรหัสผ่าน" value="<?php echo $row['us_pass'] ?>" require>
+                        </div>
+                        <div class="edituser-name d-flex">
+                           <h3>ชื่อ-นามสกุล : </h3>
+                           <input style="margin-left:63px;width:690px;" type="text" name="name" value="<?php echo $row['us_name'] ?>" placeholder="ชื่อ-นามสกุล" require>
+                        </div>                 
+                        <div class="edituser-phonenumber d-flex">
+                           <h3>เบอร์โทร : </h3>
+                           <input style="margin-left:123px;width:690px;padding-left:20px;" type="number" name="phonenumber" placeholder="เบอร์โทร" value="<?php echo $row['us_phone']; ?>" require>
+                        </div>                          
+                        <div class="edituser-sex d-flex">
+                           <h3>เพศ : </h3>
+                           <select name="sex"  style="margin-left:200px;width:690px;">
+                           <?php
+                           if($row['us_sex'] == "male"){
+                              echo "<option value='male' selected>ชาย</option>
+                                    <option value='female'>หญิง</option>";
+                           }else{
+                              echo "<option value='male'>ชาย</option>
+                                    <option value='female' selected>หญิง</option>";
+                           }                           
+                           ?> 
+                           </select>
+                        </div>    
+                        <!-- <div class="addroom-status d-flex">
                            <h3>สถานะ : </h3>
                            <select name="memberstatus"  style="margin-left:158px;width:690px;">
                               <option>เลือกสถานะผู้ใช้งาน</option>
-                              <option value="">ผู้ดูแลห้องประชุม</option>
-                              <option value="" disabled>ผู้ใช้งานทั่วไป</option>
-                              <option value="" disabled>ผู้ดูแลระบบ</option>
+                              <option value="staff">ผู้ดูแลห้องประชุม</option>
+                              <option value="user">ผู้ใช้งานทั่วไป</option>
                            </select>
                         </div>     -->
-                        <div class="addmember-building d-flex">
+                        <!-- <div class="addroom-building d-flex">
                            <h3>ดูแลห้องประชุม : </h3>
                            <select name="building"  style="margin-left:15px;width:690px;">
                               <option select>เลือกอาคาร</option>
@@ -293,16 +291,15 @@
                               <option value="13">ศึกษาศาสตร์</option>
                               <option value="14">อิสลามศึกษา</option>
                            </select>
-                        </div>                    
-                        
-                        <div class="addmember-button mt-3">
-                           <button type="submit">ยืนยัน</button>
+                        </div>                     -->                        
+                        <div class="edituser-button mt-3">
+                           <button onclick="return confirm('คุณแน่ใจที่จะแก้ไขข้อมูลชุดนี้?')" type="submit">แก้ไข</button>
                            <button type="reset">ยกเลิก</button>
                         </div>
                      </form>                    
                   </div>
                </div>
-               <!---------- End addmember ---------->
+               <!---------- Start Edit User ---------->
 
                <!---------- Start content-footer ---------->
                <div class="content-footer row">
@@ -322,7 +319,6 @@
 <footer>
    <?php include('../master/footer-user.php'); ?>
 </footer>
-
 <!---------- end footer ---------->
 
    <script src="../bootstrap/js/bootstrap.min.js"></script>

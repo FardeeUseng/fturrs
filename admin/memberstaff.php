@@ -3,13 +3,19 @@
    session_start();
    require('../dbconnect.php');
 
-   // Start Access permission Staff and Admin
+   // Start Access permission Admin
 
-   if(!isset($_SESSION['staff_login']) and !isset($_SESSION['admin_login'])){
+   if(!isset($_SESSION['admin_login'])){
       $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ';
       header('location:../index.php');
    }
-   // End Access permission Staff and Admin
+   // End Access permission Admin
+
+   // Start Show table staff
+
+   $sql = "SELECT * FROM staff INNER JOIN building ON staff.bd_Id = building.bd_Id";
+   $result = mysqli_query($connect,$sql);
+   // End Show table staff
 
 ?>
 
@@ -25,7 +31,7 @@
 
 <body>
 <style>
-   
+
    /********** Start Main menu **********/
 
    .main-content{
@@ -49,12 +55,13 @@
       font-weight: bold;
       color:#585858;
    }
-   .main-manu-items li:nth-child(6){
+   .main-manu-items li:nth-child(11){
       background-color:#3D5538;
    }
-   .main-manu-items li:nth-child(6) h3{
+   .main-manu-items li:nth-child(11) h3{
       color:#F0F8FF;
    }
+
    /********** End Main menu **********/
 
    /********** Start Content **********/
@@ -73,25 +80,25 @@
       font-size:45px;
       color:#585858;
    }
-   .content-search-button{
-      background-color:#3D5538;
-      color:#F0F8FF;
-   }
    .content-search{
       justify-content:flex-end;
    }
-   .content-search form{
-      width:500px;
-   }
-   .custom-select option{
-      background-color:#E9F1E6;
+   .content-search select {
+      background-color:#3D5538;
+      color:#E9F1E6;
+      border-radius:5px;
+      font-size:22px;
+      width: 210px;
+      height: 50px;
+      padding-left:20px;
+      border:none;
    }
    /********** End Content **********/
 
    /********** Start table **********/
 
    .content-table th{
-      font-size:25px;
+      font-size:20px;
       font-weight: normal;
    }
    .content-table td{
@@ -119,6 +126,7 @@
 
 
 <!---------- start content ---------->
+
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
@@ -138,69 +146,55 @@
             <div class="content-container mx-5 my-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
-                     <img src="../img/menu-logo/regulation.png" alt="">
+                     <img src="../img/menu-logo/team.png" alt="">
                   </div>
                   <div class="content-title-h ml-4">
-                     <h3>คำขอใช้ห้องประชุม</h3>
+                     <h3>ข้อมูลสมาชิก</h3>
                   </div>
                </div>
-               <div class="content-search d-flex mt-5 mb-4">
-                  <form method="post" class="input-group">                  
-                     <select class="custom-select" id="">
-                        <option value="allbuilding" selected>อาคารทั้งหมด</option>
-                        <option value="scienceandit">วิทยาศาสตร์และเทคโนโลยี</option>
-                        <option value="arts">ศิลปศาสตร์และสังคมศาสตร์</option>
-                        <option value="education">ศึกษาศาสตร์</option>
-                        <option value="islamic">อิสลามศึกษา</option>
+               <div class="content-search d-flex mt-5 mb-4">                 
+                     <select class="form-select" aria-label="Default select example" onchange="location = this.value;" id="login">
+                        <option selected>ผู้ดูแลห้องประชุม</option>
+                        <option value="member.php">ข้อมูลผู้ใช้งานทั่วไป</option>
                      </select>
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
-                  </form>
                </div>
-
-               <!---------- Start Content-table ---------->
-
                <div class="content-table bg-dark">
+                  
+                  <!---------- Start Table staff ---------->
+
                   <table class="text-center table table-bordered">
                      <thead>
                         <tr>
                            <th>ลำดับ</th>
-                           <th>ชื่อผู้จอง</th>
-                           <th>เริ่ม</th>
-                           <th>สิ้นสุด</th>
-                           <th>ห้อง</th>
-                           <th>ชื่อห้องประชุม</th>
-                           <th>เพิ่มเติม</th>
-                           <th>สถานะ</th>
-                           <th>ยกเลิก</th>
+                           <th>อีเมล</th>
+                           <th>Password</th>
+                           <th>ชื่อ-นามสกุล</th>
+                           <th>เบอร์โทร</th>                           
+                           <th>ดูแลห้องประชุมอาคาร</th>
+                           <th>ลบ</th>
+                           <th>แก้ไข</th>
                         </tr>
                      </thead>
                      <tbody>
+                        <?php while($row=mysqli_fetch_assoc($result)){ ?>
                         <tr>
-                           <td>1</td>
-                           <td>นาย ฟัรดี อูเซ็ง</td>                           
-                           <td>10/12/6408.00น.</td>
-                           <td>10/12/6410.00น.</td>
-                           <td>107-11</td>
-                           <td>หอประชุมวันม.นอร์ มะทา</td>
-                           <td><a href="../staff/peoplebookingdetail.php">ดูเพิ่มเติม</a></td>
-                           <td><a href="#" class="btn btn-success">อนุมัติ</a></td>
-                           <td><a href="#" class="btn btn-danger">ยกเลิก</a></td>
+                           <td><?php echo $row['staff_Id']; ?></td>                   
+                           <td><?php echo $row['st_email']; ?></td>
+                           <td><?php echo $row['st_pass']; ?></td>
+                           <td><?php echo $row['st_name']; ?></td>                           
+                           <td><?php echo $row['st_phone']; ?></td>
+                           <td><?php echo $row['bd_name']; ?></td>
+                           <td><a href="deletememberstaff.php?id=<?php echo $row['staff_Id']; ?>" class="btn btn-danger" onclick="return confirm('คุณต้องการลบผู้ใช้รายนี้ใช้รึไม่')">ลบ</a></td>
+                           <td><a href="../admin/editmemberstaff.php?id=<?php echo $row['staff_Id']; ?>" class="btn btn-warning" onclick="return confirm('คุณต้องการที่จะแก้ไขข้อมูลผู้ใช้รายนี้ใช้รึไม่')">แก้ไข</a></td>
                         </tr>
-                        <tr>
-                           <td>2</td>
-                           <td>นาย นุรดิน เจ็ะเลาะห์</td>
-                           <td>10/12/6408.00น.</td>
-                           <td>10/12/6410.00น.</td>
-                           <td>107-11</td>
-                           <td>วิจัย</td>
-                           <td><a href="../staff/peoplebookingdetail.php">ดูเพิ่มเติม</a></td>
-                           <td><a href="#" class="btn btn-success">อนุมัติ</a></td>
-                           <td><a href="#" class="btn btn-danger">ยกเลิก</a></td>
-                        </tr>
+                        <?php } ?>
                      </tbody>
                   </table>
+                  <!---------- End Table staff ---------->
+
                </div>
-               <!---------- End Content-table ---------->
+
+               <!---------- Start content-footer staff ---------->
 
                <div class="content-footer row">
                   <div class="content-footer-left col-xl-7">
@@ -210,6 +204,8 @@
                      <p></p>
                   </div>
                </div>
+               <!---------- End content-footer staff ---------->
+
             </div>
          </div>
       </div>  
@@ -218,13 +214,12 @@
 <!---------- end content ---------->
 
 <!---------- start footer ---------->
+
 <footer>
    <?php include('../master/footer-user.php'); ?>
 </footer>
-
 <!---------- end footer ---------->
 
    <script src="../bootstrap/js/bootstrap.min.js"></script>
-   
 </body>
 </html>
