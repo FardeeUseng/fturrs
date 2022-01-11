@@ -11,6 +11,41 @@
    }
    // End Access permission User, Staff and Admin
 
+   //show table if have session User or Staff or Admin
+   if(isset($_SESSION['admin_login'])){
+      $id = $_SESSION['admin_login'];
+      $sql = "SELECT * FROM admin WHERE admin_Id = $id";
+      $result = mysqli_query($connect,$sql);
+      $row = mysqli_fetch_assoc($result);
+
+      $name = $row['ad_name'];
+      $email = $row['ad_email'];
+      $password = $row['ad_pass'];
+      $sex = $row['ad_sex'];
+      $phone = $row['ad_phone'];
+   }elseif (isset($_SESSION['staff_login'])) {
+      $id = $_SESSION['staff_login'];
+      $sql = "SELECT * FROM staff WHERE staff_Id = $id";
+      $result = mysqli_query($connect,$sql);
+      $row = mysqli_fetch_assoc($result);
+
+      $name = $row['st_name'];
+      $email = $row['st_email'];
+      $password = $row['st_pass'];
+      $sex = $row['st_sex'];
+      $phone = $row['st_phone'];
+   }elseif (isset($_SESSION['user_login'])) {
+      $id = $_SESSION['user_login'];
+      $sql = "SELECT * FROM users WHERE users_Id = $id";
+      $result = mysqli_query($connect,$sql);
+      $row = mysqli_fetch_assoc($result);
+
+      $name = $row['us_name'];
+      $email = $row['us_email'];
+      $password = $row['us_pass'];
+      $sex = $row['us_sex'];
+      $phone = $row['us_phone'];
+   }
 ?>
 
 <!DOCTYPE html>
@@ -150,7 +185,7 @@
 <!---------- start header ---------->
 
 <header>
-   <?php include('../master/head-user.php') ?>
+   <?php include('../master/header-user.php') ?>
 </header>
 <!---------- end header ---------->
 
@@ -171,12 +206,12 @@
             <!----------- Start form Edit Profile ---------->
 
             <div class="profile-edit mt-3">           
-               <form action="" method="post">               
-                  <h2 class="text-center">ฟัรดี อูเซ็ง</h2>
-                  <button type="submit">ยืนยันแก้ไขข้อมูล</button>
+               <form action="profileeditdata.php" method="post" enctype="multipart/form-data">               
+                  <h2 class="text-center"><?php echo $name; ?></h2>
+                  <button type="submit" onclick="return confirm('คุณต้องการแก้ไขข้อมูลของคุณใช้หรือไหม?')">ยืนยันแก้ไขข้อมูล</button>
             </div> 
             <div class="login-link mt-4 text-center">
-               <a class="text-center" href="index.php">กลับสู่หน้าหลัก</a>
+               <a class="text-center" href="../index.php">กลับสู่หน้าหลัก</a>
             </div>         
          </div>
          <div class="main-content col-xl-8">
@@ -189,34 +224,48 @@
                      <h3>แก้ไขข้อมูลส่วนตัว</h3>
                   </div>
                </div>
+               <?php if(isset($_SESSION['error_profile'])){ ?>
+                  <div class="alert alert-danger">
+                     <?php echo $_SESSION['error_profile']; 
+                           unset($_SESSION['error_profile']);
+                     ?>
+                  </div>
+               <?php } ?>
                <div class="profile-detail">
                   <div class="profile-detail-container p-5">
+                     <input type="hidden" name="id" value="<?php echo $id; ?>">
                         <div class="profile-detail-name d-flex">
                            <h3>ชื่อ-นามสกุล : </h3>
-                           <input type="text" name="name" value="ฟัรดี อูเซ็ง" require>
+                           <input type="text" name="name" value="<?php echo $name; ?>" require>
                         </div>
-                        <div class="profile-detail-username d-flex">
-                           <h3>Username : </h3>
-                           <input style="margin-left:36px;" type="text" name="username" value="Admin1122" require>
+                        <div class="profile-detail-email d-flex">
+                           <h3>อีเมล : </h3>
+                           <input style="margin-left:130px;" type="email" name="email" value="<?php echo $email; ?>" require>
                         </div>
                         <div class="profile-detail-password d-flex">
                            <h3>Password : </h3>
-                           <input style="margin-left:48px;" type="password" name="password" value="faaa1122" require>
+                           <input style="margin-left:48px;" type="text" name="password" value="<?php echo $password; ?>" require>
                         </div>
                         <div class="profile-detail-sex d-flex">
                            <h3>เพศ : </h3>
                            <select name="sex"  style="margin-left:148px;">
-                              <option value="male">ชาย</option>
-                              <option value="female">หญิง</option>
+                           <?php if($sex == "male"){
+                              echo "<option value='male' select>ชาย</option>";
+                              echo "<option value='female'>หญิง</option>";
+                           }else{
+                              echo "<option value='female' select>หญิง</option>";
+                              echo "<option value='male'>ชาย</option>";
+                           } ?>
                            </select>
-                        </div>
-                        <div class="profile-detail-email d-flex">
-                           <h3>อีเมล : </h3>
-                           <input style="margin-left:130px;" type="email" name="email" value="Fatdee006@gmail.com" require>
                         </div>
                         <div class="profile-detail-phone d-flex">
                            <h3>เบอร์โทร : </h3>
-                           <input style="margin-left:71px;" type="number" name="phonenum" value="0650505204" require>
+                           <input style="margin-left:71px;" type="number" name="phonenum" value="<?php echo $phone; ?>" require>
+                        </div>
+                        <div class="profile-detail-image d-flex">
+                           <h3>รูปห้อง : </h3>
+                           <input type="hidden" name="MAX_FILE_SIZE" value="1048576">
+                           <input style="margin-left:103px;" type="file" name="file" accept="image/*">
                         </div>
                      </form>
                      <!----------- End form Edit Profil ---------->

@@ -2,6 +2,10 @@
 
    session_start();
    require('../dbconnect.php');
+   $sql1 = "SELECT * FROM building";
+   $result1 = mysqli_query($connect, $sql1);
+   
+   // $bd_array = array('อิสลามศึกษา','ศิลปศาสตร์และสังคมศาสตร์','วิทยาศาสตร์และเทคโนโลยี','ศึกษาศาสตร์');
 
    // Start Access permission Staff and Admin
 
@@ -19,11 +23,12 @@ if($_POST){
    $room = $_POST['roomname'];
    $coderoom = $_POST['coderoom'];
    $capacity = $_POST['roomcapacity'];
+   $floor = $_POST['roomfloor'];
    $status = $_POST['roomstatus'];
    $roomimage = $_POST['roomimage'];
    $equipment = implode(',',$_POST['equipment']);
-
-   $sql = "INSERT INTO room(bd_Id,staff_Id,r_name,r_capacity,r_img,r_status,r_code,r_equipment) VALUES($building,$staff,'$room',$capacity,'$roomimage','$status','$coderoom','$equipment')";
+   $note = $_POST['note'];
+   $sql = "INSERT INTO room(bd_Id,staff_Id,r_name,r_capacity,r_img,r_status,r_code,r_floor,r_equipment,r_note) VALUES($building,$staff,'$room',$capacity,'$roomimage','$status','$coderoom','$floor','$equipment','$note')";
    $result = mysqli_query($connect,$sql);
 
    if($result){
@@ -116,7 +121,7 @@ if($_POST){
       margin-bottom:25px;
       color:#585858;
    }
-   .addroom-container input,.addroom-container select{
+   .addroom-container input,.addroom-container select,textarea{
       background-color:#BAC9B8;
       border: 2px solid #3D5538;
       border-radius:6px;
@@ -174,6 +179,9 @@ if($_POST){
       color:#FAFCF9;
       font-size:30px;
    }
+   textarea{
+      height:100px;
+   }
 
    /********** End Edit Booking **********/
 
@@ -222,26 +230,43 @@ if($_POST){
                      <form action="" method="post">
                         <div class="addroom-building d-flex">
                            <h3>อาคาร : </h3>
-                           <select name="building"  style="margin-left:135px;width:690px;">
-                              <option select>เลือกอาคาร</option>
+                           <select name="building" id="building" style="margin-left:135px;width:690px;">       
+                              <option selected disabled>เลือกอาคาร</option>                  
+                              <?php
+                              foreach($result1 as $value){
+                                 echo "<option value='{$value['bd_Id']}'>{$value['bd_name']}</option>";
+                              }
+                              // while($row1 = mysqli_fetch_assoc($result1)){
+                              //    echo "<option value='{$row1['bd_Id']}'>{$row1['bd_name']}</option>";
+                              // }
+                              ?>
+                              <!-- <option select>เลือกอาคาร</option>
                               <option value="11">วิทยาศาสตร์และเทคโนโลยี</option>
                               <option value="12">ศิลปศาสตร์และสังคมศาสตร์</option>
                               <option value="13">ศึกษาศาสตร์</option>
-                              <option value="14">อิสลามศึกษา</option>
+                              <option value="14">อิสลามศึกษา</option> -->
                            </select>
                         </div>
                         <div class="addroom-name d-flex">
                            <h3>ชื่อผู้ดูแล : </h3>
-                           <select name="staff"  style="margin-left:92px;width:690px;">
-                              <option select>ชื่อผู้ดูแล</option>
+                           <select name="staff" id="staff" style="margin-left:92px;width:690px;">
+                           </select>
+                           <!-- <?php
+                              // $sql2 = "SELECT * FROM staff";
+                              // $result2 = mysqli_query($connect,$sql2);                              
+                              // while($row2 = mysqli_fetch_assoc($result2)){
+                              //    echo "<option value='{$row2['staff_Id']}'>{$row2['st_name']}</option>";
+                              // }
+                           ?> -->
+                              <!-- <option select>ชื่อผู้ดูแล</option>
                               <option value="502">staff</option>
                               <option value="503">staff11</option>
-                              <option value="504">staff22</option>
-                           </select>
+                              <option value="504">staff22</option> -->
+                           
                         </div>
                         <div class="addroom-nameroom d-flex">
                            <h3>ชื่อห้อง : </h3>
-                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" require>
+                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" value="" require>
                         </div>
                         <div class="addroom-coderoom d-flex">
                            <h3>หมายเลขห้อง : </h3>
@@ -250,6 +275,10 @@ if($_POST){
                         <div class="addroom-capacity d-flex">
                            <h3>ความจุ : </h3>
                            <input style="margin-left:130px;width:690px;" type="number" name="roomcapacity" require>
+                        </div>
+                        <div class="addroom-floor d-flex">
+                           <h3>ชั้น : </h3>
+                           <input style="margin-left:190px;width:690px;" type="number" name="roomfloor" require>
                         </div>
                         <div class="addroom-status d-flex">
                            <h3>สถานะ : </h3>
@@ -288,8 +317,16 @@ if($_POST){
                                     <input type="checkbox" name="equipment[]" value="จอมอนิเตอร์" id="addroom-items">
                                     <label for="">จอมอนิเตอร์</label>
                                  </div>
+                                 <div class="">                       
+                                    <input type="checkbox" name="equipment[]" value="จอLED" id="addroom-items">
+                                    <label for="">จอ LED</label>
+                                 </div>
                               </div>
                            </div>
+                        </div>
+                        <div class="addroom-note d-flex">
+                           <h3>หมายเหตุ : </h3>
+                           <textarea style="margin-left:80px;width:690px;padding:10px;" name="note" placeholder="หมายเหตุ(ถ้ามี)"></textarea>
                         </div>
                         <div class="addroom-button mt-3">
                            <button type="submit">ยืนยัน</button>
@@ -321,3 +358,19 @@ if($_POST){
    <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+<script type="text/javascript">
+  $('#building').change(function() {
+    var id_building = $(this).val();
+
+      $.ajax({
+      type: "POST",
+      url: "aj_addroom.php",
+      data: {id:id_building,function:'building'},
+      success: function(data){
+          $('#staff').html(data); 
+      }
+    });
+  });
+</script>
+

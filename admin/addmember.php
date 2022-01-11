@@ -1,6 +1,9 @@
 <?php
    session_start();
    require('../dbconnect.php');
+   $sql = "SELECT * FROM building";
+   $result = mysqli_query($connect,$sql);
+   $row = mysqli_fetch_assoc($result);
 
    // Start Access permission Admin
 
@@ -287,11 +290,12 @@
                         <div class="addmember-building d-flex">
                            <h3>ดูแลห้องประชุม : </h3>
                            <select name="building"  style="margin-left:15px;width:690px;">
-                              <option select>เลือกอาคาร</option>
-                              <option value="11">วิทยาศาสตร์และเทคโนโลยี</option>
-                              <option value="12">ศิลปศาสตร์และสังคมศาสตร์</option>
-                              <option value="13">ศึกษาศาสตร์</option>
-                              <option value="14">อิสลามศึกษา</option>
+                              <option selected disabled>เลือกอาคาร</option>
+                           <?php
+                              foreach($result as $value){
+                                 echo "<option value='{$value['bd_Id']}'>{$value['bd_name']}</option>";
+                              }
+                           ?>
                            </select>
                         </div>                    
                         

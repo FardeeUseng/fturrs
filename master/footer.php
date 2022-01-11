@@ -34,7 +34,7 @@
    }
    /********** End Footer **********/
 </style>
-<div class="container-fluid">
+   <div class="container-fluid">
       <div class="row">
          <div class="col-xl">
             <div class="footer-top">

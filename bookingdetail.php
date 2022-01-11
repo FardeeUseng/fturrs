@@ -1,5 +1,10 @@
 <?php
    session_start();
+   require("dbconnect.php");
+
+   $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id"; 
+   // LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN organization ON reservation.org_Id = organization.org_Id LEFT JOIN major reservation.major_Id = major.major_Id";
+   $result = mysqli_query($connect, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -169,30 +174,30 @@
                            <th>ชื่อผู้จอง</th>
                            <th>เริ่ม</th>
                            <th>สิ้นสุด</th>
-                           <th>ห้องประชุม</th>
-                           <th>จุดประสงค์</th>
+                           <th>รหัสห้อง</th>
+                           <th>ห้องประชุม</th>                           
                            <th>สถานะ</th>
                         </tr>
                      </thead>
                      <tbody>
+                     <?php while($row=mysqli_fetch_array($result)){ ?>
                         <tr>
-                           <td>1</td>
-                           <td>นาย ฟัรดี อูเซ็ง</td>
-                           <td>17/11/6408.00น.</td>
-                           <td>17/11/6410.00น.</td>
-                           <td>วันม.นอร์ มะทา</td>
-                           <td>....</td>
-                           <td class="text-success">อนุมัติ</td>
+                           <td><?php echo $row["rserv_Id"]; ?></td>
+                           <td><?php echo $row["peoplename"]; ?></td>
+                           <td><?php echo $row["startdate"]. " / " .$row["starttime"] ?></td>
+                           <td><?php echo $row["enddate"]. " / " .$row["endtime"] ?></td>
+                           <td><?php echo $row["r_code"] ?></td>
+                           <td><?php echo $row["r_name"] ?></td>
+                           <?php
+                              if($row["rserv_status"] == "อนุมัติ"){
+                                 echo "<td class='text-success'>อนุมัติ</td>";
+                              }else{
+                                 echo "<td class='text-primary'>รอการอนุมัติ</td>";
+                              }
+                           ?>
+                           
                         </tr>
-                        <tr>
-                           <td>2</td>
-                           <td>นาย นุรดิน เจ็ะเลาะห์</td>
-                           <td>17/11/6410.00น.</td>
-                           <td>17/11/6412.00น.</td>
-                           <td>วันม.นอร์ มะทา</td>
-                           <td>....</td>
-                           <td class="text-success">อนุมัติ </td>
-                        </tr>
+                     <?php } ?>
                      </tbody>
                   </table>
                </div>

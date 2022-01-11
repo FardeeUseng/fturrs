@@ -2,6 +2,10 @@
 
    session_start();
    require('../dbconnect.php');
+
+   $sql = "SELECT * FROM building";
+   $result = mysqli_query($connect,$sql);
+   $row = mysqli_fetch_assoc($result);
    
    // Start Access permission User, Staff and Admin
 
@@ -11,6 +15,60 @@
    }
    // End Access permission User, Staff and Admin
 
+   $errors = array();
+   if($_POST){
+
+      $building = $_POST["building"];
+      $room = $_POST["room"];
+      $name = $_POST["name"];
+      $phone = $_POST["phonenumber"];
+      $numpeople = $_POST["numpeople"];
+      $peopleId = $_POST["peopleId"];
+      $obj = $_POST["obj"];
+      $org = $_POST["organization"];
+      $major = $_POST["major"];
+      $startdate = $_POST["startdate"];
+      $starttime = $_POST["starttime"];
+      $enddate = $_POST["enddate"];
+      $endtime = $_POST["endtime"];
+
+      if(empty($building)){
+         array_push($errors, "กรุณาเลือกอาคาร");
+      }elseif(empty($room)){
+         array_push($errors, "กรุณาเลือกห้อง");
+      }elseif(empty($name)){
+         array_push($errors, "กรุณากรอกชื่อผู้จอง");
+      }elseif(empty($phone)){
+         array_push($errors, "กรุณากรอกเบอร์โทรศัพท์");
+      }elseif(empty($numpeople)){
+         array_push($errors, "กรุณากรอกจำนวนผู้เข้าร่วม");
+      }elseif(empty($peopleId)){
+         array_push($errors, "กรุณากรอกรหัสนักศึกษา/รหัสบุคลากร/เลขประจำตัวประชาชน");
+      }elseif(empty($obj)){
+         array_push($errors, "กรุณากรอกจุดประสงค์การขอใช้ห้อง");
+      }elseif(empty($startdate)){
+         array_push($errors, "กรุณากรอกวันที่เริ่มใช้ห้อง");
+      }elseif(empty($startdate)){
+         array_push($errors, "กรุณากรอกเวลาเริ่มใช้ห้อง");
+      }elseif(empty($enddate)){
+         array_push($errors, "กรุณากรอกวันที่สิ้นสุดการใช้ห้อง");
+      }elseif(empty($endtime)){
+         array_push($errors, "กรุณากรอกเวลาสิ้นสุดการใช้ห้อง");
+      }else {
+         if(count($errors) == 0){
+            $sql = "INSERT INTO reservation(bd_Id, room_Id, peoplename, phone, numpeople, people_Id, obj, org_Id, major_Id, startdate, starttime,enddate, endtime, rserv_status) VALUES($building, $room, '$name', '$phone', '$numpeople', '$peopleId', '$obj', '$org', '$major','$startdate','$starttime','$enddate','$endtime', 'รอการอนุมัติ')";
+      
+            $result = mysqli_query($connect, $sql);
+
+         if($result){
+            header("location:../bookingdetail.php");
+            exit();
+         }else{
+            echo "เกิดข้อผิดพลาด" . mysqli_error($connect);
+         }
+         }
+      }
+   }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +137,7 @@
       font-size:35px;
       color:#585858;
    }
-   .booking-fill input{
+   .booking-fill input,textarea{
       background-color:#BAC9B8;
       border:2px solid #3D5538;
       border-radius:5px;
@@ -96,7 +154,7 @@
       font-size:23px;
       color:#3D5538;
    }
-   .booking-fill-items5 button{
+   .booking-fill-items7 button{
       width:220px;
       height:60px;
       border:none;
@@ -105,14 +163,14 @@
       font-size:35px;
       color:#F0F8FF;
    }
-   .booking-fill-items5 button:hover{
+   .booking-fill-items7 button:hover{
       background-color:#597154;
    }
-   .booking-fill-items5 a{
+   .booking-fill-items7 a{
       font-size:35px;
       color:#F0F8FF;
    }
-   .booking-fill-items5 a:hover{
+   .booking-fill-items7 a:hover{
       text-decoration:none;
       color:#F0F8FF;
    }
@@ -129,6 +187,11 @@
    .booking-fill input[type]{
       font-size:23px;
       color:#3D5538;
+   }
+   .booking-obj textarea{
+      width:1163px;
+      height:100px;
+      padding:10px;
    }
    /********** End Register **********/
 
@@ -170,74 +233,121 @@
                   </div>
                   
                </div>
+                              <!---------- Start error ---------->
+                              <?php if(count($errors) > 0): ?>
+                  <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
+                     <?php foreach($errors as $error): ?>
+                        <?php echo $error; 
+                        ?>
+                     <?php endforeach ?>
+                  </div>
+               <?php endif ?>
+               <!---------- End Error ---------->
 
                <!---------- Start Booking Form ---------->
 
                <div class="booking-fill my-5">
-                  <form action="#" method="post">
+                  <form action="" method="post">
                      <div class="booking-fill-items1 row">
                         <div class="booking-building col-xl-6 mb-4">
                            <h4>อาคาร</h4>
-                           <select name="building" class="pl-2" require>
-                              <option select>เลือก</option>
-                              <option value="scienceandit">วิทยาศาสตร์และเทคโนโลยี</option>
-                              <option value="arts">ศิลปศาสตร์และสังคมศาสตร์</option>
-                              <option value="education">ศึกษาศาสตร์</option>
-                              <option value="islamic">อิสลามศึกษา</option>
+                           <select name="building" id="building" class="pl-2">
+                              <option selected disabled>เลือกอาคาร</option>
+                              <?php  
+                              foreach($result as $value){
+                                 echo "<option value='{$value['bd_Id']}'>{$value['bd_name']}</option>";
+                              }
+                              ?>
                            </select>
                         </div>
                         <div class="booking-room col-xl-6 mb-4">
                            <h4>ห้อง</h4>
-                           <select name="building" class="pl-2" require>
-                              <option select>เลือก</option>
-                              <option value="scienceandit">104-11วิจัย</option>
-                              <option value="arts">101-11คอม</option>
-                              <option value="education">ลานกิจกรรม</option>
-                              <option value="islamic">101-1ห้องประชุม</option>
-                           </select>
+                           <select name="room" id="room" class="pl-2">
+                              <option selcted disable>เลือก</option>
+                           </select>                              
+                           
                         </div>
                      </div>
                      <div class="booking-fill-items2 row mb-4">
                         <div class="booking-name col-xl-6">
                            <h4>ชื่อผู้จอง</h4>
-                           <input type="text" name="name" placeholder="ชื่อผู้จอง" require>
+                           <input type="text" name="name" placeholder="ชื่อผู้จอง">
                         </div>
                         <div class="booking-phone col-xl-6">
                            <h4>เบอร์โทร</h4>
-                           <input type="number" name="phonenumber" placeholder="เบอร์โทร" require>
+                           <input type="number" name="phonenumber" placeholder="เบอร์โทร">
                         </div>
                      </div>
                      <div class="booking-fill-items3 row mb-4">
-                        <div class="booking-numpeople col-xl-6 mb-4">
+                        <div class="booking-numpeople col-xl-6 ">
                            <h4>จำนวนผู้เข้าร่วม</h4>
-                           <input type="number" name="numpeople" placeholder="จำนวนผู้เข้าร่วม" require>
+                           <input type="number" name="numpeople" placeholder="จำนวนผู้เข้าร่วม">
                         </div>
-                        <div class="booking-email col-xl-6">
-                           <h4>จุดประสงค์</h4>
-                           <input type="text" name="obj" placeholder="จุดประสงค์" require>
+                        <div class="booking-studentId col-xl-6">
+                           <h4>รหัสนักศึกษา</h4>
+                           <input type="number" name="peopleId" placeholder="รหัสนักศึกษา">
                         </div>
                      </div>
                      <div class="booking-fill-items4 row mb-4">
-                        <div class="booking-startdate col-xl-6 mb-4">
+                        <div class="booking-obj col-xl ">
+                           <h4>จุดประสงค์การใช้ห้อง</h4>
+                           <textarea name="obj" placeholder="จุดประสงค์การใช้ห้อง"></textarea>
+                        </div>
+                     </div>
+                     <div class="booking-fill-items1 row">
+                        <div class="booking-building col-xl-6 mb-4">
+                           <h4>สังกัดองค์กร/คณะ</h4>
+                           <?php  
+                              $sql2 = "SELECT * FROM organization";
+                              $result2 = mysqli_query($connect,$sql2);
+                           ?>
+                           <select name="organization" class="pl-2">
+                              <option selected disabled>เลือก</option>
+                              <?php foreach($result2 as $value){
+                                 echo "<option value='{$value['org_Id']}'>{$value['org_name']}</option>";
+                              } ?>
+                              <option value="">อื่น ๆ</option>
+                           </select>
+                        </div>
+                        <div class="booking-room col-xl-6 mb-4">
+                           <h4>หน่วยงาย/สาขา/ชมรม/กลุ่ม</h4>
+                           <?php  
+                              $sql3 = "SELECT * FROM major";
+                              $result3 = mysqli_query($connect,$sql3); 
+                           ?>
+                           <select name="major" class="pl-2">                              
+                              <option selected disabled>เลือก</option>
+                              <?php
+                                 foreach($result3 as $value){
+                                    echo "<option value='{$value['major_Id']}'>{$value['major_name']}</option>";
+                                 }
+                              ?>
+                              
+                              <option value="">อื่นๆ</option>
+                           </select>
+                        </div>
+                     </div>
+                     <div class="booking-fill-items5 row mb-4">
+                        <div class="booking-startdate col-xl-6">
                            <h4>วันที่เริ่มต้น</h4>
-                           <input type="date" name="startdate" require>
+                           <input type="date" name="startdate">
                         </div>
                         <div class="booking-starttime col-xl-6">
                            <h4>เวลาเริ่มต้น</h4>
-                           <input type="time" name="starttime" require>
+                           <input type="time" name="starttime">
                         </div>
                      </div>
-                     <div class="booking-fill-items4 row mb-5">
-                        <div class="booking-enddate col-xl-6 mb-4">
+                     <div class="booking-fill-items6 row mb-5">
+                        <div class="booking-enddate col-xl-6">
                            <h4>วันสิ้นสุด</h4>
-                           <input type="date" name="enddate" require>
+                           <input type="date" name="enddate">
                         </div>
                         <div class="booking-endtime col-xl-6">
                            <h4>เวลาสิ้นสุด</h4>
-                           <input type="time" name="endtime" require>
+                           <input type="time" name="endtime">
                         </div>
                      </div>
-                     <div class="booking-fill-items5 mb-5 d-flex">
+                     <div class="booking-fill-items7 mb-5 d-flex">
                         <button type="submit">ส่ง</button>
                         <button type="reset" class="bg-danger ml-3">ยกเลิก</button>
                      </div>
@@ -263,3 +373,17 @@
 
 </body>
 </html>
+<script type="text/javascript">
+  $('#building').change(function() {
+    var id_building = $(this).val();
+
+      $.ajax({
+      type: "POST",
+      url: "aj_booking.php",
+      data: {id:id_building,function:'building'},
+      success: function(data){
+          $('#room').html(data); 
+      }
+    });
+  });
+</script>

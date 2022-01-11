@@ -3,6 +3,12 @@
    session_start();
    require('../dbconnect.php');
 
+   $id = $_GET['id'];
+   $sql = "SELECT * FROM room INNER JOIN staff ON room.staff_Id = staff.staff_Id INNER JOIN building ON room.bd_Id = building.bd_Id WHERE room_Id = $id";
+   $result = mysqli_query($connect, $sql);
+   $row = mysqli_fetch_assoc($result);
+   $equip_arr = array("โปรเจคเตอร์","ที่ฉายโปรเจคเตอร์","ไมค์","ลำโพง","จอมอนิเตอร์","จอLED"); 
+
    // Start Access permission Staff and Admin
 
    if(!isset($_SESSION['staff_login']) and !isset($_SESSION['admin_login'])){
@@ -10,6 +16,40 @@
       header('location:../index.php');
    }
    // End Access permission Staff and Admin
+
+   $errors = array();
+   if($_POST){
+      $room_id = $_POST["id"];
+      $roomname = $_POST["roomname"];
+      $coderoom = $_POST["coderoom"];
+      $roomcapacity = $_POST["roomcapacity"];
+      $roomfloor = $_POST["roomfloor"];
+      $roomstatus = $_POST["roomstatus"];
+      $equipment = implode(",",$_POST["equipment"]);
+      $r_note = $_POST["r_note"];
+
+      if(empty($roomname)){
+         array_push($errors, "กรุณากรอกชื่อห้อง");
+      }elseif(empty($coderoom)){
+         array_push($errors, "กรุณากรอกหมายเลขห้อง");
+      }elseif(empty($roomcapacity)){
+         array_push($errors, "กรุณากรอกความจุห้อง");
+      }elseif(empty($roomfloor)){
+         array_push($errors, "กรุณากรอกชั้นของห้อง");
+      }else{
+         if(count($errors) == 0){
+            $sql = "UPDATE room SET r_name = '$roomname', r_code = '$coderoom', r_capacity = $roomcapacity, r_floor = $roomfloor, r_status = '$roomstatus', r_equipment = '$equipment', r_note = '$r_note' WHERE room_Id = $room_id";
+            $result = mysqli_query($connect,$sql);
+      
+            if($result){
+               header("location:../checkroom.php");
+               exit();
+            }else{
+               echo "ไม่สามารถแก้ไขข้อมูลห้องได้" . mysqli_error($connect);
+            }
+         }
+      }
+   }
 
 ?>
 
@@ -91,7 +131,7 @@
       margin-bottom:25px;
       color:#585858;
    }
-   .editbooking-container input,.editbooking-container select{
+   .editbooking-container input,.editbooking-container select,textarea{
       background-color:#BAC9B8;
       border: 2px solid #3D5538;
       border-radius:6px;
@@ -147,6 +187,10 @@
       color:#FAFCF9;
       font-size:30px;
    }
+
+   textarea{
+      height:100px;
+   }
    /********** End Edit Booking **********/
 
 </style>
@@ -187,79 +231,115 @@
                   </div>
                </div>
 
-               <!---------- Start Form Edit booking ---------->
+               <!---------- Start error ---------->
+               <?php if(count($errors) > 0): ?>
+                  <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
+                     <?php foreach($errors as $error): ?>
+                        <?php echo $error; 
+                        ?>
+                     <?php endforeach ?>
+                  </div>
+               <?php endif ?>
+               <!---------- End Error ---------->
 
+               <!---------- Start Form Edit booking ---------->
                <div class="editbooking">
                   <div class="editbooking-container p-5">
                      <form action="" method="post">
+                        <input type="hidden" name="id" value="<?php echo $id ?>">
                         <div class="editbooking-building d-flex">
                            <h3>อาคาร : </h3>
-                           <select name="building"  style="margin-left:135px;width:690px;">
-                              <option select>เลือกอาคาร</option>
-                              <option value="scienceandit">วิทยาศาสตร์และเทคโนโลยี</option>
-                              <option value="arts">ศิลปศาสตร์และสังคมศาสตร์</option>
-                              <option value="education">ศึกษาศาสตร์</option>
-                              <option value="islamic">อิสลามศึกษา</option>
+                           <input style="margin-left:135px;width:690px;" type="text" name="building" value="<?php echo $row['bd_name']; ?>" disabled>
                            </select>
                         </div>
                         <div class="editbooking-name d-flex">
                            <h3>ชื่อผู้ดูแล : </h3>
-                           <input style="margin-left:92px;width:690px;" type="text" name="name" value="" require>
+                           <input style="margin-left:93px;width:690px;" type="text" name="name" value="<?php echo $row['st_name']; ?>" disabled>
                         </div>
                         <div class="editbooking-nameroom d-flex">
                            <h3>ชื่อห้อง : </h3>
-                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" value="" require>
+                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" value="<?php echo $row['r_name']; ?>">
                         </div>
                         <div class="editbooking-coderoom d-flex">
                            <h3>หมายเลขห้อง : </h3>
-                           <input style="margin-left:15px;width:690px;" type="text" name="coderoom" value="" require>
+                           <input style="margin-left:15px;width:690px;" type="text" name="coderoom" value="<?php echo $row['r_code']; ?>">
                         </div>
                         <div class="editbooking-capacity d-flex">
                            <h3>ความจุ : </h3>
-                           <input style="margin-left:130px;width:690px;" type="number" name="roomcapacity" value="" require>
+                           <input style="margin-left:130px;width:690px;" type="number" name="roomcapacity" value="<?php echo $row['r_capacity']; ?>">
+                        </div>
+                        <div class="addroom-floor d-flex">
+                           <h3>ชั้น : </h3>
+                           <input style="margin-left:190px;width:690px;" type="number" name="roomfloor" value="<?php echo $row['r_floor']; ?>">
                         </div>
                         <div class="editbooking-status d-flex">
                            <h3>สถานะ : </h3>
                            <select name="roomstatus"  style="margin-left:130px;width:690px;">
-                              <option value="available">ใช้งานได้</option>
-                              <option value="notavailable">ปิดปรับปรุง</option>
+                           <?php
+                              if($row["r_status"] == "available"){
+                                 echo "<option value='available' selected>ใช้งานได้</option>";
+                                 echo "<option value='notavailable'>ปิดปรับปรุง</option>";
+                              }else{
+                                 echo "<option value='available'>ใช้งานได้</option>";
+                                 echo "<option value='notavailable' selected>ปิดปรับปรุง</option>";
+                              }
+                           ?>
                            </select>
                         </div>
                         <div class="editbooking-roomimage d-flex">
                            <h3>รูปห้อง : </h3>
-                           <input style="margin-left:126px;width:690px;" type="file" name="roomimage" value="" require>
+                           <input style="margin-left:126px;width:690px;" type="file" name="roomimage" value="">
                         </div>                        
                         <div class="editbooking-equipment">
                            <h3>อุปกรณ์ :</h3>
                            <div class="editbooking-equipment-items">
                               <div class="editbooking-equipment-items1 d-flex">
-                                 <div class="">                       
-                                    <input type="checkbox" name="projecter" id="addroom-items">
-                                    <label for="">โปรเจคเตอร์</label>
+                                 <div class="">
+                                    <?php
+                                    $equipment = explode(",",$row['r_equipment']);
+                                    foreach($equip_arr as $value){
+                                       if(in_array($value,$equipment)){
+                                          echo "<input type='checkbox' name='equipment[]' value='$value' id='addroom-items' checked>$value";
+                                       }else {
+                                          echo "<input type='checkbox' name='equipment[]' value='$value' id='addroom-items'>$value";
+                                       }
+                                       
+                                    }
+                                    ?>                     
+                                    <!-- <input type="checkbox" name="equipment[]" value="โปรเจคเตอร์" id="addroom-items">
+                                    <label for="">โปรเจคเตอร์</label> -->
                                  </div>
-                                 <div class="">                       
-                                    <input type="checkbox" name="" id="addroom-items">
+                                 <!-- <div class="">                       
+                                    <input type="checkbox" name="equipment[]" value="ที่ฉายโปรเจคเตอร์" id="addroom-items">
                                     <label for="">ที่ฉายโปรเจคเตอร์</label>
                                  </div>
                                  <div class="">                       
-                                    <input type="checkbox" name="" id="addroom-items">
+                                    <input type="checkbox" name="equipment[]" value="ไมค์" id="addroom-items">
                                     <label for="">ไมค์</label>
-                                 </div>
+                                 </div> -->
                               </div>
-                              <div class="editbooking-equipment-items2 d-flex">
+                              <!-- <div class="editbooking-equipment-items2 d-flex">
                                  <div class="">                       
-                                    <input type="checkbox" name="" id="addroom-items">
+                                    <input type="checkbox" name="equipment[]" vlaue="ลำโพง" id="addroom-items">
                                     <label for="">ลำโพง</label>
                                  </div>
                                  <div class="">                       
-                                    <input type="checkbox" name="" id="addroom-items">
+                                    <input type="checkbox" name="equipment[]" value="จอมอนิเตอร์" id="addroom-items">
                                     <label for="">จอมอนิเตอร์</label>
                                  </div>
-                              </div>
+                                 <div class="">                       
+                                    <input type="checkbox" name="equipment[]" value="จอLED" id="addroom-items">
+                                    <label for="">จอ LED</label>
+                                 </div>
+                              </div> -->
                            </div>
                         </div>
+                        <div class="addroom-note d-flex">
+                           <h3>หมายเหตุ : </h3>
+                           <textarea style="margin-left:80px;width:690px;padding:10px;" name="r_note" value="" placeholder="หมายเหตุ(ถ้ามี)"><?php echo $row['r_note']; ?></textarea>
+                        </div>
                         <div class="editbooking-button mt-3">
-                           <button type="submit">แก้ไข</button>
+                           <button type="submit" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูลห้องนี้?')">แก้ไข</button>
                            <button type="reset">ยกเลิก</button>
                         </div>
                      </form>                    

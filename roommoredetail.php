@@ -211,11 +211,20 @@
                            </div>
                         </div>
                         <div class="room-detail-items4 d-flex row">
-                           <div class="room-detail-equip d-flex col-xl">
-                              <h3>อุปกรณ์: </h3>
+                           <div class="addroom-floor d-flex col-xl-6">
+                              <h3>ชั้น : <?php echo $row['r_floor']; ?></h3>
+                           </div>
+                           <div class="room-detail-equip d-flex col-xl-6">
+                              <h3>อุปกรณ์ : </h3>
                               <p><?php echo $row['r_equipment']; ?></p>
                            </div>
-                        </div>                                    
+                        </div> 
+                        <div class="room-detail-items5 d-flex row">
+                           <div class="room-detail-note d-flex col-xl">
+                              <h3>หมายเหตุ : </h3>
+                              <p><?php echo $row['r_note'] ?></p>
+                           </div>  
+                        </div>                             
                   </div>
                </div>
                <!---------- End Room detail Table ---------->

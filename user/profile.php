@@ -11,6 +11,42 @@
    }
    // End Access permission User, Staff and Admin
 
+   //show table if have session User or Staff or Admin
+   if(isset($_SESSION['admin_login'])){
+      $id = $_SESSION['admin_login'];
+      $sql = "SELECT * FROM admin WHERE admin_Id = $id";
+      $result = mysqli_query($connect,$sql);
+      $row = mysqli_fetch_assoc($result);
+
+      $name = $row['ad_name'];
+      $email = $row['ad_email'];
+      $password = $row['ad_pass'];
+      $sex = $row['ad_sex'];
+      $phone = $row['ad_phone'];
+   }elseif (isset($_SESSION['staff_login'])) {
+      $id = $_SESSION['staff_login'];
+      $sql = "SELECT * FROM staff WHERE staff_Id = $id";
+      $result = mysqli_query($connect,$sql);
+      $row = mysqli_fetch_assoc($result);
+
+      $name = $row['st_name'];
+      $email = $row['st_email'];
+      $password = $row['st_pass'];
+      $sex = $row['st_sex'];
+      $phone = $row['st_phone'];
+   }elseif (isset($_SESSION['user_login'])) {
+      $id = $_SESSION['user_login'];
+      $sql = "SELECT * FROM users WHERE users_Id = $id";
+      $result = mysqli_query($connect,$sql);
+      $row = mysqli_fetch_assoc($result);
+
+      $name = $row['us_name'];
+      $email = $row['us_email'];
+      $password = $row['us_pass'];
+      $sex = $row['us_sex'];
+      $phone = $row['us_phone'];
+   }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -129,7 +165,6 @@
 <!---------- end header ---------->
 
 <!---------- start content ---------->
-
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
@@ -142,8 +177,8 @@
                <img src="../img/menu-logo/profile.png" alt="">
             </div>            
             <div class="profile-edit mt-3">
-               <h2 class="text-center">ฟัรดี อูเซ็ง</h2>
-               <p class="text-center mt-4"><a href="../user/profileedit.php">แก้ไขข้อมูลส่วนตัว</a></p>  
+               <h2 class="text-center"><?php echo "$name"; ?></h2>
+               <p class="text-center mt-4"><a href="profileedit.php">แก้ไขข้อมูลส่วนตัว</a></p>  
             </div>  
             <div class="login-link mt-4 text-center">
                <a class="text-center" href="../index.php">กลับสู่หน้าหลัก</a>
@@ -162,31 +197,40 @@
                      <h3>ข้อมูลส่วนตัว</h3>
                   </div>
                </div>
+               <?php if(isset($_SESSION['editprofilesuccess'])){ ?>
+                  <div class="alert alert-primary">
+                     <?php echo $_SESSION['editprofilesuccess'];
+                           unset($_SESSION['editprofilesuccess']);
+                     ?>
+                  </div>
+               <?php } ?>
                <div class="profile-detail">
                   <div class="profile-detail-container p-5">
                      <div class="profile-detail-name d-flex">
                         <h3>ชื่อ - นามสกุล : </h3>
-                        <h3 class="ml-3">ฟัรดี อูเซ็ง</h3>
-                     </div>
-                     <div class="profile-detail-username d-flex">
-                        <h3>Username : </h3>
-                        <h3 class="ml-3">Admin1122</h3>
-                     </div>
-                     <div class="profile-detail-password d-flex">
-                        <h3>Password : </h3>
-                        <h3 class="ml-3">faaa1122</h3>
-                     </div>
-                     <div class="profile-detail-sex d-flex">
-                        <h3>เพศ : </h3>
-                        <h3 class="ml-3">ชาย</h3>
+                        <h3 class="ml-3"><?php echo $name; ?></h3>
                      </div>
                      <div class="profile-detail-email d-flex">
                         <h3>อีเมล : </h3>
-                        <h3 class="ml-3">Fatdee006@gmail.com</h3>
+                        <h3 class="ml-3"><?php echo $email; ?></h3>
+                     </div>
+                     <div class="profile-detail-password d-flex">
+                        <h3>Password : </h3>
+                        <h3 class="ml-3"><?php echo $password; ?></h3>
+                     </div>
+                     <div class="profile-detail-sex d-flex">
+                        <h3>เพศ : </h3>
+                        <h3 class="ml-3">
+                           <?php if($sex == "male"){
+                              echo "ชาย";
+                           }else{
+                              echo "หญิง";
+                           } ?>
+                        </h3>
                      </div>
                      <div class="profile-detail-phone d-flex">
                         <h3>เบอร์โทร : </h3>
-                        <h3 class="ml-3">0650505204</h3>
+                        <h3 class="ml-3"><?php echo $phone; ?></h3>
                      </div>
                   </div>
                </div>

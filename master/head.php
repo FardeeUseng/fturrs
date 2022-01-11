@@ -6,4 +6,5 @@
    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
    <link rel="stylesheet" href="font/tahomo.ttf">
    <link rel="stylesheet" href="font/SukhumvitSet-Medium.ttf">
-   <link rel="stylesheet" href="bootstrap/js/jquery-3.6.0.min.js">
+   <script src="bootstrap/js/jquery-3.6.0.min.js"></script>
+   <script src="bootstrap/css/bootstrap.min.js"></script>

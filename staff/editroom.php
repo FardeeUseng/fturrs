@@ -3,6 +3,9 @@
    session_start();
    require('../dbconnect.php');
 
+   $sql = "SELECT * FROM room INNER JOIN staff ON room.staff_Id = staff.staff_Id";
+   $result = mysqli_query($connect,$sql);
+
    // Start Access permission Staff and Admin
 
    if(!isset($_SESSION['staff_login']) and !isset($_SESSION['admin_login'])){
@@ -206,29 +209,25 @@
                         </tr>
                      </thead>
                      <tbody>
+                        <?php while($row = mysqli_fetch_assoc($result)){ ?>
                         <tr>
-                           <td>1</td>
-                           <td>หอประชุมวันม.นอร์ มะทา</td>
-                           <td>1000</td>
-                           <td>นาย ฟัรดี อูเซ็ง</td>                                                      
-                           <td>0650505204</td>
-                           <td><a href="#">ดูเพิ่มเติม</a></td>
-                           <td class="text-success">ใช้งานได้</td>                          
-                           <td><a href="#" class="btn btn-danger">ลบ</a></td>
-                           <td><a href="./editroomitems.php" class="btn btn-warning">แก้ไข</a></td>
-                           
+                           <td><?php echo $row['room_Id']; ?></td>
+                           <td><?php echo $row['r_name']; ?></td>
+                           <td><?php echo $row['r_capacity']; ?></td>
+                           <td><?php echo $row['st_name']; ?></td>                                                      
+                           <td><?php echo $row['st_phone']; ?></td>
+                           <td><a href="../roommoredetail.php?id=<?php echo $row['room_Id']; ?>">ดูเพิ่มเติม</a></td>
+                           <?php  
+                           if($row['r_status'] == "available"){
+                              echo "<td class='text-success'>ใช้งานได้</td>";
+                           }else{
+                              echo "<td class='text-danger'>ปิดปรับปรุง</td>";
+                           }
+                           ?>
+                           <td><a href="./deleteroom.php?id=<?php echo $row['room_Id']; ?>" class="btn btn-danger" onclick="return confirm('ยืนยันที่จะลบข้อมูลห้องนี้?')">ลบ</a></td>
+                           <td><a href="./editroomitems.php?id=<?php echo $row['room_Id']; ?>" class="btn btn-warning" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูลห้องนี้?')">แก้ไข</a></td>                           
                         </tr>
-                        <tr>
-                           <td>2</td>
-                           <td>วิจัย</td>
-                           <td>50</td>
-                           <td>นาย นุรดิน เจ็ะเลาะห์</td>                                                      
-                           <td>0650505204</td>
-                           <td><a href="#">ดูเพิ่มเติม</a></td>
-                           <td class="text-success">ใช้งานได้</td>                          
-                           <td><a href="" class="btn btn-danger">ลบ</a></td>
-                           <td><a href="./editroomitems.php" class="btn btn-warning">แก้ไข</a></td>
-                        </tr>
+                        <?php } ?>
                      </tbody>
                   </table>
                </div>

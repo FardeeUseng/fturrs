@@ -24,6 +24,7 @@
          if(mysqli_num_rows($result) == 1){
             $_SESSION['user_login'] = $row['users_Id'];
             $_SESSION['name'] = $row['us_name'];
+            $_SESSION['male'] = $row['us_sex'] == "male";
             $_SESSION['success'] = "Now your are log In";
             header('location:index.php');
          }else{

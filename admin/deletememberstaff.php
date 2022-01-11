@@ -1,6 +1,15 @@
 <?php
 
+   session_start();
    require('../dbconnect.php');
+
+   // Start Access permission Admin
+
+   if(!isset($_SESSION['admin_login'])){
+      $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ';
+      header('location:../index.php');
+   }
+   // End Access permission Admin
 
    // Start If post from memberstaff.php
 

@@ -8,6 +8,7 @@
       unset($_SESSION['user_login']);
       unset($_SESSION['staff_login']);
       unset($_SESSION['admin_login']);
+      unset($_SESSION['male']);
       header('location: index.php');
    }
    // End User, Staff and Admin Log out Code

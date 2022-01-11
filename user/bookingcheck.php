@@ -3,6 +3,10 @@
    session_start();
    require('../dbconnect.php');
 
+   $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id";
+   $result = mysqli_query($connect, $sql);
+   $order = 1;
+
    // Start Access permission User, Staff and Admin
 
    if(!isset($_SESSION['user_login']) and !isset($_SESSION['staff_login']) and !isset($_SESSION['admin_login'])){
@@ -176,26 +180,25 @@
                         </tr>
                      </thead>
                      <tbody>
+                     <?php while($row = mysqli_fetch_assoc($result)){ ?>
                         <tr>
-                           <td>1</td>
-                           <td>นาย ฟัรดี อูเซ็ง</td>                           
-                           <td>10/12/6408.00น.</td>
-                           <td>10/12/6410.00น.</td>
-                           <td>107-11</td>
-                           <td>หอประชุมวันม.นอร์ มะทา</td>
-                           <td class="text-success">อนุมัติ</td>
-                           <td><a href="#" class="btn btn-danger">ยกเลิก</a></td>
+                           <td><?php echo $order++; ?></td>
+                           <td><?php echo $row["peoplename"] ?></td>                           
+                           <td><?php echo $row["startdate"]. " / " .$row["starttime"] ?></td>
+                           <td><?php echo $row["enddate"]. " / " .$row["endtime"] ?></td>
+                           <td><?php echo $row["r_code"] ?></td>
+                           <td><?php echo $row["r_name"] ?></td>                           
+                           <?php
+                              if($row["rserv_status"] == "อนุมัติ"){
+                                 echo "<td class='text-success'>อนุมัติ</td>";
+                              }else{
+                                 echo "<td class='text-primary'>รอการอนุมัติ</td>";
+                              }
+                           ?>
+                           
+                           <td><a href="canclebooking.php?id=<?php echo $row["rserv_Id"] ?>" class="btn btn-danger" onclick="return confirm('ยืนยันที่ต้องการยกเลิกการจอง')">ยกเลิก</a></td>
                         </tr>
-                        <tr>
-                           <td>2</td>
-                           <td>นาย นุรดิน เจ็ะเลาะห์</td>
-                           <td>10/12/6408.00น.</td>
-                           <td>10/12/6410.00น.</td>
-                           <td>107-11</td>
-                           <td>วิจัย</td>
-                           <td class="text-warning">รออนุมัติ</td>
-                           <td><a href="#" class="btn btn-danger">ยกเลิก</a></td>
-                        </tr>
+                     <?php } ?>
                      </tbody>
                   </table>
                </div>

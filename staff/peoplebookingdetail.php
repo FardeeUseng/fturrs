@@ -137,8 +137,8 @@
                <div class="booking-detail">
                   <div class="booking-detail-container p-5">
                      <div class="booking-detail-name d-flex">
-                        <h3>ชื่อ-นามสกุล : </h3>
-                        <p>ฟัรดี อูเซ็ง</p>
+                        <h3>ชื่อผู้จอง : </h3>
+                        <p style="margin-left:80px">ฟัรดี อูเซ็ง</p>
                      </div>
                      <div class="booking-detail-building d-flex">
                         <h3>อาคาร : </h3>
@@ -176,6 +176,23 @@
                         <h3>เบอร์โทร : </h3>
                         <p style="margin-left:75px">0650505204</p>
                      </div>                   
+                     <div class="booking-detail-nameroom d-flex">
+                        <h3>จำนวนผู้เข้าร่วม : </h3>
+                        <p style="margin-left:30px">50</p>
+                     </div>
+                     <div class="booking-detail-nameroom d-flex">
+                        <h3>รหัสนักศึกษา : </h3>
+                        <p style="margin-left:30px">601431004</p>
+                     </div>
+                     <div class="booking-detail-nameroom d-flex">
+                        <h3>สังกัดองค์กร/คณะ : </h3>
+                        <p style="margin-left:30px">วิทยาศาสตร์และเทคโนโลยี</p>
+                     </div>
+                     <div class="booking-detail-nameroom d-flex">
+                        <h3>หน่วยงาน/สาขาวิชา/ชมรม : </h3>
+                        <p style="margin-left:30px">สโมสรนักศึกษา</p>
+                     </div>
+                     
                   </div>
                </div>
                <!---------- End booking-detail ---------->

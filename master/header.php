@@ -1,3 +1,8 @@
+<?php
+   
+
+?>
+
 <style>
    *{
       margin:0;
@@ -46,7 +51,7 @@
 
 </style>
 
-<div class="container-fluid">
+   <div class="container-fluid">
       <div class="header-container row m-0 d-flex align-items-center">
          <div class="header-logo col-xl-8 m-0 row d-flex align-items-center">
             <div class="header-logo-left col-xl-2 pl-5 ">
@@ -64,7 +69,11 @@
                </h3>
             </div>
             <div class="header-signup-img col-xl-6">
-               <img style="width:85px;height:85px;margin-right:20px;" src="./img/menu-logo/profile.png" alt="">
+               <?php if(isset($_SESSION['male'])){ ?>
+                  <a href="user/profile.php"><img style="width:85px;height:85px;margin-right:20px;" src="./img/menu-logo/boy1.png" alt=""></a>
+               <?php }else{ ?>
+                  <a href="user/profile.php"><img style="width:85px;height:85px;margin-right:20px;" src="./img/menu-logo/gilr1.png" alt=""></a>
+               <?php } ?>
                <a href="index.php?logout='1'" class="btn btn-danger">ออกจารระบบ</a>
             </div>
          </div>
