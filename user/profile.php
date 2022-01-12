@@ -198,9 +198,9 @@
                   </div>
                </div>
                <?php if(isset($_SESSION['editprofilesuccess'])){ ?>
-                  <div class="alert alert-primary">
+                  <div class="alert-primary mt-5 align-items-center d-flex pl-3" style="height:50px;font-size:20px;margin:0 30px;">
                      <?php echo $_SESSION['editprofilesuccess'];
-                           unset($_SESSION['editprofilesuccess']);
+                           // unset($_SESSION['editprofilesuccess']);
                      ?>
                   </div>
                <?php } ?>

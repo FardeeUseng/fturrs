@@ -2,6 +2,9 @@
 
    session_start();
    require('../dbconnect.php');
+   
+   $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id";
+   $result = mysqli_query($connect, $sql);
 
    // Start Access permission Staff and Admin
 
@@ -145,13 +148,17 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
-                  <form method="post" class="input-group">                  
-                     <select class="custom-select" id="">
-                        <option value="allbuilding" selected>อาคารทั้งหมด</option>
-                        <option value="scienceandit">วิทยาศาสตร์และเทคโนโลยี</option>
-                        <option value="arts">ศิลปศาสตร์และสังคมศาสตร์</option>
-                        <option value="education">ศึกษาศาสตร์</option>
-                        <option value="islamic">อิสลามศึกษา</option>
+                  <form action="bookingrequestsearch.php" method="post" class="input-group">                  
+                     <select class="custom-select" name="building" id="">
+                        <option value="" selected disabled>อาคารทั้งหมด</option>
+                        <?php
+                           $sql2 = "SELECT * FROM building";
+                           $result2 = mysqli_query($connect, $sql2);
+                           $row2 = mysqli_fetch_array($result2);
+                           foreach($result2 as $value){
+                              echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
+                           }
+                        ?>
                      </select>
                      <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
                   </form>
@@ -175,28 +182,19 @@
                         </tr>
                      </thead>
                      <tbody>
+                     <?php while($row = mysqli_fetch_assoc($result)){ ?>
                         <tr>
-                           <td>1</td>
-                           <td>นาย ฟัรดี อูเซ็ง</td>                           
-                           <td>10/12/6408.00น.</td>
-                           <td>10/12/6410.00น.</td>
-                           <td>107-11</td>
-                           <td>หอประชุมวันม.นอร์ มะทา</td>
-                           <td><a href="../staff/peoplebookingdetail.php">ดูเพิ่มเติม</a></td>
-                           <td><a href="#" class="btn btn-success">อนุมัติ</a></td>
-                           <td><a href="#" class="btn btn-danger">ยกเลิก</a></td>
+                           <td><?php echo $row["rserv_Id"]; ?></td>
+                           <td><?php echo $row["peoplename"]; ?></td>                           
+                           <td><?php echo $row["startdate"] . " / " . $row["starttime"]; ?></td>
+                           <td><?php echo $row["enddate"] . " / " . $row["endtime"]; ?></td>
+                           <td><?php echo $row["r_code"]; ?></td>
+                           <td><?php echo $row["r_name"]; ?></td>
+                           <td><a href="../staff/peoplebookingdetail.php?id=<?php echo $row['rserv_Id'] ?>">ดูเพิ่มเติม</a></td>
+                           <td><a href="approvebooking.php?id=<?php echo $row['rserv_Id']; ?>" class="btn btn-success" onclick="return confirm('ยืนยันที่จะอนุมัติใช้ห้องนี้?')">อนุมัติ</a></td>
+                           <td><a href="notapprovebooking.php?id=<?php echo $row['rserv_Id']; ?>" class="btn btn-danger" onclick="return confirm('ยืนยันที่จะไม่อนุมัติใช้ห้องนี้?')">ยกเลิก</a></td>
                         </tr>
-                        <tr>
-                           <td>2</td>
-                           <td>นาย นุรดิน เจ็ะเลาะห์</td>
-                           <td>10/12/6408.00น.</td>
-                           <td>10/12/6410.00น.</td>
-                           <td>107-11</td>
-                           <td>วิจัย</td>
-                           <td><a href="../staff/peoplebookingdetail.php">ดูเพิ่มเติม</a></td>
-                           <td><a href="#" class="btn btn-success">อนุมัติ</a></td>
-                           <td><a href="#" class="btn btn-danger">ยกเลิก</a></td>
-                        </tr>
+                     <?php } ?>                        
                      </tbody>
                   </table>
                </div>

@@ -275,38 +275,38 @@
                   </div>
                </div>
                <?php if (count($errors) > 0) : ?>
-                  <div class="alert alert-danger">
+                  <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="height:50px;font-size:20px;">
                      <?php foreach ($errors as $error) : ?>
                         <?php echo $error ?>
                      <?php endforeach ?>
                   </div>
                <?php endif ?>
                <div class="register-fill my-5">
-                  <form action="#" method="post">
+                  <form method="post">
                      <div class="register-fill-items1 row mb-4">
                         <div class="register-email col-xl-6">
                            <h4>อีเมล</h4>
-                           <input type="email" name="email" placeholder="อีเมล">
+                           <input type="email" name="email" placeholder="อีเมล" required>
                         </div>
                         <div class="register-password col-xl-6">
                            <h4>รหัสผ่าน</h4>
-                           <input type="password" name="password" placeholder="Password">
+                           <input type="password" name="password" placeholder="Password" required>
                         </div>
                      </div>
                      <div class="register-fill-items2 row mb-4">
                         <div class="register-cpassword col-xl-6">
                            <h4>ยืนยันรหัสผ่าน</h4>
-                           <input type="password" name="confirmpassword" placeholder="Confirm Password">
+                           <input type="password" name="confirmpassword" placeholder="Confirm Password" required>
                         </div>
                         <div class="register-name col-xl-6">
                            <h4>ชื่อ-นามสกุล</h4>
-                           <input type="text" name="name" placeholder="ชื่อ - นามสกุล">
+                           <input type="text" name="name" placeholder="ชื่อ - นามสกุล" required>
                         </div>
                      </div>
                      <div class="register-fill-items3 row mb-4 mb-5">
                         <div class="register-sex col-xl-6">
                            <h4>เพศ</h4>
-                           <select name="sex" class="pl-2">
+                           <select name="sex" class="pl-2" required>
                               <option select>เลือก</option>
                               <option value="male">ชาย</option>
                               <option value="female">หญิง</option>
@@ -314,15 +314,15 @@
                         </div>
                         <div class="register-phone col-xl-6">
                            <h4>เบอร์โทร</h4>
-                           <input type="text" name="phone" placeholder="เบอร์โทรศัพท์">
+                           <input type="text" name="phone" placeholder="เบอร์โทรศัพท์" required>
                         </div>
                      </div>
                      <div class="register-fill-items5 mb-5 d-flex">
                         <button type="submit">สมัคร</button>
-                        <button class="bg-danger ml-3"><a href="#">ยกเลิก</a></button>
+                        <a href="index.php" class="bg-danger ml-3 px-5" style="border-radius:5px">ยกเลิก</a>
                      </div>
                   </form>
-                  <span class="register-question">สมัครสมาชิกแล้ว? <a href="login.php">เข้าสู่ระบบ</a></span>
+                  <span class="register-question">สมัครสมาชิกแล้ว? <a href="./user_login.php">เข้าสู่ระบบ</a></span>
                </div>
             </div>
          </div>

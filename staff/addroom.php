@@ -4,8 +4,6 @@
    require('../dbconnect.php');
    $sql1 = "SELECT * FROM building";
    $result1 = mysqli_query($connect, $sql1);
-   
-   // $bd_array = array('อิสลามศึกษา','ศิลปศาสตร์และสังคมศาสตร์','วิทยาศาสตร์และเทคโนโลยี','ศึกษาศาสตร์');
 
    // Start Access permission Staff and Admin
 
@@ -17,30 +15,41 @@
 
    // If Post
 
-if($_POST){
-   $building = $_POST['building'];
-   $staff = $_POST['staff'];
-   $room = $_POST['roomname'];
-   $coderoom = $_POST['coderoom'];
-   $capacity = $_POST['roomcapacity'];
-   $floor = $_POST['roomfloor'];
-   $status = $_POST['roomstatus'];
-   $roomimage = $_POST['roomimage'];
-   $equipment = implode(',',$_POST['equipment']);
-   $note = $_POST['note'];
-   $sql = "INSERT INTO room(bd_Id,staff_Id,r_name,r_capacity,r_img,r_status,r_code,r_floor,r_equipment,r_note) VALUES($building,$staff,'$room',$capacity,'$roomimage','$status','$coderoom','$floor','$equipment','$note')";
-   $result = mysqli_query($connect,$sql);
+   error_reporting(0);
+   ini_set('display_errors', 0);
 
-   if($result){
-      header('location:../checkroom.php');
-      exit(0);
-   }else{
-      echo mysqli_error($connect);
+   $errors = array();
+
+   if($_POST){
+
+      $building = $_POST['building'];
+      $staff = $_POST['staff'];
+      $room = $_POST['roomname'];
+      $coderoom = $_POST['coderoom'];
+      $capacity = $_POST['roomcapacity'];
+      $floor = $_POST['roomfloor'];
+      $status = $_POST['roomstatus'];
+      $roomimage = $_POST['roomimage'];
+      isset($_POST['equipment']) ? $equipment = implode(",",$_POST["equipment"]) : $equipment = '';
+      $note = $_POST['note'];
+
+      if(empty($building)){
+         array_push($errors, "กรุณาเลือกอาคาร");
+      }else{
+         if(count($errors) == 0){
+            $sql = "INSERT INTO room(bd_Id,staff_Id,r_name,r_capacity,r_img,r_status,r_code,r_floor,r_equipment,r_note) VALUES($building,$staff,'$room',$capacity,'$roomimage','$status','$coderoom','$floor','$equipment','$note')";
+            $result = mysqli_query($connect,$sql);
+   
+            if($result){
+               header('location:../checkroom.php');
+            exit();
+            }
+            else{
+               echo mysqli_error($connect);
+            }
+         }
+      }
    }
-
-
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -223,66 +232,58 @@ if($_POST){
                   </div>
                </div>
 
+               <!---------- Start error ---------->
+
+               <?php if(count($errors) > 0): ?>
+                  <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
+                  <?php foreach($errors as $error): ?>
+                        <?php echo $error; 
+                        ?>
+                     <?php endforeach ?>
+                  </div>
+               <?php endif ?>
+               <!---------- End Error ---------->
+
                <!---------- Start Addroom --------->
 
                <div class="addroom">
                   <div class="addroom-container p-5">
-                     <form action="" method="post">
+                     <form method="post">
                         <div class="addroom-building d-flex">
                            <h3>อาคาร : </h3>
-                           <select name="building" id="building" style="margin-left:135px;width:690px;">       
+                           <select name="building" id="building" style="margin-left:135px;width:690px;" required>       
                               <option selected disabled>เลือกอาคาร</option>                  
                               <?php
-                              foreach($result1 as $value){
-                                 echo "<option value='{$value['bd_Id']}'>{$value['bd_name']}</option>";
-                              }
-                              // while($row1 = mysqli_fetch_assoc($result1)){
-                              //    echo "<option value='{$row1['bd_Id']}'>{$row1['bd_name']}</option>";
-                              // }
+                                 foreach($result1 as $value){
+                                    echo "<option value='{$value['bd_Id']}'>{$value['bd_name']}</option>";
+                                 }
                               ?>
-                              <!-- <option select>เลือกอาคาร</option>
-                              <option value="11">วิทยาศาสตร์และเทคโนโลยี</option>
-                              <option value="12">ศิลปศาสตร์และสังคมศาสตร์</option>
-                              <option value="13">ศึกษาศาสตร์</option>
-                              <option value="14">อิสลามศึกษา</option> -->
                            </select>
                         </div>
                         <div class="addroom-name d-flex">
                            <h3>ชื่อผู้ดูแล : </h3>
                            <select name="staff" id="staff" style="margin-left:92px;width:690px;">
-                           </select>
-                           <!-- <?php
-                              // $sql2 = "SELECT * FROM staff";
-                              // $result2 = mysqli_query($connect,$sql2);                              
-                              // while($row2 = mysqli_fetch_assoc($result2)){
-                              //    echo "<option value='{$row2['staff_Id']}'>{$row2['st_name']}</option>";
-                              // }
-                           ?> -->
-                              <!-- <option select>ชื่อผู้ดูแล</option>
-                              <option value="502">staff</option>
-                              <option value="503">staff11</option>
-                              <option value="504">staff22</option> -->
-                           
+                           </select>                        
                         </div>
                         <div class="addroom-nameroom d-flex">
                            <h3>ชื่อห้อง : </h3>
-                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" value="" require>
+                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" value="" required>
                         </div>
                         <div class="addroom-coderoom d-flex">
                            <h3>หมายเลขห้อง : </h3>
-                           <input style="margin-left:15px;width:690px;" type="text" name="coderoom" require>
+                           <input style="margin-left:15px;width:690px;" type="text" name="coderoom" required>
                         </div>
                         <div class="addroom-capacity d-flex">
                            <h3>ความจุ : </h3>
-                           <input style="margin-left:130px;width:690px;" type="number" name="roomcapacity" require>
+                           <input style="margin-left:130px;width:690px;" type="number" name="roomcapacity" required>
                         </div>
                         <div class="addroom-floor d-flex">
                            <h3>ชั้น : </h3>
-                           <input style="margin-left:190px;width:690px;" type="number" name="roomfloor" require>
+                           <input style="margin-left:190px;width:690px;" type="number" name="roomfloor" required>
                         </div>
                         <div class="addroom-status d-flex">
                            <h3>สถานะ : </h3>
-                           <select name="roomstatus"  style="margin-left:130px;width:690px;">
+                           <select name="roomstatus"  style="margin-left:130px;width:690px;" required>
                               <option value="available">ใช้งานได้</option>
                               <option value="notavailable">ปิดปรับปรุง</option>
                            </select>

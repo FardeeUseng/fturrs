@@ -5,7 +5,7 @@
    // Start Select tables Room, Staff, Building Code
 
    $id = $_GET['id'];
-   $sql = "SELECT * FROM room INNER JOIN staff ON room.staff_Id = staff.staff_Id INNER JOIN building ON room.bd_Id = building.bd_Id WHERE  room_Id = $id";
+   $sql = "SELECT * FROM room LEFT JOIN staff ON room.staff_Id = staff.staff_Id LEFT JOIN building ON room.bd_Id = building.bd_Id WHERE  room_Id = $id";
    $result = mysqli_query($connect,$sql);
    $row = mysqli_fetch_array($result);
    // End Select tables Room, Staff, Building Code
@@ -215,7 +215,7 @@
                               <h3>ชั้น : <?php echo $row['r_floor']; ?></h3>
                            </div>
                            <div class="room-detail-equip d-flex col-xl-6">
-                              <h3>อุปกรณ์ : </h3>
+                              <h3>อุปกรณ์: </h3>
                               <p><?php echo $row['r_equipment']; ?></p>
                            </div>
                         </div> 

@@ -225,7 +225,7 @@
                   </div>
                </div>
                <?php if(isset($_SESSION['error_profile'])){ ?>
-                  <div class="alert alert-danger">
+                  <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="height:50px;font-size:20px;margin:0 30px;">
                      <?php echo $_SESSION['error_profile']; 
                            unset($_SESSION['error_profile']);
                      ?>

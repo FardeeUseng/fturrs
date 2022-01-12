@@ -243,7 +243,7 @@
                <img src="img/menu-logo/users.png" alt="">
             </div>      
             <?php if (count($errors) > 0) : ?>
-               <div class="alert alert-danger">
+               <div class="alert-danger mt-5 mb-3 align-items-center d-flex pl-3" style="height:50px;font-size:15px;margin:0 150px;
                   <?php foreach ($errors as $error) : ?>
                   <?php echo $error ?>
                <?php endforeach ?>

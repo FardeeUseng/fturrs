@@ -3,6 +3,11 @@
    session_start();
    require('../dbconnect.php');
 
+   $id = $_GET["id"];
+   $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN organization ON reservation.org_Id = organization.org_Id LEFT JOIN major ON reservation.major_Id = major.major_Id WHERE rserv_Id = $id";
+   $result = mysqli_query($connect, $sql);
+   $row = mysqli_fetch_assoc($result);
+
    // Start Access permission Staff and Admin
 
    if(!isset($_SESSION['staff_login']) and !isset($_SESSION['admin_login'])){
@@ -11,6 +16,19 @@
    }
    // End Access permission Staff and Admin
 
+   if($_POST){
+      $rserv_id = $_POST["id"];
+      $rserv_status = $_POST["rserv_status"];
+      $sql = "UPDATE reservation SET rserv_status = '$rserv_status' WHERE rserv_Id = $rserv_id";
+      $result = mysqli_query($connect, $sql);
+
+      if($result){
+         header("location:bookingedit.php");
+         exit();
+      }else{
+         echo "เกิดข้อผิดพลาด" . mysqli_error($connect);
+      }
+   }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -183,56 +201,69 @@
                <div class="editbooking">
                   <div class="editbooking-container p-5">
                      <form action="" method="post">
+                        <input type="hidden" name="id" value="<?php echo $id; ?>">
                         <div class="editbooking-name d-flex">
                            <h3>ชื่อ-นามสกุล : </h3>
-                           <input type="text" name="name" value="ฟัรดี อูเซ็ง" require>
+                           <input type="text" name="name" value="<?php echo $row['peoplename'] ?>" disabled>
                         </div>
                         <div class="editbooking-building d-flex">
                            <h3>อาคาร : </h3>
                            <select name="building"  style="margin-left:110px;width:690px;">
-                              <option select>เลือกอาคาร</option>
-                              <option value="scienceandit">วิทยาศาสตร์และเทคโนโลยี</option>
-                              <option value="arts">ศิลปศาสตร์และสังคมศาสตร์</option>
-                              <option value="education">ศึกษาศาสตร์</option>
-                              <option value="islamic">อิสลามศึกษา</option>
+                              <?php echo "<option value='{$row['bd_Id']}' selected disabled>{$row['bd_name']}</option>"; ?>
                            </select>
                         </div>
                         <div class="editbooking-room d-flex">
                            <h3>ห้อง : </h3>
                            <select name="room"  style="margin-left:143px;width:690px;">
-                              <option select>เลือกห้อง</option>
-                              <option value="rsumna">สัมมนา</option>
-                              <option value="rit">คอม</option>
-                              <option value="rresearch">วิจัย</option>
-                              <option value="rmeeting">ประชุม</option>
+                              <?php echo "<option value='{$row['room_Id']}' selected disabled>{$row['r_name']}</option>"; ?>
                            </select>
                         </div>
                         <div class="editbooking-password d-flex">
                            <h3>เริ่มต้นวันที่ : </h3>
-                           <input style="margin-left:38px;" type="date" name="startdate" value="" require>
+                           <input style="margin-left:38px;" type="date" name="startdate" value="<?php echo $row['startdate']; ?>" disabled>
                         </div>
                         <div class="editbooking-password d-flex">
                            <h3>สิ้นสุดวันที่ : </h3>
-                           <input style="margin-left:44px;" type="date" name="enddate" value="" require>
+                           <input style="margin-left:44px;" type="date" name="enddate" value="<?php echo $row['enddate']; ?>" disabled>
                         </div>
                         <div class="editbooking-password d-flex">
                            <h3>เริ่มต้นเวลา : </h3>
-                           <input style="margin-left:34px;" type="time" name="starttime" value="" require>
+                           <input style="margin-left:34px;" type="time" name="starttime" value="<?php echo $row['starttime']; ?>" disabled>
                         </div>
                         <div class="editbooking-password d-flex">
                            <h3>สิ้นสุดเวลา : </h3>
-                           <input style="margin-left:40px;" type="time" name="endtime" value="" require>
+                           <input style="margin-left:40px;" type="time" name="endtime" value="<?php echo $row['endtime'] ?>" disabled>
                         </div>
                         <div class="editbooking-email d-flex">
                            <h3>อีเมล : </h3>
-                           <input style="margin-left:130px;" type="email" name="email" value="" require>
+                           <input style="margin-left:130px;" type="email" name="email" value="" disabled>
                         </div>
                         <div class="editbooking-phone d-flex">
                            <h3>เบอร์โทร : </h3>
-                           <input style="margin-left:71px;" type="number" name="phonenum" value="" require>
+                           <input style="margin-left:71px;" type="number" name="phonenum" value="<?php echo $row['phone']; ?>" disabled>
+                        </div>
+                        <div class="editbooking-status d-flex">
+                           <h3>สถานะ * : </h3>
+                           <select name="rserv_status"  style="margin-left:72px;width:690px;">
+                              <?php
+                                 if($row["rserv_status"] == "อนุมัติ"){
+                                    echo "<option value='อนุมัติ' class='text-success' selected>อนุมัติ</option>";
+                                    echo "<option value='ไม่อนุมัติ' class='text-danger'>ไม่อนุมัติ</option>";
+                                    echo "<option value='รอการอนุมัติ' class='text-primary'>รอการอนุมัติ</option>";
+                                 }elseif($row["rserv_status"] == "ไม่อนุมัติ"){
+                                    echo "<option value='อนุมัติ' class='text-success'>อนุมัติ</option>";
+                                    echo "<option value='ไม่อนุมัติ' class='text-danger' selected>ไม่อนุมัติ</option>";
+                                    echo "<option value='รอการอนุมัติ' class='text-primary'>รอการอนุมัติ</option>";
+                                 }else{
+                                    echo "<option value='อนุมัติ' class='text-success'>อนุมัติ</option>";
+                                    echo "<option value='ไม่อนุมัติ' class='text-danger'>ไม่อนุมัติ</option>";
+                                    echo "<option value='รอการอนุมัติ' class='text-primary' selected>รอการอนุมัติ</option>";
+                                 }
+                              ?>
+                           </select>
                         </div>
                         <div class="editbooking-button">
-                           <button type="submit">แก้ไข</button>
+                           <button type="submit" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูล?')">แก้ไข</button>
                            <button type="reset">ยกเลิก</button>
                         </div>
                      </form>                    

@@ -15,6 +15,23 @@
    }
    // End Access permission User, Staff and Admin
 
+   $sql3 = "SELECT * FROM building";
+   $result3 = mysqli_query($connect, $sql3);
+   while($row3 = mysqli_fetch_assoc($result3)){
+      $buildings[] = $row3['bd_name']; 
+   }
+
+   if($_POST){
+      $building = $_POST['building'];
+      $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' ORDER BY bd_name ASC";
+
+      $result = mysqli_query($connect, $sql);
+      // if($_POST["building"] == "allbuilding"){
+      //    header("location:checkroom.php");
+      //    exit();
+      // }
+   }
+
 ?>
 
 <!DOCTYPE html>
@@ -151,15 +168,17 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
-                  <form action="bookingchecksearch.php" method="post" class="input-group">                  
+                  <form action="" method="post" class="input-group">                  
                      <select class="custom-select" name="building" id="">
-                        <option value="" selected disabled>อาคารทั้งหมด</option>
+                        <option value="allbuilding">อาคารทั้งหมด</option>
                         <?php
-                           $sql2 = "SELECT * FROM building";
-                           $result2 = mysqli_query($connect, $sql2);
-                           $row2 = mysqli_fetch_array($result2);
-                           foreach($result2 as $value){
-                              echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
+                        
+                           foreach($buildings as $value){
+                              if($value == $building){
+                                 echo "<option value='$value' selected>$value</option>";
+                              }else{
+                                 echo "<option value='$value'>$value</option>";
+                              }
                            }
                         ?>
                      </select>
@@ -184,7 +203,7 @@
                         </tr>
                      </thead>
                      <tbody>
-                     <?php while($row = mysqli_fetch_assoc($result)){ ?>
+                     <?php while($row = mysqli_fetch_array($result)){ ?>
                         <tr>
                            <td><?php echo $order++; ?></td>
                            <td><?php echo $row["peoplename"] ?></td>                           

@@ -235,10 +235,11 @@
 
                <!---------- Start if error ---------->
 
-               <?php if (count($errors) > 0) : ?>
-                  <div class="alert alert-danger">
-                     <?php foreach ($errors as $error) : ?>
-                        <?php echo $error ?>
+               <?php if(count($errors) > 0): ?>
+                  <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
+                  <?php foreach($errors as $error): ?>
+                        <?php echo $error; 
+                        ?>
                      <?php endforeach ?>
                   </div>
                <?php endif ?>
@@ -251,31 +252,31 @@
                      <form action="" method="post">
                         <div class="addmember-capacity d-flex">
                            <h3>อีเมล : </h3>
-                           <input style="margin-left:181px;width:690px;" type="email" name="email" placeholder="Email">
+                           <input style="margin-left:181px;width:690px;" type="email" name="email" placeholder="Email" required>
                         </div>
                         <div class="addmember-nameroom d-flex">
                            <h3>Password : </h3>
-                           <input style="margin-left:103px;width:690px;" type="password" name="password" placeholder="password">
+                           <input style="margin-left:103px;width:690px;" type="password" name="password" placeholder="password" required>
                         </div>
                         <div class="addmember-nameroom d-flex">
                            <h3>ยืนยันรหัสผ่าน : </h3>
-                           <input style="margin-left:35px;width:690px;" type="password" name="confirmpassword" placeholder="ยืนยันรหัสผ่าน">
+                           <input style="margin-left:35px;width:690px;" type="password" name="confirmpassword" placeholder="ยืนยันรหัสผ่าน" required>
                         </div>
                         <div class="addmember-coderoom d-flex">
                            <h3>ชื่อ-นามสกุล : </h3>
-                           <input style="margin-left:63px;width:690px;" type="text" name="name" value="" placeholder="ชื่อ-นามสกุล">
+                           <input style="margin-left:63px;width:690px;" type="text" name="name" value="" placeholder="ชื่อ-นามสกุล"required>
                         </div>                   
                         <div class="addmember-coderoom d-flex">
                            <h3>เพศ :</h3>
-                           <select name="sex" style="margin-left:200px;width:200px;">
-                              <option select>เลือก</option>
+                           <select name="sex" style="margin-left:200px;width:200px;" required>
+                              <option selected disabled>เลือก</option>
                               <option value="male">ชาย</option>
                               <option value="female">หญิง</option>
                            </select>
                         </div>                   
                         <div class="addmember-roomimage d-flex">
                            <h3>เบอร์โทร : </h3>
-                           <input style="margin-left:123px;width:690px;padding-left:20px;" type="number" name="phonenumber" placeholder="เบอร์โทร" >
+                           <input style="margin-left:123px;width:690px;padding-left:20px;" type="number" name="phonenumber" placeholder="เบอร์โทร" required>
                         </div>  
                         
                         <!-- <div class="addroom-status d-flex disble">
@@ -289,7 +290,7 @@
                         </div>     -->
                         <div class="addmember-building d-flex">
                            <h3>ดูแลห้องประชุม : </h3>
-                           <select name="building"  style="margin-left:15px;width:690px;">
+                           <select name="building"  style="margin-left:15px;width:690px;" required>
                               <option selected disabled>เลือกอาคาร</option>
                            <?php
                               foreach($result as $value){

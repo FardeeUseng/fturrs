@@ -142,13 +142,17 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
-                  <form method="post" class="input-group">                  
-                     <select class="custom-select" id="">
-                        <option value="allbuilding" selected>อาคารทั้งหมด</option>
-                        <option value="scienceandit">วิทยาศาสตร์และเทคโนโลยี</option>
-                        <option value="arts">ศิลปศาสตร์และสังคมศาสตร์</option>
-                        <option value="education">ศึกษาศาสตร์</option>
-                        <option value="islamic">อิสลามศึกษา</option>
+                  <form action="checkroomsearch.php" method="post" class="input-group">                  
+                     <select class="custom-select" name="building" id="">
+                        <option value="" selected disabled>อาคารทั้งหมด</option>
+                        <?php
+                           $sql2 = "SELECT * FROM building";
+                           $result2 = mysqli_query($connect, $sql2);
+                           $row2 = mysqli_fetch_array($result2);
+                           foreach($result2 as $value){
+                              echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
+                           }
+                        ?>
                      </select>
                      <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
                   </form>

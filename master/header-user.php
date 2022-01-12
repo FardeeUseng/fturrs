@@ -69,7 +69,7 @@
                <?php }else{ ?>
                   <a href="../user/profile.php"><img style="width:85px;height:85px;margin-right:20px;" src="../img/menu-logo/gilr1.png" alt=""></a>
                <?php } ?>
-               <a href="../index.php?logout='1'" class="btn btn-danger">ออกจารระบบ</a>
+               <a href="../index.php?logout='1'" class="btn btn-danger" onclick="return confirm('ยืนยันออกจากระบบ?')">ออกจารระบบ</a>
             </div>
          </div>
          <?php }else{ ?>

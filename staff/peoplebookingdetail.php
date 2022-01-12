@@ -2,6 +2,11 @@
 
    session_start();
    require('../dbconnect.php');
+   
+   $id = $_GET["id"];
+   $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN organization ON reservation.org_Id = organization.org_Id LEFT JOIN major ON reservation.major_Id = major.major_Id WHERE rserv_Id = $id";
+   $result = mysqli_query($connect, $sql);
+   $row = mysqli_fetch_assoc($result);
 
    // Start Access permission Staff and Admin
 
@@ -138,59 +143,67 @@
                   <div class="booking-detail-container p-5">
                      <div class="booking-detail-name d-flex">
                         <h3>ชื่อผู้จอง : </h3>
-                        <p style="margin-left:80px">ฟัรดี อูเซ็ง</p>
+                        <p style="margin-left:80px"><?php echo $row["peoplename"]; ?></p>
                      </div>
                      <div class="booking-detail-building d-flex">
                         <h3>อาคาร : </h3>
-                        <p style="margin-left:117px">วิทยาศาสตร์และเทคโนโลยี</p>
+                        <p style="margin-left:117px"><?php echo $row["bd_name"] ?></p>
                      </div>
                      <div class="booking-detail-room d-flex">
                         <h3>ห้อง : </h3>
-                        <p style="margin-left:150px">107-11</p>
+                        <p style="margin-left:150px"><?php echo $row["r_code"] ?></p>
                      </div>
                      <div class="booking-detail-nameroom d-flex">
                         <h3>ชื่อห้อง : </h3>
-                        <p style="margin-left:103px">วิจัย</p>
+                        <p style="margin-left:103px"><?php echo $row["r_name"] ?></p>
                      </div>
                      <div class="booking-detail-start d-flex">
                         <h3>เริ่ม : </h3>
-                        <p style="margin-left:168px">11/12/6408.00น.</p>
+                        <p style="margin-left:168px"><?php echo $row['startdate'] . " / " . $row['starttime'] ?></p>
                      </div>
                      <div class="booking-detail-end d-flex">
                         <h3>สิ้นสุด : </h3>
-                        <p style="margin-left:123px">11/12/6410.00น.</p>
+                        <p style="margin-left:123px"><?php echo $row['enddate'] . " / " . $row['endtime'] ?></p>
                      </div>
                      <div class="booking-detail-obj d-flex">
                         <h3>จุดประสงค์ : </h3>
-                        <p style="margin-left:48px">....</p>
+                        <p style="margin-left:48px"><?php echo $row['obj'] ?></p>
                      </div>
                      <div class="booking-detail-status d-flex">
                         <h3>สถานะ : </h3>
-                        <p style="margin-left:113px">อนุมัติ</p>
+                        <?php 
+                           if($row["rserv_status"] == "อนุมัติ"){
+                              echo "<p class='text-success' style='margin-left:113px'>อนุมัติ</p>";
+                           }elseif($row["rserv_status"] == "ไม่อนุมัติ"){
+                              echo "<p class='text-danger' style='margin-left:113px'>ไม่อนุมัติ</p>";
+                           }else{
+                              echo "<p class='text-primary' style='margin-left:113px'>รอการอนุมัติ</p>";
+                           }
+                        ?>
                      </div>
                      <div class="booking-detail-email d-flex">
                         <h3>อีเมล : </h3>
-                        <p style="margin-left:137px">Fatdee006@gmail.com</p>
+                        <p style="margin-left:137px"></p>
                      </div>
                      <div class="booking-detail-phone d-flex">
                         <h3>เบอร์โทร : </h3>
-                        <p style="margin-left:75px">0650505204</p>
+                        <p style="margin-left:75px"><?php echo $row['phone'] ?></p>
                      </div>                   
                      <div class="booking-detail-nameroom d-flex">
                         <h3>จำนวนผู้เข้าร่วม : </h3>
-                        <p style="margin-left:30px">50</p>
+                        <p style="margin-left:30px"><?php echo $row['numpeople'] ?></p>
                      </div>
                      <div class="booking-detail-nameroom d-flex">
-                        <h3>รหัสนักศึกษา : </h3>
-                        <p style="margin-left:30px">601431004</p>
+                        <h3>รหัสนักศึกษา/บุคลากร : </h3>
+                        <p style="margin-left:30px"><?php echo $row['people_Id'] ?></p>
                      </div>
                      <div class="booking-detail-nameroom d-flex">
                         <h3>สังกัดองค์กร/คณะ : </h3>
-                        <p style="margin-left:30px">วิทยาศาสตร์และเทคโนโลยี</p>
+                        <p style="margin-left:30px"><?php echo $row['org_name'] ?></p>
                      </div>
                      <div class="booking-detail-nameroom d-flex">
-                        <h3>หน่วยงาน/สาขาวิชา/ชมรม : </h3>
-                        <p style="margin-left:30px">สโมสรนักศึกษา</p>
+                        <h3>หน่วยงาน/สาขาวิชา/ชมรม: </h3>
+                        <p style="margin-left:30px"><?php echo $row['major_name'] ?></p>
                      </div>
                      
                   </div>

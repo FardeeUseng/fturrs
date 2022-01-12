@@ -15,7 +15,11 @@
    }
    // End Access permission User, Staff and Admin
 
+   error_reporting(0);
+   ini_set('display_errors', 0);
+
    $errors = array();
+
    if($_POST){
 
       $building = $_POST["building"];
@@ -32,42 +36,50 @@
       $enddate = $_POST["enddate"];
       $endtime = $_POST["endtime"];
 
-      if(empty($building)){
-         array_push($errors, "กรุณาเลือกอาคาร");
-      }elseif(empty($room)){
-         array_push($errors, "กรุณาเลือกห้อง");
-      }elseif(empty($name)){
-         array_push($errors, "กรุณากรอกชื่อผู้จอง");
-      }elseif(empty($phone)){
-         array_push($errors, "กรุณากรอกเบอร์โทรศัพท์");
-      }elseif(empty($numpeople)){
-         array_push($errors, "กรุณากรอกจำนวนผู้เข้าร่วม");
-      }elseif(empty($peopleId)){
-         array_push($errors, "กรุณากรอกรหัสนักศึกษา/รหัสบุคลากร/เลขประจำตัวประชาชน");
-      }elseif(empty($obj)){
-         array_push($errors, "กรุณากรอกจุดประสงค์การขอใช้ห้อง");
-      }elseif(empty($startdate)){
-         array_push($errors, "กรุณากรอกวันที่เริ่มใช้ห้อง");
-      }elseif(empty($startdate)){
-         array_push($errors, "กรุณากรอกเวลาเริ่มใช้ห้อง");
-      }elseif(empty($enddate)){
-         array_push($errors, "กรุณากรอกวันที่สิ้นสุดการใช้ห้อง");
-      }elseif(empty($endtime)){
-         array_push($errors, "กรุณากรอกเวลาสิ้นสุดการใช้ห้อง");
-      }else {
-         if(count($errors) == 0){
-            $sql = "INSERT INTO reservation(bd_Id, room_Id, peoplename, phone, numpeople, people_Id, obj, org_Id, major_Id, startdate, starttime,enddate, endtime, rserv_status) VALUES($building, $room, '$name', '$phone', '$numpeople', '$peopleId', '$obj', '$org', '$major','$startdate','$starttime','$enddate','$endtime', 'รอการอนุมัติ')";
-      
-            $result = mysqli_query($connect, $sql);
+      $sql = "INSERT INTO reservation(bd_Id, room_Id, peoplename, phone, numpeople, people_Id, obj, org_Id, major_Id, startdate, starttime,enddate, endtime, rserv_status) VALUES($building, $room, '$name', '$phone', '$numpeople', '$peopleId', '$obj', '$org', '$major','$startdate','$starttime','$enddate','$endtime', 'รอการอนุมัติ')";
 
-         if($result){
-            header("location:../bookingdetail.php");
-            exit();
-         }else{
-            echo "เกิดข้อผิดพลาด" . mysqli_error($connect);
-         }
-         }
+      $result = mysqli_query($connect, $sql);
+      if($result){
+         header("location:../bookingdetail.php");
+         exit();
       }
+
+      // if(empty($building)){
+      //    array_push($errors, "กรุณาเลือกอาคาร");
+      // }elseif(empty($room)){
+      //    array_push($errors, "กรุณาเลือกห้อง");
+      // }elseif(empty($name)){
+      //    array_push($errors, "กรุณากรอกชื่อผู้จอง");
+      // }elseif(empty($phone)){
+      //    array_push($errors, "กรุณากรอกเบอร์โทรศัพท์");
+      // }elseif(empty($numpeople)){
+      //    array_push($errors, "กรุณากรอกจำนวนผู้เข้าร่วม");
+      // }elseif(empty($peopleId)){
+      //    array_push($errors, "กรุณากรอกรหัสนักศึกษา/รหัสบุคลากร/เลขประจำตัวประชาชน");
+      // }elseif(empty($obj)){
+      //    array_push($errors, "กรุณากรอกจุดประสงค์การขอใช้ห้อง");
+      // }elseif(empty($startdate)){
+      //    array_push($errors, "กรุณากรอกวันที่เริ่มใช้ห้อง");
+      // }elseif(empty($startdate)){
+      //    array_push($errors, "กรุณากรอกเวลาเริ่มใช้ห้อง");
+      // }elseif(empty($enddate)){
+      //    array_push($errors, "กรุณากรอกวันที่สิ้นสุดการใช้ห้อง");
+      // }elseif(empty($endtime)){
+      //    array_push($errors, "กรุณากรอกเวลาสิ้นสุดการใช้ห้อง");
+      // }else {
+      //    if(count($errors) == 0){
+      //       $sql = "INSERT INTO reservation(bd_Id, room_Id, peoplename, phone, numpeople, people_Id, obj, org_Id, major_Id, startdate, starttime,enddate, endtime, rserv_status) VALUES($building, $room, '$name', '$phone', '$numpeople', '$peopleId', '$obj', '$org', '$major','$startdate','$starttime','$enddate','$endtime', 'รอการอนุมัติ')";
+      
+      //       $result = mysqli_query($connect, $sql);
+
+      //    if($result){
+      //       header("location:../bookingdetail.php");
+      //       exit();}
+      //    // }else{
+      //    //    echo "เกิดข้อผิดพลาด" . mysqli_error($connect);
+      //    // }
+      //    }
+      // }
    }
 ?>
 <!DOCTYPE html>
@@ -233,15 +245,15 @@
                   </div>
                   
                </div>
-                              <!---------- Start error ---------->
-                              <?php if(count($errors) > 0): ?>
+               <!---------- Start error ---------->
+               <!-- <?php if(count($errors) > 0): ?>
                   <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
                      <?php foreach($errors as $error): ?>
                         <?php echo $error; 
                         ?>
                      <?php endforeach ?>
                   </div>
-               <?php endif ?>
+               <?php endif ?> -->
                <!---------- End Error ---------->
 
                <!---------- Start Booking Form ---------->
@@ -251,7 +263,7 @@
                      <div class="booking-fill-items1 row">
                         <div class="booking-building col-xl-6 mb-4">
                            <h4>อาคาร</h4>
-                           <select name="building" id="building" class="pl-2">
+                           <select name="building" id="building" class="pl-2" required>
                               <option selected disabled>เลือกอาคาร</option>
                               <?php  
                               foreach($result as $value){
@@ -262,7 +274,7 @@
                         </div>
                         <div class="booking-room col-xl-6 mb-4">
                            <h4>ห้อง</h4>
-                           <select name="room" id="room" class="pl-2">
+                           <select name="room" id="room" class="pl-2" required>
                               <option selcted disable>เลือก</option>
                            </select>                              
                            
@@ -271,27 +283,27 @@
                      <div class="booking-fill-items2 row mb-4">
                         <div class="booking-name col-xl-6">
                            <h4>ชื่อผู้จอง</h4>
-                           <input type="text" name="name" placeholder="ชื่อผู้จอง">
+                           <input type="text" name="name" placeholder="ชื่อผู้จอง" required>
                         </div>
                         <div class="booking-phone col-xl-6">
                            <h4>เบอร์โทร</h4>
-                           <input type="number" name="phonenumber" placeholder="เบอร์โทร">
+                           <input type="number" name="phonenumber" placeholder="เบอร์โทร" required>
                         </div>
                      </div>
                      <div class="booking-fill-items3 row mb-4">
                         <div class="booking-numpeople col-xl-6 ">
                            <h4>จำนวนผู้เข้าร่วม</h4>
-                           <input type="number" name="numpeople" placeholder="จำนวนผู้เข้าร่วม">
+                           <input type="number" name="numpeople" placeholder="จำนวนผู้เข้าร่วม" required>
                         </div>
                         <div class="booking-studentId col-xl-6">
                            <h4>รหัสนักศึกษา</h4>
-                           <input type="number" name="peopleId" placeholder="รหัสนักศึกษา">
+                           <input type="number" name="peopleId" placeholder="รหัสนักศึกษา" required>
                         </div>
                      </div>
                      <div class="booking-fill-items4 row mb-4">
                         <div class="booking-obj col-xl ">
                            <h4>จุดประสงค์การใช้ห้อง</h4>
-                           <textarea name="obj" placeholder="จุดประสงค์การใช้ห้อง"></textarea>
+                           <textarea name="obj" placeholder="จุดประสงค์การใช้ห้อง" required></textarea>
                         </div>
                      </div>
                      <div class="booking-fill-items1 row">
@@ -301,7 +313,7 @@
                               $sql2 = "SELECT * FROM organization";
                               $result2 = mysqli_query($connect,$sql2);
                            ?>
-                           <select name="organization" class="pl-2">
+                           <select name="organization" class="pl-2" required>
                               <option selected disabled>เลือก</option>
                               <?php foreach($result2 as $value){
                                  echo "<option value='{$value['org_Id']}'>{$value['org_name']}</option>";
@@ -313,9 +325,9 @@
                            <h4>หน่วยงาย/สาขา/ชมรม/กลุ่ม</h4>
                            <?php  
                               $sql3 = "SELECT * FROM major";
-                              $result3 = mysqli_query($connect,$sql3); 
+                              $result3 = @mysqli_query($connect,$sql3); 
                            ?>
-                           <select name="major" class="pl-2">                              
+                           <select name="major" class="pl-2" required>                              
                               <option selected disabled>เลือก</option>
                               <?php
                                  foreach($result3 as $value){
@@ -330,21 +342,21 @@
                      <div class="booking-fill-items5 row mb-4">
                         <div class="booking-startdate col-xl-6">
                            <h4>วันที่เริ่มต้น</h4>
-                           <input type="date" name="startdate">
+                           <input type="date" name="startdate" required>
                         </div>
                         <div class="booking-starttime col-xl-6">
                            <h4>เวลาเริ่มต้น</h4>
-                           <input type="time" name="starttime">
+                           <input type="time" name="starttime" required>
                         </div>
                      </div>
                      <div class="booking-fill-items6 row mb-5">
                         <div class="booking-enddate col-xl-6">
                            <h4>วันสิ้นสุด</h4>
-                           <input type="date" name="enddate">
+                           <input type="date" name="enddate" required>
                         </div>
                         <div class="booking-endtime col-xl-6">
                            <h4>เวลาสิ้นสุด</h4>
-                           <input type="time" name="endtime">
+                           <input type="time" name="endtime" required>
                         </div>
                      </div>
                      <div class="booking-fill-items7 mb-5 d-flex">

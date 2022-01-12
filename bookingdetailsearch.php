@@ -1,20 +1,26 @@
 <?php
-
    session_start();
-   require('../dbconnect.php');
+   require("dbconnect.php");
 
-   $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id";
+   $building = $_POST['building'];
+   $sql = "SELECT * FROM reservation INNER JOIN building ON reservation.bd_Id = building.bd_Id INNER JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' ORDER BY bd_name ASC"; 
    $result = mysqli_query($connect, $sql);
-   $order = 1;
 
-   // Start Access permission User, Staff and Admin
-
-   if(!isset($_SESSION['user_login']) and !isset($_SESSION['staff_login']) and !isset($_SESSION['admin_login'])){
-      $_SESSION['error'] = 'กรุณาเข้าสู่ระบบ';
-      header('location:../index.php');
+   $sql3 = "SELECT * FROM building";
+   $result3 = mysqli_query($connect, $sql3);
+   while($row3 = mysqli_fetch_assoc($result3)){
+      $buildings[] = $row3['bd_name']; 
    }
-   // End Access permission User, Staff and Admin
 
+   if($_POST){
+      $building = $_POST['building'];
+      $sql = "SELECT * FROM reservation INNER JOIN building ON reservation.bd_Id = building.bd_Id INNER JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' ORDER BY bd_name ASC"; 
+      $result = mysqli_query($connect, $sql);
+      if($_POST["building"] == "allbuilding"){
+         header("location:bookingdetail.php");
+         exit();
+      }
+   }
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +29,7 @@
 <!---------- start head ---------->
 
 <head>
-   <?php include('../master/head-user.php') ?>
+   <?php include('./master/head.php') ?>
 </head>
 <!---------- End head ---------->
 
@@ -53,10 +59,10 @@
       font-weight: bold;
       color:#585858;
    }
-   .main-manu-items li:nth-child(4){
+   .main-manu-items li:nth-child(2){
       background-color:#3D5538;
    }
-   .main-manu-items li:nth-child(4) h3{
+   .main-manu-items li:nth-child(2) h3{
       color:#F0F8FF;
    }
    /********** End Main menu **********/
@@ -90,9 +96,22 @@
    .custom-select option{
       background-color:#E9F1E6;
    }
+   .content-footer-bottom{
+      height:50px;
+      align-items:center;
+   }
+   .content-footer-bottom img{
+      width:50px;
+      height:50px;
+   }
+   .content-footer-bottom p {
+      margin:10px;
+      font-size:25px;
+      color:#585858;
+   }
    /********** End Content **********/
 
-   /********** Start table **********/
+   /********** Start Content Table **********/
 
    .content-table th{
       font-size:30px;
@@ -110,14 +129,14 @@
       background-color:#CDD9CC;
       color:#585858;
    }
-   /********** End table **********/
-   
+   /********** End Content Table **********/
+
 </style>
    
 <!---------- start header ---------->
 
 <header>
-   <?php include('../master/header-user.php') ?>
+   <?php include('./master/header.php') ?>
 </header>
 <!---------- end header ---------->
 
@@ -129,45 +148,45 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
+               <img src="img/menu-logo/online-booking.png" alt="">
                <h3 class="ml-3">FTU RRS</h>
             </div>
             
-            <!---------- start main-manu-items ---------->
+            <!---------- Start main-manu-items ---------->
 
-               <?php include('../master/main-menu-user.php') ?>
-            </ul>
+               <?php include('./master/main-menu.php') ?>
             <!---------- End main-manu-items ---------->
-
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
-                     <img src="../img/menu-logo/booking2.png" alt="">
+                     <img src="img/menu-logo/booking.png" alt="">
                   </div>
                   <div class="content-title-h ml-4">
-                     <h3>การจองห้องของคุณ</h3>
+                     <h3>ข้อมูลการจองห้องประชุม</h3>
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
-                  <form action="bookingchecksearch.php" method="post" class="input-group">                  
+                  <form method="post" class="input-group">                  
                      <select class="custom-select" name="building" id="">
-                        <option value="" selected disabled>อาคารทั้งหมด</option>
+                        <option value="allbuilding">อาคารทั้งหมด</option>
                         <?php
-                           $sql2 = "SELECT * FROM building";
-                           $result2 = mysqli_query($connect, $sql2);
-                           $row2 = mysqli_fetch_array($result2);
-                           foreach($result2 as $value){
-                              echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
+                           foreach($buildings as $value){
+                              if($value == $building){
+                                 echo "<option value='$value' selected>$value</option>";
+                              }else{
+                                 echo "<option value='$value'>$value</option>";
+                              }
                            }
                         ?>
                      </select>
+                     
                      <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
                   </form>
                </div>
 
-               <!--------- Start Content-table ---------->
+               <!---------- Start content-table ---------->
 
                <div class="content-table bg-dark">
                   <table class="text-center table table-bordered">
@@ -177,21 +196,20 @@
                            <th>ชื่อผู้จอง</th>
                            <th>เริ่ม</th>
                            <th>สิ้นสุด</th>
-                           <th>ห้อง</th>
-                           <th>ชื่อห้องประชุม</th>
+                           <th>รหัสห้อง</th>
+                           <th>ห้องประชุม</th>                           
                            <th>สถานะ</th>
-                           <th>ยกเลิก</th>
                         </tr>
                      </thead>
                      <tbody>
-                     <?php while($row = mysqli_fetch_assoc($result)){ ?>
+                     <?php while($row=mysqli_fetch_array($result)){ ?>
                         <tr>
-                           <td><?php echo $order++; ?></td>
-                           <td><?php echo $row["peoplename"] ?></td>                           
+                           <td><?php echo $row["rserv_Id"]; ?></td>
+                           <td><?php echo $row["peoplename"]; ?></td>
                            <td><?php echo $row["startdate"]. " / " .$row["starttime"] ?></td>
                            <td><?php echo $row["enddate"]. " / " .$row["endtime"] ?></td>
                            <td><?php echo $row["r_code"] ?></td>
-                           <td><?php echo $row["r_name"] ?></td>                           
+                           <td><?php echo $row["r_name"] ?></td>
                            <?php
                               if($row["rserv_status"] == "อนุมัติ"){
                                  echo "<td class='text-success'>อนุมัติ</td>";
@@ -202,25 +220,24 @@
                               }
                            ?>
                            
-                           <td><a href="canclebooking.php?id=<?php echo $row["rserv_Id"] ?>" class="btn btn-danger" onclick="return confirm('ยืนยันที่ต้องการยกเลิกการจอง')">ยกเลิก</a></td>
                         </tr>
                      <?php } ?>
                      </tbody>
                   </table>
                </div>
-               <!--------- End Content-table ---------->
+               <!---------- End content-table ---------->
 
                <div class="content-footer row">
-                  <div class="content-footer-left col-xl-7">
+                  <div class="content-footer-left col-7">
                      <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
                   </div>
-                  <div class="content-footer-right col-xl-5">
+                  <div class="content-footer-right col-5">
                      <p></p>
                   </div>
                </div>
             </div>
          </div>
-      </div>  
+      </div>
    </div>
 </div>
 <!---------- end content ---------->
@@ -228,10 +245,10 @@
 <!---------- start footer ---------->
 
 <footer>
-   <?php include('../master/footer-user.php') ?>
+   <?php include('./master/footer.php'); ?>
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
+   <script src="./bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

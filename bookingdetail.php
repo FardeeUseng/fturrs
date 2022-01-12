@@ -2,9 +2,9 @@
    session_start();
    require("dbconnect.php");
 
-   $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id"; 
-   // LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN organization ON reservation.org_Id = organization.org_Id LEFT JOIN major reservation.major_Id = major.major_Id";
+   $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id"; 
    $result = mysqli_query($connect, $sql);
+   
 ?>
 
 <!DOCTYPE html>
@@ -152,13 +152,17 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
-                  <form method="post" class="input-group">                  
-                     <select class="custom-select" id="">
-                        <option value="allbuilding" selected>อาคารทั้งหมด</option>
-                        <option value="scienceandit">วิทยาศาสตร์และเทคโนโลยี</option>
-                        <option value="arts">ศิลปศาสตร์และสังคมศาสตร์</option>
-                        <option value="education">ศึกษาศาสตร์</option>
-                        <option value="islamic">อิสลามศึกษา</option>
+                  <form action="bookingdetailsearch.php" method="post" class="input-group">                  
+                     <select class="custom-select" name="building" id="">
+                        <option value="" selected disabled>อาคารทั้งหมด</option>
+                        <?php
+                           $sql2 = "SELECT * FROM building";
+                           $result2 = mysqli_query($connect, $sql2);
+                           $row2 = mysqli_fetch_array($result2);
+                           foreach($result2 as $value){
+                              echo "<option value='{$value['bd_name']}'>{$value['bd_name']}</option>";
+                           }
+                        ?>
                      </select>
                      <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
                   </form>
@@ -191,6 +195,8 @@
                            <?php
                               if($row["rserv_status"] == "อนุมัติ"){
                                  echo "<td class='text-success'>อนุมัติ</td>";
+                              }elseif($row["rserv_status"] == "ไม่อนุมัติ"){
+                                 echo "<td class='text-danger'>ไม่อนุมัติ</td>";
                               }else{
                                  echo "<td class='text-primary'>รอการอนุมัติ</td>";
                               }
