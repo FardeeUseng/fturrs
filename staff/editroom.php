@@ -3,8 +3,7 @@
    session_start();
    require('../dbconnect.php');
 
-   $sql = "SELECT * FROM room LEFT JOIN staff ON room.staff_Id = staff.staff_Id";
-   $result = mysqli_query($connect,$sql);
+   
 
    // Start Access permission Staff and Admin
 
@@ -14,6 +13,63 @@
    }
    // End Access permission Staff and Admin
 
+
+   if(isset($_SESSION['staff_login'])){
+
+      // Start Pagination for Staff logIn
+
+      // $id = $_SESSION['staff_login'];
+      $st_bd = $_SESSION['staff_bd'];
+      // Start Pagination for staff logIn
+
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }         
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+      
+         // Query Total Product
+         $sql_total = "SELECT * FROM room LEFT JOIN building ON room.bd_Id = building.bd_Id LEFT JOIN staff ON room.staff_Id = staff.staff_Id WHERE building.bd_Id = $st_bd";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+      
+         $sql = "SELECT * FROM room LEFT JOIN building ON room.bd_Id = building.bd_Id LEFT JOIN staff ON room.staff_Id = staff.staff_Id WHERE building.bd_Id = $st_bd"; 
+         $sql .= " LIMIT $offset,$record_show";
+         $result = mysqli_query($connect, $sql);
+
+         // Start Pagination for Staff logIn
+   }
+   
+   if(isset($_SESSION['admin_login'])){
+
+      // Start Pagination for admin logIn
+
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }
+
+      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+      $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+      // Query Total Product
+      $sql_total = "SELECT * FROM room LEFT JOIN building ON room.bd_Id = building.bd_Id LEFT JOIN staff ON room.staff_Id = staff.staff_Id";
+      $query_total = mysqli_query($connect, $sql_total);
+      $row_total = mysqli_num_rows($query_total);
+
+      $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+      $sql = "SELECT * FROM room LEFT JOIN building ON room.bd_Id = building.bd_Id LEFT JOIN staff ON room.staff_Id = staff.staff_Id";
+      $sql .= " LIMIT $offset,$record_show";
+      $result = mysqli_query($connect, $sql);
+
+      // End Pagination for admin logIn
+   }
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +81,11 @@
    <?php include('../master/head-user.php') ?>
 </head>
 <!---------- End head ---------->
+
 <body>
+
+<!---------- start style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -52,6 +112,7 @@
    }
    .main-manu-items li:nth-child(9){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(9) h3{
       color:#F0F8FF;
@@ -142,6 +203,7 @@
    }
    /********** End Footer **********/
 </style>
+<!---------- end style ---------->
    
 <!---------- start header ---------->
 
@@ -167,6 +229,13 @@
                <?php include('../master/main-menu-user.php') ?>
             <!---------- End main-manu-items ---------->
 
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End inform ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -179,20 +248,36 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
+
+                  <!---------- Start select building ---------->
+
                   <form action="editroomsearch.php" method="post" class="input-group">                  
-                     <select class="custom-select" name="building" id="">
-                        <option value="" selected disabled>อาคารทั้งหมด</option>
+                     <select class="custom-select" name="building" id="">                        
                         <?php
-                           $sql2 = "SELECT * FROM building";
-                           $result2 = mysqli_query($connect, $sql2);
-                           $row2 = mysqli_fetch_array($result2);
-                           foreach($result2 as $value){
-                              echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
-                           }
-                        ?>
+                              $sql2 = "SELECT * FROM building";
+                              $result2 = mysqli_query($connect, $sql2);
+                              $row2 = mysqli_fetch_array($result2);
+
+                              if(isset($_SESSION['staff_login'])){
+                                 echo "<option value='{$_SESSION['bd_Id']}'>{$_SESSION['bd_name']}</option>";
+                              }else{
+                                 echo "<option value='allbuilding'>อาคารทั้งหมด</option>";
+                                 foreach($result2 as $value){
+                                    echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
+                                 }
+                              }
+                           ?>
                      </select>
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
+                     <?php 
+                        if(isset($_SESSION['staff_login'])){
+                           echo "<button class='content-search-button px-2 rounded-right' type='submit' disabled>ค้นหา</button>";
+                        }else{
+                           echo "<button class='content-search-button px-2 rounded-right' type='submit'>ค้นหา</button>";
+                        } 
+                     ?>
                   </form>
+                  <!---------- End select building ---------->
+
                </div>
 
                <!---------- Start content-table ---------->
@@ -202,8 +287,8 @@
                      <thead>
                         <tr>
                            <th>ลำดับ</th>
-                           <th>ชื่อห้องประชุม</th>
-                           <th>รองรับจำนวน</th>
+                           <th>อาคาร</th>
+                           <th>ห้องประชุม</th>                           
                            <th>ผู้ดูแล</th>
                            <th>โทร</th>                           
                            <th>เพิ่มเติม</th>
@@ -216,8 +301,8 @@
                         <?php while($row = mysqli_fetch_assoc($result)){ ?>
                         <tr>
                            <td><?php echo $row['room_Id']; ?></td>
+                           <td><?php echo $row['bd_name']; ?></td>
                            <td><?php echo $row['r_name']; ?></td>
-                           <td><?php echo $row['r_capacity']; ?></td>
                            <td><?php echo $row['st_name']; ?></td>                                                      
                            <td><?php echo $row['st_phone']; ?></td>
                            <td><a href="../roommoredetail.php?id=<?php echo $row['room_Id']; ?>">ดูเพิ่มเติม</a></td>
@@ -228,7 +313,7 @@
                               echo "<td class='text-danger'>ปิดปรับปรุง</td>";
                            }
                            ?>
-                           <td><a href="./deleteroom.php?id=<?php echo $row['room_Id']; ?>" class="btn btn-danger" onclick="return confirm('ยืนยันที่จะลบข้อมูลห้องนี้?')">ลบ</a></td>
+                           <td><a href="./deleteroom.php?id=<?php echo $row['room_Id']; ?>" class="btn btn-danger px-3" onclick="return confirm('ยืนยันที่จะลบข้อมูลห้องนี้?')">ลบ</a></td>
                            <td><a href="./editroomitems.php?id=<?php echo $row['room_Id']; ?>" class="btn btn-warning" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูลห้องนี้?')">แก้ไข</a></td>                           
                         </tr>
                         <?php } ?>
@@ -239,10 +324,15 @@
 
                <div class="content-footer row">
                   <div class="content-footer-left col-xl-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                     
                   </div>
-                  <div class="content-footer-right col-xl-5">
-                     <p></p>
+                  <div class="content-footer-right d-flex justify-content-end col-xl-5">
+                     
+                     <!---------- Start pagination ---------->
+
+                     <?php include("../master/pagination.php"); ?>
+                     <!---------- End pagination ---------->
+
                   </div>
                </div>
             </div>

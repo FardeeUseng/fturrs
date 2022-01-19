@@ -58,6 +58,19 @@
 </head>
 <!---------- End head ---------->
 
+<script>
+   $(document).ready(function(){
+
+      $("#uploadimg").on("change", function(e){
+         var filename = e.target.value.split('\\').pop();
+         $("#label_span").text(filename);
+      })
+      $("#uploadimgg").click(function(){
+         $("#submit").show()
+      })
+   })
+</script>
+
 <body>
 <style>
 
@@ -84,10 +97,25 @@
       font-weight: bold;
       color:#585858;
    }
+   .logo-user-load{
+      margin: auto;
+      height: 180px;
+      width: 180px;
+      justify-content:center;
+      align-items:center;
+      border-radius:50%;
+   }
+   .logo-user-load img{
+      border-radius: 50%;
+   }
    .logo-user{
       margin: auto;
-      width:100%;
+      height: 180px;
+      width: 180px;
       justify-content:center;
+      align-items:center;
+      background-color:#16451c;
+      border-radius:50%;
    }
    .logo-user img{
       width:200px;
@@ -130,6 +158,26 @@
    .login-link a:hover{
       color:#2780BB;
       text-decoration:none;
+   }
+   .upload-profile input{
+      display:none;
+   }
+   .upload-profile label{
+      background-color:#3D5538;
+   }
+   .upload-file label{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+      font-size:25px;
+      border-radius:5px;
+      width:300px;
+      height:45px;
+      background-color:#5F745A;
+      cursor:pointer;
+      margin-top:20px;
+      margin-bottom:20px;
    }
 
    /********** end Main menu **********/
@@ -178,6 +226,7 @@
    .profile-detail-container select{
       width:200px;
    }
+
    /********** End Content **********/
 
 </style>
@@ -199,16 +248,36 @@
                <img src="../img/menu-logo/online-booking.png" alt="">
                <h3 class="ml-3">FTU RRS</h>
             </div>
-            <div class="logo-user d-flex mt-2">
-               <img src="../img/menu-logo/profile.png" alt="">
-            </div> 
+            <?php if(isset($_SESSION['us_prof'])){?>
+               <div class="logo-user-load d-flex mt-2">                  
+                  <img style="width:200px;height:200px;margin:8px 8px;" class="shadow" id="logouser" src="../img/profiles/<?php echo $_SESSION['us_prof']; ?> ">                  
+               </div>
+            <?php }else{ ?>
+               <?php if(isset($_SESSION['male'])){?>
+                  <?php if($_SESSION['male'] == "male" ){?>
+                     <div class="logo-user d-flex mt-2 shadow">                  
+                        <img style="width:150px;height:150px;margin:8px 8px;" id="logouser" src="../img/menu-logo/boy1.png">                  
+                     </div>
+                  <?php }else{ ?>
+                     <div class="logo-user d-flex mt-2">                  
+                        <img style="width:150px;height:150px;margin:8px 8px;" id="logouser" src="../img/menu-logo/gilr1.png">                  
+                     </div>
+                  <?php } ?>                      
+               <?php } ?>                      
+            <?php } ?>   
 
             <!----------- Start form Edit Profile ---------->
 
             <div class="profile-edit mt-3">           
-               <form action="profileeditdata.php" method="post" enctype="multipart/form-data">               
-                  <h2 class="text-center"><?php echo $name; ?></h2>
-                  <button type="submit" onclick="return confirm('คุณต้องการแก้ไขข้อมูลของคุณใช้หรือไหม?')">ยืนยันแก้ไขข้อมูล</button>
+               <form action="profileeditdata.php" method="post" enctype="multipart/form-data">       
+                  <div class="upload-file">
+                     <label for="uploadimg" id="uploadimgg" class="shadow">
+                        <i class="fas fa-cloud-upload-alt mr-2"></i>
+                        <span id="label_span">อัพโหลดรูป</span>
+                     </label>
+                     <input type="file" name="file" accept="image/*" id="uploadimg" class="d-none">
+                  </div>
+                  <button type="submit" name="update" class="shadow" onclick="return confirm('คุณต้องการแก้ไขข้อมูลของคุณใช้หรือไหม?')">ยืนยันแก้ไขข้อมูล</button>
             </div> 
             <div class="login-link mt-4 text-center">
                <a class="text-center" href="../index.php">กลับสู่หน้าหลัก</a>
@@ -262,11 +331,11 @@
                            <h3>เบอร์โทร : </h3>
                            <input style="margin-left:71px;" type="number" name="phonenum" value="<?php echo $phone; ?>" require>
                         </div>
-                        <div class="profile-detail-image d-flex">
+                        <!-- <div class="profile-detail-image d-flex">
                            <h3>รูปห้อง : </h3>
                            <input type="hidden" name="MAX_FILE_SIZE" value="1048576">
                            <input style="margin-left:103px;" type="file" name="file" accept="image/*">
-                        </div>
+                        </div> -->
                      </form>
                      <!----------- End form Edit Profil ---------->
                   </div>

@@ -3,11 +3,14 @@
    session_start();
    require('../dbconnect.php');
 
+   // Start select room
+
    $id = $_GET['id'];
    $sql = "SELECT * FROM room INNER JOIN staff ON room.staff_Id = staff.staff_Id INNER JOIN building ON room.bd_Id = building.bd_Id WHERE room_Id = $id";
    $result = mysqli_query($connect, $sql);
    $row = mysqli_fetch_assoc($result);
-   $equip_arr = array("โปรเจคเตอร์","ที่ฉายโปรเจคเตอร์","ไมค์","ลำโพง","จอมอนิเตอร์","จอLED"); 
+   $equip_arr = array("โปรเจคเตอร์","ที่ฉายโปรเจคเตอร์","ไมค์","ลำโพง","จอมอนิเตอร์","จอLED");
+   // End select room 
 
    // Start Access permission Staff and Admin
 
@@ -16,6 +19,8 @@
       header('location:../index.php');
    }
    // End Access permission Staff and Admin
+
+   // Start add room
 
    $errors = array();
    if($_POST){
@@ -42,7 +47,7 @@
             $result = mysqli_query($connect,$sql);
       
             if($result){
-               header("location:../checkroom.php");
+               header("location:editroom.php");
                exit();
             }else{
                echo "ไม่สามารถแก้ไขข้อมูลห้องได้" . mysqli_error($connect);
@@ -50,6 +55,7 @@
          }
       }
    }
+   // End add room
 
 ?>
 
@@ -64,6 +70,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -91,6 +100,7 @@
    }
    .main-manu-items li:nth-child(9){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(9) h3{
       color:#F0F8FF;
@@ -194,6 +204,7 @@
    /********** End Edit Booking **********/
 
 </style>
+<!---------- End style ---------->
    
 <!---------- start header ---------->
 
@@ -219,6 +230,13 @@
             <?php include('../master/main-menu-user.php') ?>
             <!---------- /ul main-manu-items ---------->
 
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End inform ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -232,6 +250,7 @@
                </div>
 
                <!---------- Start error ---------->
+
                <?php if(count($errors) > 0): ?>
                   <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
                      <?php foreach($errors as $error): ?>
@@ -286,10 +305,10 @@
                            ?>
                            </select>
                         </div>
-                        <div class="editbooking-roomimage d-flex">
+                        <!-- <div class="editbooking-roomimage d-flex">
                            <h3>รูปห้อง : </h3>
                            <input style="margin-left:126px;width:690px;" type="file" name="roomimage" value="">
-                        </div>                        
+                        </div>                         -->
                         <div class="editbooking-equipment">
                            <h3>อุปกรณ์ :</h3>
                            <div class="editbooking-equipment-items">

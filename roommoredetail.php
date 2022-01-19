@@ -10,6 +10,38 @@
    $row = mysqli_fetch_array($result);
    // End Select tables Room, Staff, Building Code
 
+   // Start if upload room image
+
+   $success = array();
+   $errors = array();
+   if(isset($_POST['upload'])){
+      $r_Id = $_POST["room"];
+      $check = getimagesize($_FILES["file"]["tmp_name"]);
+      $name = $_FILES['file']['name'];
+
+      if(!isset($name)){
+         array_push($errors, "ไม่ได้แนบภาพ");
+      }elseif($_FILES['file']['error'] != 0){
+         array_push($errors, "การโหลดภาพไม่สำเร็จ");
+      }else{
+
+         if($check){
+            $dir = "img/uploads/";
+            $fileImage = $dir . basename($_FILES["file"]["name"]);
+            if(move_uploaded_file($_FILES["file"]["tmp_name"], $fileImage)){
+               $sql = "UPDATE room SET r_img = '$name' WHERE room_Id = $r_Id";
+               $result = mysqli_query($connect, $sql);
+               if($result){
+                  array_push($success, "เพิ่มรูปห้องสำเร็จ");
+               }
+            }else {
+               array_push($errors, "เกิดข้อผิดพลาด");
+            }
+         }
+      }
+   }
+   // End if upload room image
+
 ?>
 
 
@@ -22,8 +54,27 @@
    <?php include('./master/head.php'); ?>
 </head>
 <!---------- start head ---------->
-</head>
+
+<!---------- start Jquery ---------->
+
+<script>
+   $(document).ready(function(){
+
+      $("#uploadimg").on("change", function(e){
+         var filename = e.target.value.split('\\').pop();
+         $("#label_span").text(filename);
+      })
+      $("#uploadimgg").click(function(){
+         $("#submit").show()
+      })
+   })
+</script>
+<!---------- End Jquery ---------->
+
 <body>
+
+<!---------- Start Style ---------->
+
 <style>
    /********** Start Main menu **********/
 
@@ -71,6 +122,7 @@
    }
    .main-manu-items li:nth-child(3){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(3) h3{
       color:#F0F8FF;
@@ -103,6 +155,11 @@
       margin:50px 0px;
       border-radius:3px;
    }
+   .room-detail-container{
+      padding-left:150px;
+      padding-top: 40px;
+      padding-bottom: 40px;
+   }
    .room-detail-container h3{
       font-size:30px;
       margin-bottom:35px;
@@ -115,6 +172,7 @@
 
    }
    .room-detail-image{
+      position:relative;
       width:900px;
       height:500px;
       padding-top:50px;
@@ -125,9 +183,61 @@
       width:100%;
       height:100%;
    }
+
+   .room-detail-image label{
+      padding:7px 18px;
+      background-color:#3D5538;
+      color:white;
+      font-size:25px;
+      margin:180px 340px;
+      width:250px;
+      height:50px;
+      border-radius:5px;
+      cursor:pointer;
+   }
+
+   .room-detail-image button{
+      display:none;
+      position:absolute;
+      font-size:25px;
+      top:310px;
+      left:390px;
+      width:145px;
+      background-color:#585858;
+      color:white;
+      padding: 3px 0px;
+      border-radius:5px;
+   }
+   .notImg{
+      width:900px;
+      height:450px;
+      background-color:#BAC9B8;
+      border-radius:5px;
+      color:#585858;
+      justify-content:center;
+      align-items: center;
+   }
+   .notImg img{
+      margin-right:10px;
+      width:50px;
+      height:50px;
+   }
+
+   .notImg p{
+      margin-top : 20px;
+      font-size:25px;
+   }
+   .upload-img{
+      width:900px;
+      height:450px;
+      background-color:#BAC9B8;
+      border-radius:5px;
+   }
+
    /********** End Cintent detail **********/
 
 </style>
+<!---------- End Style ---------->
    
 <!---------- start header ---------->
 
@@ -153,6 +263,10 @@
                <?php include('./master/main-menu.php'); ?>
             <!---------- End main-manu-items ---------->
 
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('./master/inform.php'); ?>
+            <?php endif ?>
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -173,9 +287,46 @@
 
                <div class="room-detail">
                   <div class="room-detail-image">
-                     <img src="img/5302.jpg" alt="">
+
+                     <!---------- Start upload room image if user is staff ---------->
+
+                     <?php if(isset($_SESSION['staff_login'])){ ?>
+                        <?php if($_SESSION['staff_bd'] == $row['bd_Id'] and $row['r_img'] == ''){ ?>
+
+                           <div class="upload-img">
+                              <form method="post" enctype="multipart/form-data">
+                                 <input type="hidden" name="room" value="<?php echo $row['room_Id']; ?>">
+                                 <div class="upload-file">
+                                    <label for="uploadimg" id="uploadimgg" class="shadow">
+                                       <i class="fas fa-cloud-upload-alt mr-2"></i>
+                                       <span id="label_span">อัพโหลดรูปห้อง</span>
+                                    </label>
+                                 </div>                                                   
+                                 <input type="file" name="file" accept="image/*" id="uploadimg" class="d-none">
+                                 <button type="submit" name="upload" id="submit" class="shadow">อัพโหลด</button>
+                              </form>
+                           </div>
+                        <?php }else{ ?>
+                           <img src="./img/uploads/<?php echo $row['r_img']; ?>" alt="">
+                        <?php } ?>
+                     <!---------- Start upload room image if user is staff ---------->
+                     
+                     <!---------- Start show room image if have ---------->
+
+                     <?php }else{ ?>
+                        <?php if($row['r_img'] == ''){ ?>
+                           <div class="notImg d-flex">
+                              <img src="./img/menu-logo/board-meeting.png" alt="">
+                              <p>ไม่ได้อัพโหลดรูปห้อง</p>
+                           </div>
+                        <?php }else{ ?>
+                           <img src="./img/uploads/<?php echo $row['r_img']; ?>" alt="">
+                        <?php } ?>
+                     <?php } ?>
+                     <!---------- End show room image if have ---------->
+
                   </div>
-                  <div class="room-detail-container p-5">
+                  <div class="room-detail-container">
                         <div class="room-detail-items1 row">
                            <div class="room-detail-building d-flex col-xl-6">
                               <h3>อาคาร : </h3>

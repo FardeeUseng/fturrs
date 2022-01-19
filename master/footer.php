@@ -6,6 +6,7 @@
    .footer-link li img{
       width:40px;
       height:40px;
+      border-radius:50%;
    }
    .footer-link li{
       list-style: none;
@@ -42,11 +43,11 @@
          </div>
          <div class="footer-buttom">
             <ul class="footer-link d-flex">
-               <li><a href="#"><img src="img/menu-logo/globe-grid.png" alt=""></a></li>
-               <li><a href="#"><img src="img/menu-logo/facebook.png" alt=""></a></li>
-               <li><a href="#"><img src="img/menu-logo/instagram.png" alt=""></a></li>
-               <li><a href="#"><img src="img/menu-logo/twitter.png" alt=""></a></li>
-               <li><a href="#"><img src="img/menu-logo/youtube.png" alt=""></a></li>
+               <li><a href="#"><img src="img/menu-logo/globe-grid.png" class="shadow"></a></li>
+               <li><a href="#"><img src="img/menu-logo/facebook.png" class="shadow"></a></li>
+               <li><a href="#"><img src="img/menu-logo/instagram.png" class="shadow"></a></li>
+               <li><a href="#"><img src="img/menu-logo/twitter.png" class="shadow"></a></li>
+               <li><a href="#"><img src="img/menu-logo/youtube.png" class="shadow"></a></li>
             </ul>
          </div>
          </div>

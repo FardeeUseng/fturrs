@@ -1,7 +1,9 @@
 <?php
    session_start();
+   require("./dbconnect.php");
 
    // Start User, Staff and Admin Log out Code
+   
    if (isset($_GET['logout'])) {
       session_destroy();
       unset($_SESSION['name']);
@@ -9,6 +11,12 @@
       unset($_SESSION['staff_login']);
       unset($_SESSION['admin_login']);
       unset($_SESSION['male']);
+      unset($_SESSION['bd_Id']);
+      unset($_SESSION['bd_name']);
+      unset($_SESSION['building']);
+      unset($_SESSION['staff_bd']);
+      unset($_SESSION['rservstatus']);
+      unset($_SESSION['us_prof']);
       header('location: index.php');
    }
    // End User, Staff and Admin Log out Code
@@ -24,6 +32,9 @@
 </head>
 <!---------- End head ---------->
 <body>
+
+<!---------- Start Style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -114,6 +125,7 @@
    /********** End Content **********/
 
 </style>
+<!---------- End Style ---------->
    
 <!---------- start header ---------->
 
@@ -133,11 +145,21 @@
                <h3 class="ml-3">FTU RRS</h>
             </div>
 
+            <!-- ทำหน้าlogin เป็นหน้าเดียวโดยส่งเลขผ่านurl ไปหน้า login สมมุติถ้าส่ง url = 1 user_Login , 2 = staff  -->
+
+
             <!---------- Start main-manu-items ---------->
 
                <?php include('./master/main-menu.php'); ?>
             <!---------- End main-manu-items ---------->
+
+            <!---------- Start Inform ---------->
             
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('./master/inform.php'); ?>               
+            <?php endif ?>
+            <!---------- End Inform ---------->
+
          </div>
 
          <!---------- Start main-content ---------->

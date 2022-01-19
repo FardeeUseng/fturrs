@@ -1,5 +1,6 @@
 <?php
    session_start();
+   require("./dbconnect.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +12,9 @@
 </head>
 <!---------- End head ---------->
 <body>
+
+<!---------- Start style ---------->
+
 <style>
    
    /********** Start Main menu **********/
@@ -38,6 +42,7 @@
    }
    <?php if(isset($_SESSION['admin_login'])){ ?>
    .main-manu-items li:nth-child(12){
+      position:relative;
       background-color:#3D5538;
    }
    .main-manu-items li:nth-child(12) h3{
@@ -143,6 +148,7 @@
    /********** End About us detail **********/
 
 </style>
+<!---------- End style ---------->
    
 <!---------- start header ---------->
 
@@ -167,6 +173,13 @@
                <?php include('./master/main-menu.php') ?>
             <!---------- End main-manu-items ---------->
 
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('./master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End inform ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -185,7 +198,7 @@
                   <div class="aboutus-container p-5">
                      <div class="aboutus-top d-flex row mb-5">
                         <div class="aboutus-left col-xl-6">
-                           <img src="./img/5302.jpg" alt="">
+                           <img src="./img/5302.jpg" class="shadow">
                         </div>
                         <div class="aboutus-right col-xl-6 pt-3">
                            <h4>จุดประสงค์การพัฒนาระบบ</h4>
@@ -198,7 +211,7 @@
                         </div>
                         <div class="aboutus-advisor">
                            <div class="aboutus-advisor-img d-flex">
-                              <img class="mt-3" src="img/aj_sahidan.jpg" alt="">
+                              <img class="mt-3 shadow" src="img/aj_sahidan.jpg" alt="">
                            </div>
                            <div class="aboutus-advisor-title">
                               <p class="text-center mt-3">ด.ร.สาฮีดัน อับดุลมานะ</p>                                                         
@@ -210,7 +223,7 @@
                         <div class="aboutus-developer d-flex row mt-4">
                            <div class="aboutus-dev1 col-xl-6">
                               <div class="aboutus-dev1 float-right mr-5">
-                                 <img src="img/fardee.jpg" alt="">
+                                 <img src="img/fardee.jpg" class="shadow" alt="">
                                  <p class="text-center mt-3">นายฟัรดี อูเซ็ง</p>
                                  <p class="text-center">นักศึกษาสาขาเทคโนโลยีสารเทศ</p>
                                  <p class="text-center">ผู้พัฒนาระบบ</p>
@@ -218,7 +231,7 @@
                            </div>
                            <div class="aboutus-dev2 col-xl-6">
                               <div class="aboutus-dev2 float-left ml-5">
-                                 <img src="img/ding.jpg" alt="">
+                                 <img src="img/ding.jpg" class="shadow" alt="">
                                  <p class="text-center mt-3">นายนูรดิน เจะเลาะ</p>
                                  <p class="text-center">นักศึกษาสาขาเทคโนโลยีสารเทศ</p>
                                  <p class="text-center">ผู้พัฒนาระบบ</p>
@@ -242,7 +255,6 @@
 <footer>
    <?php include('./master/footer.php'); ?>
 </footer>
-
 <!---------- end footer ---------->
 
    <script src="./bootstrap/js/bootstrap.min.js"></script>

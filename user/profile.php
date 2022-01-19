@@ -58,6 +58,18 @@
 </head>
 <!---------- End head ---------->
 
+<script>
+   // $(document).ready(function(){
+   //    $("#logouser").mouseover(function(){
+   //       $("#logouser").animate({"width" : "220px", "height" : "220px" }, "slow")
+   //    })
+      // $("#logouser").mouseout(function(){
+      //    $("#logouser").animate({"width" : "200px", "height" : "200px"}, "slow")
+      // })
+
+   // })
+</script>
+
 <body>
 <style>
 
@@ -84,15 +96,33 @@
       font-weight: bold;
       color:#585858;
    }
+   .logo-user-load{
+      margin: auto;
+      height: 180px;
+      width: 180px;
+      justify-content:center;
+      align-items:center;
+      border-radius:50%;
+   }
+   .logo-user-load img{
+      border-radius: 50%;
+   }
    .logo-user{
       margin: auto;
-      width:100%;
+      height: 180px;
+      width: 180px;
       justify-content:center;
+      align-items:center;
+      background-color:#16451c;
+      border-radius:50%;
    }
    .logo-user img{
+      position:relative;
       width:200px;
       height:200px;
+      /* border-radius:50%; */
    }
+
    .login{
       display:flex;
       justify-content:center;
@@ -121,6 +151,18 @@
       color:#2780BB;
       text-decoration:none;
    }
+   .upload-profile{
+      position: absolute;
+      display:none;
+      background-color:#16451c;
+      opacity:0.1;
+      left:207px;
+      top:278px;
+      width: 220px;
+      height: 100px;
+      border-bottom-left-radius: 190px 170px;
+      border-bottom-right-radius: 190px 170px;
+   }
    /********** end Main menu **********/
 
    /********** Start Content **********/
@@ -135,6 +177,7 @@
    .content-title img{
       height:70px;
       width:70px;
+      border-radius:50%;
    }
    .content-title h3{
       font-size:45px;
@@ -153,6 +196,7 @@
       margin-bottom:25px;
       color:#585858;
    }
+
    /********** End Content **********/
 
 </style>
@@ -173,25 +217,46 @@
                <img src="../img/menu-logo/online-booking.png" alt="">
                <h3 class="ml-3">FTU RRS</h>
             </div>
-            <div class="logo-user d-flex mt-2">
-               <img src="../img/menu-logo/profile.png" alt="">
-            </div>            
+
+            <?php if(isset($_SESSION['us_prof'])){?>
+               <div class="logo-user-load d-flex mt-2">                  
+                  <img style="width:200px;height:200px;margin:8px 8px;" class="shadow" id="logouser" src="../img/profiles/<?php echo $_SESSION['us_prof']; ?> ">                  
+               </div>
+            <?php }else{ ?>
+               <?php if(isset($_SESSION['male'])){?>
+                  <?php if($_SESSION['male'] == "male" ){?>
+                     <div class="logo-user d-flex mt-2 shadow">                  
+                        <img style="width:150px;height:150px;margin:8px 8px;" id="logouser" src="../img/menu-logo/boy1.png">                  
+                     </div>
+                  <?php }else{ ?>
+                     <div class="logo-user d-flex mt-2">                  
+                        <img style="width:150px;height:150px;margin:8px 8px;" id="logouser" src="../img/menu-logo/gilr1.png">                  
+                     </div>
+                  <?php } ?>                      
+               <?php } ?>                      
+            <?php } ?>                      
             <div class="profile-edit mt-3">
                <h2 class="text-center"><?php echo "$name"; ?></h2>
-               <p class="text-center mt-4"><a href="profileedit.php">แก้ไขข้อมูลส่วนตัว</a></p>  
+               <p class="text-center mt-4"><a href="profileedit.php" onclick="return confirm('คุณแน่ใจที่จะแก้ไขข้อมูลส่วนตัว?')">แก้ไขข้อมูลส่วนตัว</a></p>  
             </div>  
             <div class="login-link mt-4 text-center">
                <a class="text-center" href="../index.php">กลับสู่หน้าหลัก</a>
+               <!-- <a href="#"> -->
+                  <!-- <div class="upload-profile" id="upload-profile">
+                     <label for="uploadProfile"></label>
+                  </div> -->
+               <!-- </a> -->
             </div>         
          </div>
+         
 
          <!----------- Start Profile Detail ---------->
 
          <div class="main-content col-xl-8">
             <div class="main-content-container">
                <div class="content-title d-flex">
-                  <div class="content-title-img ml-5">
-                     <img src="../img/menu-logo/profile.png" alt="">
+                  <div class="content-title-img ml-5">                     
+                     <img class="shadow" src="../img/menu-logo/profile.png">
                   </div>
                   <div class="content-header-h ml-4">
                      <h3>ข้อมูลส่วนตัว</h3>
@@ -200,7 +265,7 @@
                <?php if(isset($_SESSION['editprofilesuccess'])){ ?>
                   <div class="alert-primary mt-5 align-items-center d-flex pl-3" style="height:50px;font-size:20px;margin:0 30px;">
                      <?php echo $_SESSION['editprofilesuccess'];
-                           // unset($_SESSION['editprofilesuccess']);
+                           unset($_SESSION['editprofilesuccess']);
                      ?>
                   </div>
                <?php } ?>

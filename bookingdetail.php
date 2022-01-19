@@ -2,9 +2,30 @@
    session_start();
    require("dbconnect.php");
 
-   $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id"; 
+   // Start Pagination
+
+   if(isset($_GET['page'])){
+      $page = $_GET['page'];
+   }else{
+      $page = 1;  // เลขหน้าที่จะแสดง
+   }
+
+   $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+   $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+   // Query Total Product
+   $sql_total = "SELECT * FROM reservation";
+   $query_total = mysqli_query($connect, $sql_total);
+   $row_total = mysqli_num_rows($query_total);
+
+   $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+   $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id ORDER BY rserv_status DESC"; 
+   $sql .= " LIMIT $offset,$record_show";
+
    $result = mysqli_query($connect, $sql);
-   
+   // End Pagination
+
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +39,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start Style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -45,6 +69,7 @@
    }
    .main-manu-items li:nth-child(2){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(2) h3{
       color:#F0F8FF;
@@ -98,11 +123,11 @@
    /********** Start Content Table **********/
 
    .content-table th{
-      font-size:30px;
+      font-size:25px;
       font-weight: normal;
    }
    .content-table td{
-      font-size:20px;
+      font-size:18px;
       font-weight: normal;
    }
    .content-table thead{
@@ -116,6 +141,7 @@
    /********** End Content Table **********/
 
 </style>
+<!---------- End Inform ---------->
    
 <!---------- start header ---------->
 
@@ -140,6 +166,14 @@
 
                <?php include('./master/main-menu.php') ?>
             <!---------- End main-manu-items ---------->
+            
+            <!---------- Start Inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('./master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End Inform ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -152,6 +186,9 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
+
+                  <!---------- Start building information ---------->
+
                   <form action="bookingdetailsearch.php" method="post" class="input-group">                  
                      <select class="custom-select" name="building" id="">
                         <option value="" selected disabled>อาคารทั้งหมด</option>
@@ -164,8 +201,10 @@
                            }
                         ?>
                      </select>
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
+                     <button class="content-search-button px-2 rounded-right" type="submit" name="sbuilding">ค้นหา</button>
                   </form>
+                  <!---------- End building information ---------->
+
                </div>
 
                <!---------- Start content-table ---------->
@@ -178,24 +217,26 @@
                            <th>ชื่อผู้จอง</th>
                            <th>เริ่ม</th>
                            <th>สิ้นสุด</th>
+                           <th>อาคาร</th>
                            <th>รหัสห้อง</th>
                            <th>ห้องประชุม</th>                           
                            <th>สถานะ</th>
                         </tr>
                      </thead>
                      <tbody>
-                     <?php while($row=mysqli_fetch_array($result)){ ?>
+                     <?php while($row = mysqli_fetch_array($result)){ ?>
                         <tr>
                            <td><?php echo $row["rserv_Id"]; ?></td>
                            <td><?php echo $row["peoplename"]; ?></td>
-                           <td><?php echo $row["startdate"]. " / " .$row["starttime"] ?></td>
-                           <td><?php echo $row["enddate"]. " / " .$row["endtime"] ?></td>
+                           <td><?php echo date("d-m-y",strtotime($row["startdate"])). " / " .date("H:m",strtotime($row["starttime"])) ?></td>
+                           <td><?php echo date("d-m-y",strtotime($row["enddate"])). " / " .date("H:m",strtotime($row["endtime"])) ?></td>
+                           <td><?php echo $row["bd_name"] ?></td>
                            <td><?php echo $row["r_code"] ?></td>
                            <td><?php echo $row["r_name"] ?></td>
                            <?php
-                              if($row["rserv_status"] == "อนุมัติ"){
+                              if($row["rserv_status"] === "approve"){
                                  echo "<td class='text-success'>อนุมัติ</td>";
-                              }elseif($row["rserv_status"] == "ไม่อนุมัติ"){
+                              }elseif($row["rserv_status"] === "disapproved"){
                                  echo "<td class='text-danger'>ไม่อนุมัติ</td>";
                               }else{
                                  echo "<td class='text-primary'>รอการอนุมัติ</td>";
@@ -206,16 +247,22 @@
                      <?php } ?>
                      </tbody>
                   </table>
+                  <!-- <div id="pagination_controls"><?php echo $paginationCtrls; ?></div> -->
                </div>
                <!---------- End content-table ---------->
 
                <div class="content-footer row">
                   <div class="content-footer-left col-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                     
                   </div>
-                  <div class="content-footer-right col-5">
-                     <p></p>
+
+                  <!---------- Start Pagination ---------->
+
+                  <div class="content-footer-right d-flex justify-content-end col-5">
+                     <?php include("./master/pagination.php"); ?>
                   </div>
+                  <!---------- End Pagination ---------->
+
                </div>
             </div>
          </div>

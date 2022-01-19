@@ -41,7 +41,7 @@
 
          $_SESSION['username'] = $name;
          $_SESSION['success'] = "Now you are log In";
-         header('location:index.php');
+         header('location:user_login.php');
       }else{
          $_SESSION['error'] = "มีบางอย่างผิดพลาด";
       }
@@ -51,17 +51,9 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>ระบบจองห้องประชุมออนไลน์</title>
-   <link rel="icon" href="img/menu-logo/online-booking.png">
-   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-   <link rel="stylesheet" href="font/tahomo.ttf">
-   <link rel="stylesheet" href="font/SukhumvitSet-Medium.ttf">
-   <link rel="stylesheet" href="bootstrap/js/jquery-3.6.0.min.js">
-</head>
+
+<?php require("./master/head.php") ?>
+
 <body>
 <style>
    *{

@@ -2,25 +2,69 @@
    session_start();
    require("dbconnect.php");
 
-   $building = $_POST['building'];
-   $sql = "SELECT * FROM reservation INNER JOIN building ON reservation.bd_Id = building.bd_Id INNER JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' ORDER BY bd_name ASC"; 
-   $result = mysqli_query($connect, $sql);
+   // Start loop array building
 
    $sql3 = "SELECT * FROM building";
    $result3 = mysqli_query($connect, $sql3);
    while($row3 = mysqli_fetch_assoc($result3)){
       $buildings[] = $row3['bd_name']; 
    }
+   // Start loop array building
 
-   if($_POST){
-      $building = $_POST['building'];
-      $sql = "SELECT * FROM reservation INNER JOIN building ON reservation.bd_Id = building.bd_Id INNER JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' ORDER BY bd_name ASC"; 
+   // Start Pagination
+
+   if(isset($_GET['page'])){
+      $page = $_GET['page'];
+   }else{
+      $page = 1;  // เลขหน้าที่จะแสดง
+   }
+   if(isset($_GET['page'])){
+      $building = $_SESSION['building'];
+      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+      $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+      // Query Total Product
+      $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%'";
+      $query_total = mysqli_query($connect, $sql_total);
+      $row_total = mysqli_num_rows($query_total);
+   
+      $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+      $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' "; 
+      $sql .= " LIMIT $offset,$record_show";
+
       $result = mysqli_query($connect, $sql);
+   }
+
+   if(isset($_POST['sbuilding'])){
+
+      $building = $_POST['building'];
+      $page = 1;  // เลขหน้าที่จะแสดง
+
+      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+      $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+   
+      // Query Total Product
+      $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%'";
+      $query_total = mysqli_query($connect, $sql_total);
+      $row_total = mysqli_num_rows($query_total);
+   
+      $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+
+      $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' ORDER BY bd_name";
+      $sql .= " LIMIT $offset,$record_show";
+      
       if($_POST["building"] == "allbuilding"){
          header("location:bookingdetail.php");
+         unset($_SESSION['building']);
          exit();
       }
+      $result = mysqli_query($connect, $sql);
+      $_SESSION['building'] = $building;
    }
+   // End Pagination
+   
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +78,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -114,11 +161,11 @@
    /********** Start Content Table **********/
 
    .content-table th{
-      font-size:30px;
+      font-size:25px;
       font-weight: normal;
    }
    .content-table td{
-      font-size:20px;
+      font-size:18px;
       font-weight: normal;
    }
    .content-table thead{
@@ -131,7 +178,31 @@
    }
    /********** End Content Table **********/
 
+   /********** Start Pagination **********/
+
+   #page-link-number{
+      background-color:#BAC9B8; 
+      color:#585858;
+   }
+
+   #page-link-number:hover{
+      background-color:#d9e3d8;
+      color:white;
+   }
+
+   #page-link{
+      background-color:#3D5538;
+      color:white;
+   }
+
+   #page-link:hover{
+      background-color:#BAC9B8;
+      color:#585858;
+   }
+   /********** Start Pagination **********/
+
 </style>
+<!---------- End style ---------->
    
 <!---------- start header ---------->
 
@@ -156,6 +227,7 @@
 
                <?php include('./master/main-menu.php') ?>
             <!---------- End main-manu-items ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -168,6 +240,9 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
+
+                  <!---------- Start search building ---------->
+
                   <form method="post" class="input-group">                  
                      <select class="custom-select" name="building" id="">
                         <option value="allbuilding">อาคารทั้งหมด</option>
@@ -182,8 +257,10 @@
                         ?>
                      </select>
                      
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
+                     <button class="content-search-button px-2 rounded-right" type="submit" name="sbuilding">ค้นหา</button>
                   </form>
+                  <!---------- End search building ---------->
+
                </div>
 
                <!---------- Start content-table ---------->
@@ -202,18 +279,18 @@
                         </tr>
                      </thead>
                      <tbody>
-                     <?php while($row=mysqli_fetch_array($result)){ ?>
+                     <?php while($row = mysqli_fetch_array($result)){ ?>
                         <tr>
                            <td><?php echo $row["rserv_Id"]; ?></td>
                            <td><?php echo $row["peoplename"]; ?></td>
-                           <td><?php echo $row["startdate"]. " / " .$row["starttime"] ?></td>
-                           <td><?php echo $row["enddate"]. " / " .$row["endtime"] ?></td>
+                           <td><?php echo date("d-m-y",strtotime($row["startdate"])). " / " .date("H:m",strtotime($row["starttime"])) ?></td>
+                           <td><?php echo date("d-m-y",strtotime($row["enddate"])). " / " .date("H:m",strtotime($row["endtime"])) ?></td>
                            <td><?php echo $row["r_code"] ?></td>
                            <td><?php echo $row["r_name"] ?></td>
                            <?php
-                              if($row["rserv_status"] == "อนุมัติ"){
+                              if($row["rserv_status"] === "approve"){
                                  echo "<td class='text-success'>อนุมัติ</td>";
-                              }elseif($row["rserv_status"] == "ไม่อนุมัติ"){
+                              }elseif($row["rserv_status"] === "disapproved"){
                                  echo "<td class='text-danger'>ไม่อนุมัติ</td>";
                               }else{
                                  echo "<td class='text-primary'>รอการอนุมัติ</td>";
@@ -229,10 +306,16 @@
 
                <div class="content-footer row">
                   <div class="content-footer-left col-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+
                   </div>
-                  <div class="content-footer-right col-5">
-                     <p></p>
+                  <div class="content-footer-right d-flex justify-content-end col-5">
+
+                     <!---------- Start Pagination ---------->
+
+                     <?php require("./master/pagination.php") ?>
+                     
+                     <!---------- End Pagination ---------->
+
                   </div>
                </div>
             </div>

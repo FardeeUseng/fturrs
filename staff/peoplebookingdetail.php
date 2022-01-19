@@ -55,6 +55,7 @@
    }
    .main-manu-items li:nth-child(6){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(6) h3{
       color:#F0F8FF;
@@ -125,6 +126,10 @@
             <?php include('../master/main-menu-user.php') ?>
             <!---------- End main-manu-items ---------->
 
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -159,11 +164,11 @@
                      </div>
                      <div class="booking-detail-start d-flex">
                         <h3>เริ่ม : </h3>
-                        <p style="margin-left:168px"><?php echo $row['startdate'] . " / " . $row['starttime'] ?></p>
+                        <p style="margin-left:168px"><?php echo date("d-m-Y",strtotime($row["startdate"])). " / " .date("H:m",strtotime($row["starttime"])) ?></p>
                      </div>
                      <div class="booking-detail-end d-flex">
                         <h3>สิ้นสุด : </h3>
-                        <p style="margin-left:123px"><?php echo $row['enddate'] . " / " . $row['endtime'] ?></p>
+                        <p style="margin-left:123px"><?php echo date("d-m-Y",strtotime($row["enddate"])). " / " .date("H:m",strtotime($row["endtime"])) ?></p>
                      </div>
                      <div class="booking-detail-obj d-flex">
                         <h3>จุดประสงค์ : </h3>
@@ -172,9 +177,9 @@
                      <div class="booking-detail-status d-flex">
                         <h3>สถานะ : </h3>
                         <?php 
-                           if($row["rserv_status"] == "อนุมัติ"){
+                           if($row["rserv_status"] === "approve"){
                               echo "<p class='text-success' style='margin-left:113px'>อนุมัติ</p>";
-                           }elseif($row["rserv_status"] == "ไม่อนุมัติ"){
+                           }elseif($row["rserv_status"] === "disapproved"){
                               echo "<p class='text-danger' style='margin-left:113px'>ไม่อนุมัติ</p>";
                            }else{
                               echo "<p class='text-primary' style='margin-left:113px'>รอการอนุมัติ</p>";

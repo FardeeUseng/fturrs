@@ -3,9 +3,89 @@
    session_start();
    require('../dbconnect.php');
 
-   $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id";
-   $result = mysqli_query($connect, $sql);
+   if(isset($_SESSION['user_login'])){
+
+      $id = $_SESSION['user_login'];
+      // Start Pagination for user logIn
+
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }
+   
+      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+      $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+   
+      // Query Total Product
+      $sql_total = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN users ON reservation.users_Id = users.users_Id WHERE reservation.users_Id = $id";
+      $query_total = mysqli_query($connect, $sql_total);
+      $row_total = mysqli_num_rows($query_total);
+   
+      $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+   
+      $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN users ON reservation.users_Id = users.users_Id WHERE reservation.users_Id = $id"; 
+      $sql .= " LIMIT $offset,$record_show";
+      $result = mysqli_query($connect, $sql);
+      // End Pagination for user logIn
+
+   }elseif(isset($_SESSION['staff_login'])){
+
+      $id = $_SESSION['staff_login'];
+      // Start Pagination for staff logIn
+
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }
+   
+      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+      $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+   
+      // Query Total Product
+      $sql_total = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN staff ON reservation.staff_Id = staff.staff_Id WHERE reservation.staff_Id = $id";
+      $query_total = mysqli_query($connect, $sql_total);
+      $row_total = mysqli_num_rows($query_total);
+   
+      $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+   
+      $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN staff ON reservation.staff_Id = staff.staff_Id WHERE reservation.staff_Id = $id"; 
+      $sql .= " LIMIT $offset,$record_show";
+      $result = mysqli_query($connect, $sql);
+      
+      // End Pagination for staff logIn
+
+   }elseif(isset($_SESSION['admin_login'])){
+
+      $id = $_SESSION['admin_login'];
+      // Start Pagination for admin logIn
+
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }
+
+      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+      $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+      // Query Total Product
+      $sql_total = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN admin ON reservation.admin_Id = admin.admin_Id WHERE reservation.admin_Id = $id";
+      $query_total = mysqli_query($connect, $sql_total);
+      $row_total = mysqli_num_rows($query_total);
+
+      $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+      $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN admin ON reservation.admin_Id = admin.admin_Id WHERE reservation.admin_Id = $id"; 
+      $sql .= " LIMIT $offset,$record_show";
+      $result = mysqli_query($connect, $sql);
+      // End Pagination for admin logIn
+
+   }
+   
    $order = 1;
+   
 
    // Start Access permission User, Staff and Admin
 
@@ -25,6 +105,7 @@
 <head>
    <?php include('../master/head-user.php') ?>
 </head>
+
 <!---------- End head ---------->
 
 <body>
@@ -55,6 +136,7 @@
    }
    .main-manu-items li:nth-child(4){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(4) h3{
       color:#F0F8FF;
@@ -95,11 +177,11 @@
    /********** Start table **********/
 
    .content-table th{
-      font-size:30px;
+      font-size:25px;
       font-weight: normal;
    }
    .content-table td{
-      font-size:20px;
+      font-size:18px;
       font-weight: normal;
    }
    .content-table thead{
@@ -138,6 +220,9 @@
                <?php include('../master/main-menu-user.php') ?>
             </ul>
             <!---------- End main-manu-items ---------->
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
 
          </div>
          <div class="main-content col-xl-9">
@@ -150,20 +235,24 @@
                      <h3>การจองห้องของคุณ</h3>
                   </div>
                </div>
+
                <div class="content-search d-flex mt-5 mb-4">
                   <form action="bookingchecksearch.php" method="post" class="input-group">                  
                      <select class="custom-select" name="building" id="">
-                        <option value="" selected disabled>อาคารทั้งหมด</option>
                         <?php
                            $sql2 = "SELECT * FROM building";
                            $result2 = mysqli_query($connect, $sql2);
                            $row2 = mysqli_fetch_array($result2);
+
+                           echo "<option value='allbuilding'>อาคารทั้งหมด</option>";
                            foreach($result2 as $value){
                               echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
                            }
                         ?>
                      </select>
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
+               
+                     <button class="content-search-button px-2 rounded-right" id="button" type="submit" name="sbuilding">ค้นหา</button>
+                     
                   </form>
                </div>
 
@@ -184,12 +273,12 @@
                         </tr>
                      </thead>
                      <tbody>
-                     <?php while($row = mysqli_fetch_assoc($result)){ ?>
+                     <?php while($row = mysqli_fetch_array($result)){ ?>
                         <tr>
                            <td><?php echo $order++; ?></td>
                            <td><?php echo $row["peoplename"] ?></td>                           
-                           <td><?php echo $row["startdate"]. " / " .$row["starttime"] ?></td>
-                           <td><?php echo $row["enddate"]. " / " .$row["endtime"] ?></td>
+                           <td><?php echo date("d-m-y",strtotime($row["startdate"])). " / " .date("H:m",strtotime($row["starttime"])) ?></td>
+                           <td><?php echo date("d-m-y",strtotime($row["enddate"])). " / " .date("H:m",strtotime($row["endtime"])) ?></td>
                            <td><?php echo $row["r_code"] ?></td>
                            <td><?php echo $row["r_name"] ?></td>                           
                            <?php
@@ -212,10 +301,12 @@
 
                <div class="content-footer row">
                   <div class="content-footer-left col-xl-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                     
                   </div>
-                  <div class="content-footer-right col-xl-5">
-                     <p></p>
+                  <div class="content-footer-right d-flex justify-content-end col-xl-5">
+
+                     <?php include("../master/pagination.php"); ?>
+
                   </div>
                </div>
             </div>
@@ -235,3 +326,4 @@
    <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
+

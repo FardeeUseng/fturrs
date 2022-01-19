@@ -11,12 +11,29 @@
    }
    // End Access permission Admin
 
-   // Start Show table staff
+   // Start pagination
 
-   $sql = "SELECT * FROM staff INNER JOIN building ON staff.bd_Id = building.bd_Id";
-   $result = mysqli_query($connect,$sql);
-   // End Show table staff
+   if(isset($_GET['page'])){
+      $page = $_GET['page'];
+   }else{
+      $page = 1;  // เลขหน้าที่จะแสดง
+   }
 
+   $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+   $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+   // Query Total Product
+   $sql_total = "SELECT * FROM staff LEFT JOIN building ON staff.bd_Id = building.bd_Id";
+   $query_total = mysqli_query($connect, $sql_total);
+   $row_total = mysqli_num_rows($query_total);
+
+   $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+   $sql = "SELECT * FROM staff LEFT JOIN building ON staff.bd_Id = building.bd_Id"; 
+   $sql .= " LIMIT $offset,$record_show";
+   $result = mysqli_query($connect, $sql);
+
+   // End pagination
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +47,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start Style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -57,6 +77,7 @@
    }
    .main-manu-items li:nth-child(11){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(11) h3{
       color:#F0F8FF;
@@ -116,6 +137,7 @@
    /********** End table **********/
 
 </style>
+<!---------- End Style ---------->
    
 <!---------- start header ---------->
 
@@ -141,6 +163,13 @@
                <?php include('../master/main-menu-user.php') ?>
             <!---------- End main-manu-items ---------->
 
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- Start inform ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -152,11 +181,43 @@
                      <h3>ข้อมูลสมาชิก</h3>
                   </div>
                </div>
-               <div class="content-search d-flex mt-5 mb-4">                 
+
+               <!---------- Start if success or error ---------->
+
+               <?php if(isset($_SESSION['success'])){ 
+                  error_reporting(0);
+                  ?>                  
+                  <div class="alert-success mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
+                     <?php
+                        echo $_SESSION['success'];
+                     ?>
+                  </div>
+               <?php }elseif(isset($_SESSION['error'])){ 
+                  error_reporting(0);
+                  ?>
+                  <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
+                     <?php 
+                        echo $_SESSION['error'];
+                        unset($_SESSION['error']);
+                     ?>
+                  </div>
+               <?php } 
+                  unset($_SESSION['success']);
+                  unset($_SESSION['error']);
+               ?>
+               
+               <!---------- End if success or error ---------->
+
+               <div class="content-search d-flex mt-5 mb-4">
+                     
+                     <!---------- Start Select member ---------->
+
                      <select class="form-select" aria-label="Default select example" onchange="location = this.value;" id="login">
                         <option selected>ผู้ดูแลห้องประชุม</option>
                         <option value="member.php">ข้อมูลผู้ใช้งานทั่วไป</option>
                      </select>
+                     <!---------- End Select member ---------->
+
                </div>
                <div class="content-table bg-dark">
                   
@@ -184,7 +245,7 @@
                            <td><?php echo $row['st_name']; ?></td>                           
                            <td><?php echo $row['st_phone']; ?></td>
                            <td><?php echo $row['bd_name']; ?></td>
-                           <td><a href="deletememberstaff.php?id=<?php echo $row['staff_Id']; ?>" class="btn btn-danger" onclick="return confirm('คุณต้องการลบผู้ใช้รายนี้ใช้รึไม่')">ลบ</a></td>
+                           <td><a href="deletememberstaff.php?id=<?php echo $row['staff_Id']; ?>" class="btn btn-danger px-3" onclick="return confirm('คุณต้องการลบผู้ใช้รายนี้ใช้รึไม่')">ลบ</a></td>
                            <td><a href="../admin/editmemberstaff.php?id=<?php echo $row['staff_Id']; ?>" class="btn btn-warning" onclick="return confirm('คุณต้องการที่จะแก้ไขข้อมูลผู้ใช้รายนี้ใช้รึไม่')">แก้ไข</a></td>
                         </tr>
                         <?php } ?>
@@ -198,10 +259,15 @@
 
                <div class="content-footer row">
                   <div class="content-footer-left col-xl-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                     
                   </div>
-                  <div class="content-footer-right col-xl-5">
-                     <p></p>
+                  <div class="content-footer-right d-flex justify-content-end col-xl-5">
+
+                     <!---------- Start pagination ---------->
+
+                     <?php include("../master/pagination.php"); ?>
+                     <!---------- End pagination ---------->
+
                   </div>
                </div>
                <!---------- End content-footer staff ---------->

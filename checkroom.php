@@ -2,11 +2,29 @@
    session_start();
    require('dbconnect.php');
 
-   // Start Select tables Room, Staff, Building Code
+   // Start Pagination
 
-   $sql = "SELECT * FROM room LEFT JOIN staff ON room.staff_Id = staff.staff_Id LEFT JOIN building ON room.bd_Id = building.bd_Id ORDER BY room.room_Id ASC";
-   $result = mysqli_query($connect,$sql);
-   // End Select tables Room, Staff, Building Code
+   if(isset($_GET['page'])){
+      $page = $_GET['page'];
+   }else{
+      $page = 1;  // เลขหน้าที่จะแสดง
+   }
+
+   $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+   $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+   // Query Total Product
+   $sql_total = "SELECT * FROM room";
+   $query_total = mysqli_query($connect, $sql_total);
+   $row_total = mysqli_num_rows($query_total);
+
+   $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+   $sql = "SELECT * FROM room LEFT JOIN staff ON room.staff_Id = staff.staff_Id LEFT JOIN building ON room.bd_Id = building.bd_Id ORDER BY room.room_Id ASC"; 
+   $sql .= " LIMIT $offset,$record_show";
+
+   $result = mysqli_query($connect, $sql);
+   // End Patination
 
 ?>
 
@@ -21,6 +39,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start Style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -48,6 +69,7 @@
    }
    .main-manu-items li:nth-child(3){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(3) h3{
       color:#F0F8FF;
@@ -88,11 +110,11 @@
    /********** Start table **********/
 
    .content-table th{
-      font-size:30px;
+      font-size:25px;
       font-weight: normal;
    }
    .content-table td{
-      font-size:20px;
+      font-size:18px;
       font-weight: normal;
    }
    .content-table thead{
@@ -106,6 +128,7 @@
    /********** End table **********/
 
 </style>
+<!---------- End Style ---------->
    
 <!---------- start header ---------->
 
@@ -130,6 +153,13 @@
                <?php include('./master/main-menu.php'); ?>
             <!---------- Start main-manu-items ---------->
             
+            <!---------- Start Inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('./master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End Inform ---------->
+            
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -142,9 +172,12 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
+
+                  <!---------- Start Search building information ---------->
+
                   <form action="checkroomsearch.php" method="post" class="input-group">                  
                      <select class="custom-select" name="building" id="">
-                        <option value="" selected disabled>อาคารทั้งหมด</option>
+                        <option value="allbuilding">อาคารทั้งหมด</option>
                         <?php
                            $sql2 = "SELECT * FROM building";
                            $result2 = mysqli_query($connect, $sql2);
@@ -154,8 +187,10 @@
                            }
                         ?>
                      </select>
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
+                     <button class="content-search-button px-2 rounded-right" type="submit" name="sbuilding">ค้นหา</button>
                   </form>
+                  <!---------- End Search building information ---------->
+
                </div>
 
                <!---------- Start Content-table ---------->
@@ -202,11 +237,16 @@
 
                <div class="content-footer row">
                   <div class="content-footer-left col-xl-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                     
                   </div>
-                  <div class="content-footer-right col-xl-5">
-                     <p></p>
+
+                  <!---------- start Pagination ---------->
+
+                  <div class="content-footer-right d-flex justify-content-end col-5">
+                     <?php include("./master/pagination.php"); ?>
                   </div>
+                  <!---------- End Pagination ---------->
+
                </div>
             </div>
          </div>

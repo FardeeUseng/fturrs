@@ -2,8 +2,12 @@
 
    session_start();
    require('../dbconnect.php');
+
+   // Start select building
+
    $sql1 = "SELECT * FROM building";
    $result1 = mysqli_query($connect, $sql1);
+   // End select building
 
    // Start Access permission Staff and Admin
 
@@ -13,10 +17,12 @@
    }
    // End Access permission Staff and Admin
 
-   // If Post
+   
 
    error_reporting(0);
    ini_set('display_errors', 0);
+
+   // Start if addroom
 
    $errors = array();
 
@@ -50,6 +56,7 @@
          }
       }
    }
+   // End if addroom
 ?>
 
 <!DOCTYPE html>
@@ -63,6 +70,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start style ---------->
+
 <style>
    
    /********** Start Main menu **********/
@@ -90,6 +100,7 @@
    }
    .main-manu-items li:nth-child(8){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(8) h3{
       color:#F0F8FF;
@@ -195,6 +206,7 @@
    /********** End Edit Booking **********/
 
 </style>
+<!---------- End style ---------->
    
 <!---------- start header ---------->
 
@@ -219,6 +231,13 @@
 
                <?php include('../master/main-menu-user.php') ?>
             <!---------- Start main-manu-items ---------->
+            
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End inform ---------->
             
          </div>
          <div class="main-content col-xl-9">
@@ -267,7 +286,7 @@
                         </div>
                         <div class="addroom-nameroom d-flex">
                            <h3>ชื่อห้อง : </h3>
-                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" value="" required>
+                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" required>
                         </div>
                         <div class="addroom-coderoom d-flex">
                            <h3>หมายเลขห้อง : </h3>
@@ -288,10 +307,7 @@
                               <option value="notavailable">ปิดปรับปรุง</option>
                            </select>
                         </div>
-                        <div class="addroom-roomimage d-flex">
-                           <h3>รูปห้อง : </h3>
-                           <input style="margin-left:126px;width:690px;" type="file" name="roomimage">
-                        </div>                        
+
                         <div class="addroom-equipment">
                            <h3>อุปกรณ์ :</h3>
                            <div class="addroom-equipment-items">
@@ -339,9 +355,11 @@
                <!---------- End Addroom --------->
 
                <!-- Start content-footer -->
+
                <div class="content-footer row">
                </div>
                <!-- End content-footer -->
+
             </div>
          </div>
       </div>  
@@ -360,6 +378,8 @@
 </body>
 </html>
 
+<!---------- Start script ---------->
+
 <script type="text/javascript">
   $('#building').change(function() {
     var id_building = $(this).val();
@@ -374,4 +394,5 @@
     });
   });
 </script>
+<!---------- End script ---------->
 

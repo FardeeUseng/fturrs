@@ -11,11 +11,29 @@
    }
    // End Access permission Admin
 
-   // Start Show table users
-   
-   $sql = "SELECT * FROM users";
-   $result = mysqli_query($connect,$sql);
-   // End Show table users
+   // Start pagination
+
+   if(isset($_GET['page'])){
+      $page = $_GET['page'];
+   }else{
+      $page = 1;  // เลขหน้าที่จะแสดง
+   }
+
+   $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+   $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+   // Query Total Product
+   $sql_total = "SELECT * FROM users";
+   $query_total = mysqli_query($connect, $sql_total);
+   $row_total = mysqli_num_rows($query_total);
+
+   $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+   $sql = "SELECT * FROM users"; 
+   $sql .= " LIMIT $offset,$record_show";
+   $result = mysqli_query($connect, $sql);
+
+   // End pagination
 
 ?>
 
@@ -30,6 +48,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -57,6 +78,7 @@
    }
    .main-manu-items li:nth-child(11){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(11) h3{
       color:#F0F8FF;
@@ -115,6 +137,7 @@
    /********** End table **********/
 
 </style>
+<!---------- End style ---------->
    
 <!---------- start header ---------->
 
@@ -139,6 +162,13 @@
                <?php include('../master/main-menu-user.php') ?>
             <!---------- Start main-manu-items ---------->
 
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End inform ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -151,25 +181,41 @@
                   </div>
                </div>
 
-               <!---------- Start show if edit success1 ---------->
+               <!---------- Start if success or error ---------->
 
-               <?php if (isset($_SESSION['success1'])) : ?>
-                  <div class="alert alert-success">
-                     <h3>
-                        <?php 
-                              echo $_SESSION['success1'];
-                              unset($_SESSION['success1']);
-                        ?>
-                     </h3>
+               <?php if(isset($_SESSION['success'])){ 
+                  error_reporting(0);
+                  ?>                  
+                  <div class="alert-success mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
+                     <?php
+                        echo $_SESSION['success'];
+                     ?>
                   </div>
-               <?php endif ?>
-               <!---------- End show if edit success1 ---------->
+               <?php }elseif(isset($_SESSION['error'])){ 
+                  error_reporting(0);
+                  ?>
+                  <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
+                     <?php 
+                        echo $_SESSION['error'];
+                        unset($_SESSION['error']);
+                     ?>
+                  </div>
+               <?php } 
+                  unset($_SESSION['success']);
+                  unset($_SESSION['error']);
+               ?>               
+               <!---------- End if success or error ---------->
 
-               <div class="content-search d-flex mt-5 mb-4">                 
-                     <select class="form-select" aria-label="Default select example" onchange="location = this.value;" id="login">
-                        <option selected>ข้อมูลผู้ใช้งานทั่วไป</option>
-                        <option value="../admin/memberstaff.php">ผู้ดูแลห้องประชุม</option>
-                     </select>
+               <div class="content-search d-flex mt-5 mb-4">
+
+                  <!---------- Start Select member ---------->
+
+                  <select class="form-select" aria-label="Default select example" onchange="location = this.value;" id="login">
+                     <option selected>ข้อมูลผู้ใช้งานทั่วไป</option>
+                     <option value="../admin/memberstaff.php">ผู้ดูแลห้องประชุม</option>
+                  </select>
+                  <!---------- End Select member ---------->
+
                </div>
                <div class="content-table bg-dark">
                   
@@ -197,7 +243,7 @@
                            <td><?php echo $row['us_name']; ?></td>                           
                            <td><?php echo $row['us_phone']; ?></td>
                            <td>ผู้ใช้งานทั่วไป</td>
-                           <td><a href="deletememberuser.php?id=<?php echo $row['users_Id']; ?>" class="btn btn-danger" onclick="return confirm('คุณต้องการลบผู้ใช้รายนี้ใช้รึไม่')">ลบ</a></td>
+                           <td><a href="deletememberuser.php?id=<?php echo $row['users_Id']; ?>" class="btn btn-danger px-3" onclick="return confirm('คุณต้องการลบผู้ใช้รายนี้ใช้รึไม่')">ลบ</a></td>
                            <td><a href="editmemberuser.php?id=<?php echo $row['users_Id']; ?>" class="btn btn-warning" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูล')">แก้ไข</a></td>
                         </tr>
                         <?php } ?>
@@ -209,11 +255,16 @@
                <!---------- Start content-footer ---------->
 
                <div class="content-footer row">
-                  <div class="content-footer-left col-xl-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                  <div class="content-footer-left col-xl-7">                     
                   </div>
-                  <div class="content-footer-right col-xl-5">
-                     <p></p>
+
+                  <div class="content-footer-right d-flex justify-content-end col-xl-5">
+                     
+                     <!---------- Start pagination ---------->
+
+                     <?php include("../master/pagination.php"); ?>
+                     <!---------- End pagination ---------->
+
                   </div>
                </div>
                <!---------- End content-footer ---------->

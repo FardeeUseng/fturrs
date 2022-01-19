@@ -5,5 +5,6 @@
    <link rel="icon" href="../img/menu-logo/online-booking.png">
    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
    <link rel="stylesheet" href="../font/tahomo.ttf">
+   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
    <link rel="stylesheet" href="../font/SukhumvitSet-Medium.ttf">
    <script src="../bootstrap/js/jquery-3.6.0.min.js"></script>

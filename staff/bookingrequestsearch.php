@@ -3,8 +3,11 @@
    session_start();
    require('../dbconnect.php');
    
+   // Start Reservation
+
    $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id";
    $result = mysqli_query($connect, $sql);
+   // End Reservation
 
    // Start Access permission Staff and Admin
 
@@ -14,20 +17,71 @@
    }
    // End Access permission Staff and Admin
 
+   // Start select building
+
    $sql3 = "SELECT * FROM building";
    $result3 = mysqli_query($connect, $sql3);
    while($row3 = mysqli_fetch_assoc($result3)){
       $buildings[] = $row3['bd_name']; 
    }
+   // End select building
 
-   if($_POST){
-      $building = $_POST['building'];
-      $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' ORDER BY bd_name ASC";
-      $result = mysqli_query($connect, $sql);
-      if($_POST["building"] == "allbuilding"){
-         header("location:bookingrequest.php");
-         exit();
+   if(isset($_SESSION['admin_login'])){
+
+      $building = $_SESSION['building'];
+
+      // Start Pagination for staff logIn
+
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }         
+         
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+      
+         // Query Total Product
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' AND reservation.rserv_status = 'pendingApproval'";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+      
+         "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' AND reservation.rserv_status = 'pendingApproval'";
+         $sql .= " LIMIT $offset,$record_show";
+         $result = mysqli_query($connect, $sql);
+         
+      if(isset($_POST['sbuilding'])){
+
+         $building = $_POST['building'];
+         $page = 1;  // เลขหน้าที่จะแสดง
+
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;
+         // Query Total Product
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' AND reservation.rserv_status = 'pendingApproval'";
+
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+         $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' AND reservation.rserv_status = 'pendingApproval'";
+         $sql .= " LIMIT $offset,$record_show";
+
+         if($building == "allbuilding"){
+            header("location:bookingrequest.php");
+            // unset($_SESSION['building']);
+            exit();
+         }
+         $result = mysqli_query($connect, $sql);
+         $_SESSION['building'] = $building;
+         
       }
+
+      // End Pagination for staff logIn
+
    }
 ?>
 
@@ -42,6 +96,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start style ---------->
+
 <style>
    
    /********** Start Main menu **********/
@@ -127,6 +184,7 @@
    /********** End table **********/
 
 </style>
+<!---------- End style ---------->
    
 <!---------- start header ---------->
 
@@ -137,6 +195,7 @@
 
 
 <!---------- start content ---------->
+
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
@@ -163,22 +222,36 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
+
+                  <!---------- start search building ---------->
+
                   <form method="post" class="input-group">                  
-                     <select class="custom-select" name="building" id="">
+                     <select class="custom-select" name="building">
                         <option value="allbuilding">อาคารทั้งหมด</option>
                         <?php
-                           foreach($buildings as $value){
-                              if($value == $building){
-                                 echo "<option value='$value' selected>$value</option>";
-                              }else{
-                                 echo "<option value='$value'>$value</option>";
+                           if(isset($_SESSION['building'])){
+                              foreach($buildings as $value){
+                                 if($value == $_SESSION['building']){
+                                    echo "<option value='$value' selected>$value</option>";
+                                 }else{
+                                    echo "<option value='$value'>$value</option>";
+                                 }
                               }
-                              
+                           }else{
+                              foreach($buildings as $value){
+                                 if($value == $building){
+                                    echo "<option value='$value' selected>$value</option>";
+                                 }else{
+                                    echo "<option value='$value'>$value</option>";
+                                 }                                    
+                              }
                            }
                         ?>
                      </select>
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
+                        <button class="content-search-button px-2 rounded-right" type="submit" name="sbuilding">ค้นหา</button>
                   </form>
+                  <!---------- End search building ---------->
+
                </div>
 
                <!---------- Start Content-table ---------->
@@ -219,10 +292,15 @@
 
                <div class="content-footer row">
                   <div class="content-footer-left col-xl-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                     
                   </div>
-                  <div class="content-footer-right col-xl-5">
-                     <p></p>
+                  <div class="content-footer-right d-flex justify-content-end col-xl-5">
+                     
+                     <!---------- start pagination ---------->
+
+                     <?php include("../master/pagination.php"); ?>
+                     <!---------- start pagination ---------->
+
                   </div>
                </div>
             </div>
@@ -233,10 +311,10 @@
 <!---------- end content ---------->
 
 <!---------- start footer ---------->
+
 <footer>
    <?php include('../master/footer-user.php'); ?>
 </footer>
-
 <!---------- end footer ---------->
 
    <script src="../bootstrap/js/bootstrap.min.js"></script>

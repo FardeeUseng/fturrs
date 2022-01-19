@@ -3,9 +3,12 @@
    session_start();
    require('../dbconnect.php');
 
+   // Start Select building information
+
    $sql = "SELECT * FROM building";
    $result = mysqli_query($connect,$sql);
    $row = mysqli_fetch_assoc($result);
+   // Start Select building information
    
    // Start Access permission User, Staff and Admin
 
@@ -20,6 +23,7 @@
 
    $errors = array();
 
+   // Start if booking room
    if($_POST){
 
       $building = $_POST["building"];
@@ -36,13 +40,28 @@
       $enddate = $_POST["enddate"];
       $endtime = $_POST["endtime"];
 
-      $sql = "INSERT INTO reservation(bd_Id, room_Id, peoplename, phone, numpeople, people_Id, obj, org_Id, major_Id, startdate, starttime,enddate, endtime, rserv_status) VALUES($building, $room, '$name', '$phone', '$numpeople', '$peopleId', '$obj', '$org', '$major','$startdate','$starttime','$enddate','$endtime', 'รอการอนุมัติ')";
+      // Start Insert data for users, staff, admin
+
+      if(isset($_SESSION['user_login'])){
+         $id = $_SESSION['user_login'];
+         $sql = "INSERT INTO reservation(bd_Id, room_Id, peoplename, phone, numpeople, people_Id, obj, org_Id, major_Id, startdate, starttime,enddate, endtime, rserv_status, users_Id) VALUES($building, $room, '$name', '$phone', '$numpeople', '$peopleId', '$obj', '$org', '$major','$startdate','$starttime','$enddate','$endtime', 'pendingApproval', $id)";
+      }elseif(isset($_SESSION['staff_login'])){
+         $id = $_SESSION['staff_login'];
+         $sql = "INSERT INTO reservation(bd_Id, room_Id, peoplename, phone, numpeople, people_Id, obj, org_Id, major_Id, startdate, starttime,enddate, endtime, rserv_status, staff_Id) VALUES($building, $room, '$name', '$phone', '$numpeople', '$peopleId', '$obj', '$org', '$major','$startdate','$starttime','$enddate','$endtime', 'pendingApproval', $id)";
+      }elseif(isset($_SESSION['admin_login'])){
+         $id = $_SESSION['admin_login'];
+         $sql = "INSERT INTO reservation(bd_Id, room_Id, peoplename, phone, numpeople, people_Id, obj, org_Id, major_Id, startdate, starttime,enddate, endtime, rserv_status, admin_Id) VALUES($building, $room, '$name', '$phone', '$numpeople', '$peopleId', '$obj', '$org', '$major','$startdate','$starttime','$enddate','$endtime', 'pendingApproval', $id)";
+      }
+      // End Insert data for users, staff, admin
+
+      // Start If success
 
       $result = mysqli_query($connect, $sql);
       if($result){
-         header("location:../bookingdetail.php");
+         header("location:../user/bookingcheck.php");
          exit();
       }
+      // End If success
 
       // if(empty($building)){
       //    array_push($errors, "กรุณาเลือกอาคาร");
@@ -81,6 +100,7 @@
       //    }
       // }
    }
+   // End if booking room
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +113,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start Style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -120,6 +143,7 @@
    }
    .main-manu-items li:nth-child(5){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(5) h3{
       color:#F0F8FF;
@@ -208,6 +232,7 @@
    /********** End Register **********/
 
 </style>
+<!---------- Start Style ---------->
    
 <!---------- start header ---------->
 
@@ -233,6 +258,13 @@
                <?php include('../master/main-menu-user.php') ?>
             <!---------- End main-manu-items ---------->
 
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End inform ---------->
+
          </div>
          <div class="booking col-xl-9">
             <div class="booking-container mx-5 my-4">
@@ -245,7 +277,9 @@
                   </div>
                   
                </div>
+
                <!---------- Start error ---------->
+
                <!-- <?php if(count($errors) > 0): ?>
                   <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
                      <?php foreach($errors as $error): ?>
@@ -385,6 +419,9 @@
 
 </body>
 </html>
+
+<!---------- Start Scipt ---------->
+
 <script type="text/javascript">
   $('#building').change(function() {
     var id_building = $(this).val();
@@ -399,3 +436,4 @@
     });
   });
 </script>
+<!---------- Start Scipt ---------->

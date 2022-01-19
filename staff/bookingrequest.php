@@ -3,8 +3,63 @@
    session_start();
    require('../dbconnect.php');
    
-   $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id";
-   $result = mysqli_query($connect, $sql);
+   // Start Pagination for staff logIn
+
+   if(isset($_SESSION['staff_login'])){
+      $id = $_SESSION['staff_login'];
+      $bd_Id = $_SESSION['bd_Id'];
+      
+
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }         
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+      
+         // Query Total 
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE reservation.bd_Id = $bd_Id AND reservation.rserv_status = 'pendingApproval'";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+      
+         $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE reservation.bd_Id = $bd_Id AND reservation.rserv_status = 'pendingApproval'"; 
+         $sql .= " LIMIT $offset,$record_show";
+         $result = mysqli_query($connect, $sql);
+         // $num_row = mysqli_num_rows($result);
+
+   }
+   // End Pagination for staff logIn
+
+   // Start Pagination for admin logIn
+   
+   if(isset($_SESSION['admin_login'])){
+
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }
+
+      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+      $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+      // Query Total Product
+      $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE reservation.rserv_status = 'pendingApproval'";
+      $query_total = mysqli_query($connect, $sql_total);
+      $row_total = mysqli_num_rows($query_total);
+
+      $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+      $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE reservation.rserv_status = 'pendingApproval'"; 
+      $sql .= " LIMIT $offset,$record_show";
+      $result = mysqli_query($connect, $sql);
+      // $num_row = mysqli_num_rows($result);
+
+   }
+   // End Pagination for admin logIn
 
    // Start Access permission Staff and Admin
 
@@ -27,6 +82,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start Style ---------->
+
 <style>
    
    /********** Start Main menu **********/
@@ -53,6 +111,7 @@
       color:#585858;
    }
    .main-manu-items li:nth-child(6){
+      position:relative;
       background-color:#3D5538;
    }
    .main-manu-items li:nth-child(6) h3{
@@ -112,6 +171,7 @@
    /********** End table **********/
 
 </style>
+<!---------- End Style ---------->
    
 <!---------- start header ---------->
 
@@ -136,6 +196,13 @@
                <?php include('../master/main-menu-user.php') ?>
             <!---------- End main-manu-items ---------->
 
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])){ ?>
+               <?php include('../master/inform.php'); ?>
+            <?php } ?>
+            <!---------- End main-manu-items ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -148,20 +215,34 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
+
+                  <!---------- Start search building ---------->
+
                   <form action="bookingrequestsearch.php" method="post" class="input-group">                  
-                     <select class="custom-select" name="building" id="">
-                        <option value="" selected disabled>อาคารทั้งหมด</option>
+                     <select class="custom-select" name="building" id="">                        
                         <?php
                            $sql2 = "SELECT * FROM building";
                            $result2 = mysqli_query($connect, $sql2);
                            $row2 = mysqli_fetch_array($result2);
-                           foreach($result2 as $value){
-                              echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
-                           }
+                           if(isset($_SESSION['staff_login'])){
+                              echo "<option value='{$_SESSION['bd_Id']}' selected disabled>{$_SESSION['bd_name']}</option>";
+                           }else{
+                              echo "<option value='allbuilding'>อาคารทั้งหมด</option>";
+                              foreach($result2 as $value){
+                                 echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
+                              }
+                           }                              
                         ?>
                      </select>
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
+                     <?php if(isset($_SESSION['staff_login'])){
+                        echo "<button class='content-search-button px-2 rounded-right' type='submit' disabled>ค้นหา</button>";
+                     }else {
+                        echo "<button class='content-search-button px-2 rounded-right' type='submit' name='sbuilding'>ค้นหา</button>";
+                     } ?>
+                     
                   </form>
+                  <!---------- End search building ---------->
+
                </div>
 
                <!---------- Start Content-table ---------->
@@ -182,7 +263,7 @@
                         </tr>
                      </thead>
                      <tbody>
-                     <?php while($row = mysqli_fetch_assoc($result)){ ?>
+                     <?php while($row = mysqli_fetch_array($result)){ ?>
                         <tr>
                            <td><?php echo $row["rserv_Id"]; ?></td>
                            <td><?php echo $row["peoplename"]; ?></td>                           
@@ -202,10 +283,15 @@
 
                <div class="content-footer row">
                   <div class="content-footer-left col-xl-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                     
                   </div>
-                  <div class="content-footer-right col-xl-5">
-                     <p></p>
+                  <div class="content-footer-right d-flex justify-content-end col-xl-5">
+
+                     <!---------- Start Pagination ---------->
+
+                     <?php include("../master/pagination.php"); ?>
+                     <!---------- End Pagination ---------->
+
                   </div>
                </div>
             </div>

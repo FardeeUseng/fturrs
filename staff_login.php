@@ -17,15 +17,19 @@
       }
       
       if(count($errors) == 0){
-         $sql = "SELECT * FROM staff WHERE st_email = '$email' AND st_pass = '$password'";
+         $sql = "SELECT * FROM staff LEFT JOIN building ON staff.bd_Id = building.bd_Id WHERE st_email = '$email' AND st_pass = '$password'";
          $result = mysqli_query($connect, $sql);
          $row = mysqli_fetch_assoc($result);
 
          if(mysqli_num_rows($result) == 1){
             $_SESSION['staff_login'] = $row['staff_Id'];
             $_SESSION['name'] = $row['st_name'];
+            $_SESSION['bd_Id'] = $row['bd_Id'];
+            $_SESSION['staff_bd'] = $row['bd_Id'];
+            $_SESSION['bd_name'] = $row['bd_name'];
             $_SESSION['male'] = $row['st_sex'] == "male";
-            $_SESSION['success'] = "Now your are log In";
+            $_SESSION['us_prof'] = $row['st_profile'];
+            // $_SESSION['success'] = "Now your are log In";
             header('location:index.php');
          }else{
             array_push($errors, "อีเมล หรือ รหัสผ่านไม่ถูกต้อง");
@@ -39,17 +43,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>ระบบจองห้องประชุมออนไลน์</title>
-   <link rel="icon" href="img/menu-logo/online-booking.png">
-   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-   <link rel="stylesheet" href="font/tahomo.ttf">
-   <link rel="stylesheet" href="font/SukhumvitSet-Medium.ttf">
-   <link rel="stylesheet" href="bootstrap/js/jquery-3.6.0.min.js">
-</head>
+   <?php require("./master/head.php") ?>
 <body>
 <style>
    *{
@@ -243,12 +237,12 @@
                <img src="img/menu-logo/users.png" alt="">
             </div> 
             <?php if (count($errors) > 0) : ?>
-               <div class="alert-danger mt-5 mb-3 align-items-center d-flex pl-3" style="height:50px;font-size:15px;margin:0 150px;
+               <div class="alert-danger mt-5 mb-3 align-items-center d-flex pl-3" style="height:50px;font-size:15px;margin:0 150px;">
                   <?php foreach ($errors as $error) : ?>
                      <?php echo $error ?>
                   <?php endforeach ?>
-                  </div>
-               <?php endif ?>         
+               </div>
+            <?php endif ?>         
             <div class="login">
                <form class="user-form" action="" method="post">
                   <h2 class="text-center">เข้าสู่ระบบ</h2>

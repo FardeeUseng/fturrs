@@ -68,6 +68,7 @@
    }
    .main-manu-items li:nth-child(7){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(7) h3{
       color:#F0F8FF;
@@ -184,6 +185,10 @@
             <?php include('../master/main-menu-user.php') ?>
             <!---------- End main-manu-items ---------->
 
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -246,25 +251,25 @@
                            <h3>สถานะ * : </h3>
                            <select name="rserv_status"  style="margin-left:72px;width:690px;">
                               <?php
-                                 if($row["rserv_status"] == "อนุมัติ"){
-                                    echo "<option value='อนุมัติ' class='text-success' selected>อนุมัติ</option>";
-                                    echo "<option value='ไม่อนุมัติ' class='text-danger'>ไม่อนุมัติ</option>";
-                                    echo "<option value='รอการอนุมัติ' class='text-primary'>รอการอนุมัติ</option>";
-                                 }elseif($row["rserv_status"] == "ไม่อนุมัติ"){
+                                 if($row["rserv_status"] == "approve"){
+                                    echo "<option value='approve' class='text-success' selected>อนุมัติ</option>";
+                                    echo "<option value='disapproved' class='text-danger'>ไม่อนุมัติ</option>";
+                                    echo "<option value='pendingApproval' class='text-primary'>รอการอนุมัติ</option>";
+                                 }elseif($row["rserv_status"] == "disapproved"){
                                     echo "<option value='อนุมัติ' class='text-success'>อนุมัติ</option>";
-                                    echo "<option value='ไม่อนุมัติ' class='text-danger' selected>ไม่อนุมัติ</option>";
-                                    echo "<option value='รอการอนุมัติ' class='text-primary'>รอการอนุมัติ</option>";
+                                    echo "<option value='disapproved' class='text-danger' selected>ไม่อนุมัติ</option>";
+                                    echo "<option value='pendingApproval' class='text-primary'>รอการอนุมัติ</option>";
                                  }else{
                                     echo "<option value='อนุมัติ' class='text-success'>อนุมัติ</option>";
-                                    echo "<option value='ไม่อนุมัติ' class='text-danger'>ไม่อนุมัติ</option>";
-                                    echo "<option value='รอการอนุมัติ' class='text-primary' selected>รอการอนุมัติ</option>";
+                                    echo "<option value='disapproved' class='text-danger'>ไม่อนุมัติ</option>";
+                                    echo "<option value='pendingApproval' class='text-primary' selected>รอการอนุมัติ</option>";
                                  }
                               ?>
                            </select>
                         </div>
                         <div class="editbooking-button">
                            <button type="submit" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูล?')">แก้ไข</button>
-                           <button type="reset">ยกเลิก</button>
+                           <button type="reset" onclick="javascript:location.href='bookingedit.php'">ยกเลิก</button>
                         </div>
                      </form>                    
                   </div>

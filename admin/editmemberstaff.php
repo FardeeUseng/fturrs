@@ -18,7 +18,8 @@
    $id = $_GET['id'];
    // ENd Show Table Users
 
-   // If Post for update users
+   // Start If update member
+
    $errors = array();
    if($_POST){
       $id = $_POST['id'];
@@ -56,6 +57,7 @@
       }
       
    }
+   // End If update member
 ?>
 
 <!DOCTYPE html>
@@ -69,6 +71,9 @@
 <!---------- End head ---------->
 
 <body>
+
+<!---------- Start style ---------->
+
 <style>
 
    /********** Start Main menu **********/
@@ -96,6 +101,7 @@
    }
    .main-manu-items li:nth-child(11){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(11) h3{
       color:#F0F8FF;
@@ -183,6 +189,7 @@
    /********** End Edit Booking **********/
 
 </style>
+<!---------- End style ---------->
    
 <!---------- start header ---------->
 
@@ -207,6 +214,13 @@
 
             <?php include('../master/main-menu-user.php') ?>
             <!---------- End main-manu-items ---------->
+
+            <!---------- Start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- Start inform ---------->
 
          </div>
          <div class="main-content col-xl-9">
@@ -314,8 +328,7 @@
                <!---------- Start Edit User ---------->
 
                <!---------- Start content-footer ---------->
-               <div class="content-footer row">
-               
+               <div class="content-footer row">               
                </div>
                <!---------- End content-footer ---------->
 

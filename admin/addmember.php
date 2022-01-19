@@ -1,9 +1,13 @@
 <?php
    session_start();
    require('../dbconnect.php');
+
+   // Start select building
+
    $sql = "SELECT * FROM building";
    $result = mysqli_query($connect,$sql);
    $row = mysqli_fetch_assoc($result);
+   // End select building
 
    // Start Access permission Admin
 
@@ -13,7 +17,7 @@
    }
    // End Access permission Admin
 
-   // If Post
+   // Start If insert member
 
    $errors = array();
    if($_POST){
@@ -24,6 +28,7 @@
       $sex = $_POST['sex'];
       $phone = $_POST['phonenumber'];
       $building = $_POST['building'];
+      $memberstatus = $_POST['memberstatus'];
 
       if(empty($email)){
          array_push($errors,"กรุณากรอกอีเมล");
@@ -41,27 +46,71 @@
          array_push($errors, "กรุณาเลือกเพศ");
       }elseif(empty($phone)){
          array_push($errors, "กรุณากรอกเบอร์โทรศัพท์");
+      }elseif(empty($memberstatus)){
+         array_push($errors, "กรุณาเลือกสถานะผู้ใช้");
       }else {
-         $check_user = "SELECT * FROM staff WHERE st_email = '$email' LIMIT 1";
-         $result = mysqli_query($connect,$check_user);
-         $row = mysqli_fetch_assoc($result);
 
-         if($row){
-            if($row['st_email'] === '$email'){
-               array_push($errors, "มีอีเมลนี้ในระบบแล้ว");
+         if($memberstatus === "staff"){
+            $check_user = "SELECT * FROM staff WHERE st_email = '$email' LIMIT 1";
+            $result = mysqli_query($connect,$check_user);
+            $row = mysqli_fetch_assoc($result);
+
+            if($row){
+               if($row['st_email'] === '$email'){
+                  array_push($errors, "มีอีเมลนี้ในระบบแล้ว");
+               }
+            }elseif(empty($building)){
+               array_push($errors, "กรุณาเลือกอาคาร");
+
+            }elseif (count($errors) == 0) {
+               // $rpassword = md5($password);
+               $sql = "INSERT INTO staff(bd_Id,st_pass,st_name,st_sex,st_email,st_phone) VALUES($building,'$password','$name','$sex','$email','$phone')";
+               mysqli_query($connect,$sql);
+               $_SESSION['success'] = "คุณได้เพิ่ม " . $name . " สำเร็จ !!";
+               header('location:memberstaff.php');
+            }else{
+               $_SESSION['error'] = "มีบางอย่างผิดพลาด";
             }
-         }elseif (count($errors) == 0) {
-            $rpassword = md5($password);
-            $sql = "INSERT INTO staff(bd_Id,st_pass,st_name,st_sex,st_email,st_phone) VALUES('$building','$password','$name','$sex','$email','$phone')";
-            mysqli_query($connect,$sql);
-            $_SESSION['username'] = $name;
-            $_SESSION['success'] = "Now you are Log In";
-            header('location:memberstaff.php');
-         }else{
-            $_SESSION['error'] = "มีบางอย่างผิดพลาด";
-         }
+         }elseif($memberstatus === "admin"){
+            $check_user = "SELECT * FROM admin WHERE ad_email = '$email' LIMIT 1";
+            $result = mysqli_query($connect,$check_user);
+            $row = mysqli_fetch_assoc($result);
+
+            if($row){
+               if($row['ad_email'] === '$email'){
+                  array_push($errors, "มีอีเมลนี้ในระบบแล้ว");
+               }
+            }elseif (count($errors) == 0) {
+               // $rpassword = md5($password);
+               $sql = "INSERT INTO admin(ad_email, ad_pass, ad_name, ad_sex, ad_phone) VALUES('$email','$password','$name','$sex','$phone')";
+               mysqli_query($connect,$sql);
+               // $_SESSION['success'] = "คุณได้เพิ่ม " . $name . " สำเร็จ !!";
+               header('location:memberstaff.php');
+            }else{
+               $_SESSION['error'] = "มีบางอย่างผิดพลาด";
+            }
+         }elseif($memberstatus === "user"){
+            $check_user = "SELECT * FROM users WHERE us_email = '$email' LIMIT 1";
+            $result = mysqli_query($connect,$check_user);
+            $row = mysqli_fetch_assoc($result);
+
+            if($row){
+               if($row['us_email'] === '$email'){
+                  array_push($errors, "มีอีเมลนี้ในระบบแล้ว");
+               }
+            }elseif (count($errors) == 0) {
+               // $rpassword = md5($password);
+               $sql = "INSERT INTO users(us_email, us_pass, us_name, us_sex, us_phone) VALUES('$email','$password','$name','$sex','$phone')";
+               mysqli_query($connect,$sql);
+               $_SESSION['success'] = "คุณได้เพิ่ม " . $name . " สำเร็จ !!";
+               header('location:member.php');
+            }else{
+               $_SESSION['error'] = "มีบางอย่างผิดพลาด";
+            }            
+         }            
       }
    }
+   // End If insert member
 ?>
 
 <!DOCTYPE html>
@@ -71,9 +120,33 @@
 
 <head>
    <?php include('../master/head-user.php') ?>
+   <script src="../bootstrap/js/jquery-3.6.0.min.js"></script>
 </head>
 <!---------- End head ---------->
+
 <body>
+
+<!---------- Start jquery ---------->
+
+<script>
+   $(document).ready(function(){
+      $("#addroom-status").change(function(){
+         if(this.value == "staff"){
+            $("#addmember-building").show()
+         }else if(this.value == "selectStatus"){
+            $("#addmember-building").hide()
+         }else if(this.value == "user"){
+            $("#addmember-building").hide()
+         }else if(this.value == "admin"){
+            $("#addmember-building").hide()
+         }
+      })
+   })
+</script>
+<!---------- End jquery ---------->
+
+<!---------- Start style ---------->
+
 <style>
    
    /********** Start Main menu **********/
@@ -101,6 +174,7 @@
    }
    .main-manu-items li:nth-child(10){
       background-color:#3D5538;
+      position:relative;
    }
    .main-manu-items li:nth-child(10) h3{
       color:#F0F8FF;
@@ -200,6 +274,7 @@
    /********** End Edit Booking **********/
 
 </style>
+<!---------- End style ---------->
    
 <!---------- start header ---------->
 
@@ -210,6 +285,7 @@
 
 
 <!---------- start content ---------->
+
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
@@ -218,9 +294,19 @@
                <img src="../img/menu-logo/online-booking.png" alt="">
                <h3 class="ml-3">FTU RRS</h>
             </div>
-            <ul class="main-manu-items">
+            
+               <!---------- start main-menu ---------->
+
                <?php include('../master/main-menu-user.php') ?>
-            </ul>
+               <!---------- end main-menu ---------->
+
+            <!---------- start inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('../master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- end inform ---------->
+
          </div>
          <div class="main-content col-xl-9">
             <div class="content-container mx-5 my-4">
@@ -279,25 +365,27 @@
                            <input style="margin-left:123px;width:690px;padding-left:20px;" type="number" name="phonenumber" placeholder="เบอร์โทร" required>
                         </div>  
                         
-                        <!-- <div class="addroom-status d-flex disble">
+                        <div class="addroom-status d-flex disble" >
                            <h3>สถานะ : </h3>
-                           <select name="memberstatus"  style="margin-left:158px;width:690px;">
-                              <option>เลือกสถานะผู้ใช้งาน</option>
-                              <option value="">ผู้ดูแลห้องประชุม</option>
-                              <option value="" disabled>ผู้ใช้งานทั่วไป</option>
-                              <option value="" disabled>ผู้ดูแลระบบ</option>
+                           <select id="addroom-status" name="memberstatus" style="margin-left:158px;width:690px;">
+                              <option value="" selected>เลือกสถานะผู้ใช้งาน</option>
+                              <option value="staff">ผู้ดูแลห้องประชุม</option>
+                              <option value="user">ผู้ใช้งานทั่วไป</option>
+                              <option value="admin">ผู้ดูแลระบบ</option>
                            </select>
-                        </div>     -->
-                        <div class="addmember-building d-flex">
-                           <h3>ดูแลห้องประชุม : </h3>
-                           <select name="building"  style="margin-left:15px;width:690px;" required>
-                              <option selected disabled>เลือกอาคาร</option>
-                           <?php
-                              foreach($result as $value){
-                                 echo "<option value='{$value['bd_Id']}'>{$value['bd_name']}</option>";
-                              }
-                           ?>
-                           </select>
+                        </div>    
+                        <div id="addmember-building" class="addmember-building" style="display:none;">
+                           <div class="d-flex">
+                              <h3>ดูแลห้องประชุม : </h3>
+                              <select name="building"  style="margin-left:15px;width:690px;">
+                                 <option value="" selected>เลือกอาคาร</option>
+                              <?php
+                                 foreach($result as $value){
+                                    echo "<option value='{$value['bd_Id']}'>{$value['bd_name']}</option>";
+                                 }
+                              ?>
+                              </select>
+                           </div>
                         </div>                    
                         
                         <div class="addmember-button mt-3">
@@ -327,7 +415,6 @@
 <footer>
    <?php include('../master/footer-user.php'); ?>
 </footer>
-
 <!---------- end footer ---------->
 
    <script src="../bootstrap/js/bootstrap.min.js"></script>

@@ -3,10 +3,6 @@
    session_start();
    require('../dbconnect.php');
 
-   $sql = "SELECT * FROM reservation LEFT JOIN room ON reservation.room_Id = room.room_Id";
-   $result = mysqli_query($connect, $sql);
-   $order = 1;
-
    // Start Access permission User, Staff and Admin
 
    if(!isset($_SESSION['user_login']) and !isset($_SESSION['staff_login']) and !isset($_SESSION['admin_login'])){
@@ -21,15 +17,168 @@
       $buildings[] = $row3['bd_name']; 
    }
 
-   if($_POST){
-      $building = $_POST['building'];
-      $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE bd_name LIKE '%$building%' ORDER BY bd_name ASC";
+   if(isset($_SESSION['staff_login'])){
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }
+      if(isset($_GET['page'])){
 
-      $result = mysqli_query($connect, $sql);
-      // if($_POST["building"] == "allbuilding"){
-      //    header("location:checkroom.php");
-      //    exit();
-      // }
+         $buildingst = $_SESSION['building'];
+         $id = $_SESSION['staff_login'];
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+      // Query Total Product
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN staff ON reservation.staff_Id = staff.staff_Id WHERE bd_name LIKE '%$buildingst%' AND reservation.staff_Id = $id";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+      
+         $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN staff ON reservation.staff_Id = staff.staff_Id WHERE bd_name LIKE '%$buildingst%' AND reservation.staff_Id = $id"; 
+         $sql .= " LIMIT $offset,$record_show";
+
+         $result = mysqli_query($connect, $sql);
+         $order = 1;
+      // End Pagination for staff logIn
+      }
+
+      if(isset($_POST['sbuilding'])){
+         $id = $_SESSION['staff_login'];
+         $building = $_POST['building'];
+         $page = 1;  // เลขหน้าที่จะแสดง
+
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;
+         // Query Total Product
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN staff ON reservation.staff_Id = staff.staff_Id WHERE bd_name LIKE '%$building%' AND reservation.staff_Id = $id";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+         $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN staff ON reservation.staff_Id = staff.staff_Id WHERE bd_name LIKE '%$building%' AND reservation.staff_Id = $id";
+         $sql .= " LIMIT $offset,$record_show";
+
+         if($building == "allbuilding"){
+            header("location:bookingcheck.php");
+            unset($_SESSION['building']);
+            exit();
+         }
+         $result = mysqli_query($connect, $sql);
+         $_SESSION['building'] = $building;
+         $order = 1;
+      }
+   }elseif(isset($_SESSION['admin_login'])){
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }
+      if(isset($_GET['page'])){
+
+         $buildingst = $_SESSION['building'];
+         $id = $_SESSION['admin_login'];
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+      // Query Total Product
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN admin ON reservation.admin_Id = admin.admin_Id WHERE bd_name LIKE '%$buildingst%' AND reservation.admin_Id = $id";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+      
+         $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN admin ON reservation.admin_Id = admin.admin_Id WHERE bd_name LIKE '%$buildingst%' AND reservation.admin_Id = $id"; 
+         $sql .= " LIMIT $offset,$record_show";
+
+         $result = mysqli_query($connect, $sql);
+         $order = 1;
+      // End Pagination for staff logIn
+      }
+
+      if(isset($_POST['sbuilding'])){
+         $id = $_SESSION['admin_login'];
+         $building = $_POST['building'];
+         $page = 1;  // เลขหน้าที่จะแสดง
+
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;
+         // Query Total Product
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN admin ON reservation.admin_Id = admin.admin_Id WHERE bd_name LIKE '%$building%' AND reservation.admin_Id = $id";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+         $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN admin ON reservation.admin_Id = admin.admin_Id WHERE bd_name LIKE '%$building%' AND reservation.admin_Id = $id";
+         $sql .= " LIMIT $offset,$record_show";
+
+         if($building == "allbuilding"){
+            header("location:bookingcheck.php");
+            unset($_SESSION['building']);
+            exit();
+         }
+         $result = mysqli_query($connect, $sql);
+         $_SESSION['building'] = $building;
+         $order = 1;
+      }
+   }elseif(isset($_SESSION['user_login'])){
+      if(isset($_GET['page'])){
+         $page = $_GET['page'];
+      }else{
+         $page = 1;  // เลขหน้าที่จะแสดง
+      }
+      if(isset($_GET['page'])){
+
+         $buildingst = $_SESSION['building'];
+         $id = $_SESSION['user_login'];
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
+
+      // Query Total Product
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN users ON reservation.users_Id = users.users_Id WHERE bd_name LIKE '%$buildingst%' AND reservation.users_Id = $id";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+      
+         $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN users ON reservation.users_Id = users.users_Id WHERE bd_name LIKE '%$buildingst%' AND reservation.users_Id = $id"; 
+         $sql .= " LIMIT $offset,$record_show";
+
+         $result = mysqli_query($connect, $sql);
+         $order = 1;
+      // End Pagination for staff logIn
+      }
+
+      if(isset($_POST['sbuilding'])){
+         $id = $_SESSION['user_login'];
+         $building = $_POST['building'];
+         $page = 1;  // เลขหน้าที่จะแสดง
+
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+         $offset = ($page - 1) * $record_show;
+         // Query Total Product
+         $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN users ON reservation.users_Id = users.users_Id WHERE bd_name LIKE '%$building%' AND reservation.users_Id = $id";
+         $query_total = mysqli_query($connect, $sql_total);
+         $row_total = mysqli_num_rows($query_total);
+      
+         $page_total = ceil($row_total/$record_show); //จำนวนหน้าทั้งหมด
+
+         $sql = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id LEFT JOIN users ON reservation.users_Id = users.users_Id WHERE bd_name LIKE '%$building%' AND reservation.users_Id = $id";
+         $sql .= " LIMIT $offset,$record_show";
+
+         if($building == "allbuilding"){
+            header("location:bookingcheck.php");
+            unset($_SESSION['building']);
+            exit();
+         }
+         $result = mysqli_query($connect, $sql);
+         $_SESSION['building'] = $building;
+         $order = 1;
+      }
    }
 
 ?>
@@ -112,11 +261,11 @@
    /********** Start table **********/
 
    .content-table th{
-      font-size:30px;
+      font-size:25px;
       font-weight: normal;
    }
    .content-table td{
-      font-size:20px;
+      font-size:18px;
       font-weight: normal;
    }
    .content-table thead{
@@ -172,17 +321,27 @@
                      <select class="custom-select" name="building" id="">
                         <option value="allbuilding">อาคารทั้งหมด</option>
                         <?php
-                        
-                           foreach($buildings as $value){
-                              if($value == $building){
-                                 echo "<option value='$value' selected>$value</option>";
-                              }else{
-                                 echo "<option value='$value'>$value</option>";
+                           if(isset($_SESSION['building'])){
+                              foreach($buildings as $value){
+                                 if($value == $_SESSION['building']){
+                                    echo "<option value='$value' selected>$value</option>";
+                                 }else{
+                                    echo "<option value='$value'>$value</option>";
+                                 }
+                              }
+                           }else{
+                              foreach($buildings as $value){
+                                 if($value == $building){
+                                    echo "<option value='$value' selected>$value</option>";
+                                 }else{
+                                    echo "<option value='$value'>$value</option>";
+                                 }
                               }
                            }
+                           
                         ?>
                      </select>
-                     <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
+                     <button class="content-search-button px-2 rounded-right" type="submit" name="sbuilding">ค้นหา</button>
                   </form>
                </div>
 
@@ -207,8 +366,8 @@
                         <tr>
                            <td><?php echo $order++; ?></td>
                            <td><?php echo $row["peoplename"] ?></td>                           
-                           <td><?php echo $row["startdate"]. " / " .$row["starttime"] ?></td>
-                           <td><?php echo $row["enddate"]. " / " .$row["endtime"] ?></td>
+                           <td><?php echo date("d-m-y",strtotime($row["startdate"])). " / " .date("H:m",strtotime($row["starttime"])) ?></td>
+                           <td><?php echo date("d-m-y",strtotime($row["enddate"])). " / " .date("H:m",strtotime($row["endtime"])) ?></td>
                            <td><?php echo $row["r_code"] ?></td>
                            <td><?php echo $row["r_name"] ?></td>                           
                            <?php
@@ -231,10 +390,12 @@
 
                <div class="content-footer row">
                   <div class="content-footer-left col-xl-7">
-                     <p class="">จาก 1 ถึง 20 ทั้งหมด 100</p>
+                     
                   </div>
-                  <div class="content-footer-right col-xl-5">
-                     <p></p>
+                  <div class="content-footer-right d-flex justify-content-end col-xl-5">
+
+                     <?php include("../master/pagination.php"); ?>
+
                   </div>
                </div>
             </div>
