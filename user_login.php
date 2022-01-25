@@ -2,6 +2,8 @@
    session_start();
    require('dbconnect.php');
 
+   // Start if Users Login
+
    $errors = array();
    if($_POST){
       $email = $_POST['email'];
@@ -34,14 +36,22 @@
             array_push($errors,"กรุณากรอก อีเมล หรือ รหัสผ่าน");
       }
    }
+   // End if users Login
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
+   <!---------- Start head ---------->
+
    <?php require("./master/head.php") ?>
+   <!---------- End head ---------->
+
 <body>
+
 <style>
+
    *{
       margin:0;
       padding:0;
@@ -52,30 +62,6 @@
       font-family: SukhumvitSet, sans-serif;
       background-color:#BAC9B8;
    }
-
-   /********** Start header **********/
-   .header-container{
-      height:217px;
-      background-color:#BAC9B8;
-   }
-   .header-logo-left img{
-      width:120px;
-      height:120px;
-   }
-   .header-logo-right h1{
-      color:#585858;
-      font-size:45px;
-      font-weight:bold;
-   }
-   .header-signup-item a{
-      color:#585858;
-      font-size:30px;
-   }
-   .header-signup-item a:hover{
-      color:#3C94EC;
-      text-decoration:none;
-   }
-   /********** End header **********/
 
    /********** Start Main menu **********/
    .main-content{
@@ -163,64 +149,95 @@
       background-color:#E9F1E6;
       width:1150px;
    }
-
    /********** End Register **********/
 
-   /********** start footer **********/
-   .footer{
-      background-color:#BAC9B8;
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      .hamberger-menu i{
+         display:none;
+      }
+      .image{
+         display:none;
+      }
+      .content{
+         height:800px;
+      }
+      .header-logo-left{
+         margin-left:-60px;
+      }
    }
-   .footer-link li img{
-      width:40px;
-      height:40px;
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      .header-logo-left{
+         margin-left:-40px;
+      }
+      .main-menu-logo img{
+         height:80px;
+         width:80px;
+      }
+      .main-menu-logo h3{
+         font-size:40px;
+      }
+      .logo-user img{
+         width:130px;
+         height:130px;
+      }
+      .login h2{
+         font-size:40px;
+      }
+      .login input{
+         height: 50px;
+      }
+      .user-form button{
+         height:50px;
+         font-size:25px;
+      }
    }
-   .footer-link li{
-      list-style: none;
+   /********** End 767px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .main-menu-logo img{
+         height:60px;
+         width:60px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .logo-user img{
+         width:100px;
+         height:100px;
+      }
+      .login h2{
+         font-size:30px;
+      }
+      .login input{
+         height: 40px;
+         width:300px;
+      }
+      .user-form button{
+         height:40px;
+         font-size:23px;
+         width:150px;
+         margin-left:75px;
+      }
    }
-   .footer-top{
-      display:flex;
-      height:74px;
-      justify-content:center;
-      align-items:center;
-   }
-   .footer-top h3{
-      font-size:40px;
-      color:#585858;
-      font-weight:bold;
-   }
-   .footer-buttom{
-      display:flex;
-      height:74px;
-      justify-content:center;
-   }
-   .footer-link{
-      width:350px;
-      height:70px;
-      align-items:center;
-      justify-content:space-between;
-   }
-   /********** end footer **********/
+   /********** End 576px screen **********/
 
 </style>
    
 <!---------- start header ---------->
-<header>
-   <div class="container-fluid">
-      <div class="header-container row">
-         <div class="header-logo d-flex col-xl-8">
-            <div class="header-logo-left col-xl-2 d-flex align-items-center pl-5">
-               <img src="img/Ftu_logo.png">
-            </div>
-            <div class="header-logo-right col-xl-10 d-flex align-items-center">
-               <h1>FTU Room Reservation System</h1>
-            </div>
-         </div>
-      </div>
-   </div>
-</header>
+
+<?php include("./master/header.php") ?>
 <!---------- end header ---------->
 
 <!---------- start content ---------->
+
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
@@ -231,23 +248,31 @@
             </div>
             <div class="logo-user d-flex my-2">
                <img src="img/menu-logo/users.png" alt="">
-            </div>     
+            </div>
+            
+            <!---------- Start if have Error ---------->
+
             <?php if (count($errors) > 0) : ?>
                <div class="alert-danger mt-5 mb-3 align-items-center d-flex pl-3" style="height:50px;font-size:15px;margin:0 150px;border-radius:3px;">
-                     <?php foreach ($errors as $error) : ?>
-                        <?php echo $error ?>
-                     <?php endforeach ?>
-                  </div>
-               <?php endif ?>      
+                  <?php foreach ($errors as $error) : ?>
+                     <?php echo $error ?>
+                  <?php endforeach ?>
+               </div>
+            <?php endif ?>    
+            <!---------- End if have Error ---------->
+
+            <!---------- Start Users login ---------->
+
             <div class="login">
                <form class="user-form" action="" method="post">
                   <h2 class="text-center">เข้าสู่ระบบ</h2>
                   <input type="text" name="email" placeholder="E-mail" require><br>
                   <input type="password" name="password" placeholder="Password" require><br>
                   <button type="submit">LogIn</button>
-               </form>
-               
-            </div>  
+               </form>               
+            </div>
+            <!---------- End Users login ---------->
+
             <div class="login-link mt-4 text-center">
                <a class="text-center" href="register.php">สมัครสมาชิก</a>
                <a class="text-center" href="index.php">กลับสู่หน้าหลัก</a>
@@ -264,27 +289,12 @@
 <!---------- end content ---------->
 
 <!---------- start footer ---------->
+
 <footer>
-   <div class="container-fluid">
-      <div class="row">
-         <div class="col-xl">
-            <div class="footer-top">
-            <h3>Fatoni University</h3>
-         </div>
-         <div class="footer-buttom">
-            <ul class="footer-link d-flex">
-               <li><a href="#"><img src="img/menu-logo/globe-grid.png" alt=""></a></li>
-               <li><a href="#"><img src="img/menu-logo/facebook.png" alt=""></a></li>
-               <li><a href="#"><img src="img/menu-logo/instagram.png" alt=""></a></li>
-               <li><a href="#"><img src="img/menu-logo/twitter.png" alt=""></a></li>
-               <li><a href="#"><img src="img/menu-logo/youtube.png" alt=""></a></li>
-            </ul>
-         </div>
-         </div>
-      </div>
-   </div>
+   <?php include("./master/footer.php") ?>
 </footer>
 <!---------- end footer ---------->
+
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 
 </body>

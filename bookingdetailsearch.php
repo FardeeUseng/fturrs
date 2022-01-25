@@ -92,17 +92,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -117,17 +117,17 @@
    /********** Start Content **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
    .content-search-button{
@@ -178,29 +178,174 @@
    }
    /********** End Content Table **********/
 
-   /********** Start Pagination **********/
+   /********** Start 1800px screen **********/
 
-   #page-link-number{
-      background-color:#BAC9B8; 
-      color:#585858;
+   @media screen and (min-width:1800px){
+      .content-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .content-search form{
+         width:500px;
+      }
+      .content-table th{
+         font-size:25px;
+         padding:25px 5px;
+      }
+      .content-table td{
+         font-size:18px;
+         padding:20px 5px;
+      }
+      .content-title{
+         height:100px;
+      }
+      .content-title img{
+         height:70px;
+         width:70px;
+      }
+      .content-title h3{
+         font-size:40px;
+      }
    }
+   /********** End 1800px screen **********/
 
-   #page-link-number:hover{
-      background-color:#d9e3d8;
-      color:white;
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-title-h h3{
+         font-size:35px;
+      }
+      .content-table th{
+         font-size:18px;
+      }
+      .content-table td{
+         font-size:15px;
+      }
    }
+   /********** End 1200px screen **********/
 
-   #page-link{
-      background-color:#3D5538;
-      color:white;
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:920px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:780px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:520px;
+         }
+      <?php } ?>
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-title-h h3{
+         font-size:30px;
+      }
+      .content-search form{
+         width:350px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .content-table th{
+         font-size:17px;
+      }
+      .content-table td{
+         font-size:14px;
+      }
    }
+   /********** End 767px screen **********/
 
-   #page-link:hover{
-      background-color:#BAC9B8;
-      color:#585858;
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .content-title{
+         height:55px;
+      }
+      .content-title-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .content-title h3{
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .content-search form{
+         width:250px;
+      }
+      .content-table th{
+         font-size:14px;
+      }
+      .content-table td{
+         font-size:12px;
+      }
+      .content-table th:nth-child(3), .content-table td:nth-child(3), .content-table th:nth-child(4), .content-table td:nth-child(4), .content-table th:nth-child(5), .content-table td:nth-child(5){
+         display:none;
+      }
    }
-   /********** Start Pagination **********/
-
+   /********** End 576px screen **********/
 </style>
 <!---------- End style ---------->
    
@@ -227,10 +372,17 @@
 
                <?php include('./master/main-menu.php') ?>
             <!---------- End main-manu-items ---------->
+            
+            <!---------- Start Inform ---------->
+
+            <?php if(isset($_SESSION['staff_login']) OR isset($_SESSION['admin_login'])): ?>
+               <?php include('./master/inform.php'); ?>
+            <?php endif ?>
+            <!---------- End Inform ---------->
 
          </div>
          <div class="main-content col-xl-9">
-            <div class="content-container mx-5 my-4">
+            <div class="content-container mt-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
                      <img src="img/menu-logo/booking.png" alt="">
@@ -304,11 +456,11 @@
                </div>
                <!---------- End content-table ---------->
 
-               <div class="content-footer row">
-                  <div class="content-footer-left col-7">
+               <div class="content-footer row d-flex justify-content-end mr-1">
+                  <div class="content-footer-left">
 
                   </div>
-                  <div class="content-footer-right d-flex justify-content-end col-5">
+                  <div class="content-footer-right">
 
                      <!---------- Start Pagination ---------->
 

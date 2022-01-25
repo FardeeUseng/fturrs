@@ -58,6 +58,8 @@
 </head>
 <!---------- End head ---------->
 
+<!---------- start Script ---------->
+
 <script>
    // $(document).ready(function(){
    //    $("#logouser").mouseover(function(){
@@ -69,6 +71,7 @@
 
    // })
 </script>
+<!---------- End Script ---------->
 
 <body>
 <style>
@@ -82,14 +85,14 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:150px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
       font-size:45px;
@@ -122,7 +125,6 @@
       height:200px;
       /* border-radius:50%; */
    }
-
    .login{
       display:flex;
       justify-content:center;
@@ -168,19 +170,21 @@
    /********** Start Content **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
-      margin:30px;
+      margin-top:30px;
+      margin-left:20px;
+      margin-right:20px;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
       border-radius:50%;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
    .main-content{
@@ -188,16 +192,149 @@
    }
    .profile-detail{
       background-color:#D7E6D5;
-      width:1070px;
-      margin:50px 30px;;
+      width:auto;
+      margin:50px 20px;;
    }
    .profile-detail-container h3{
-      font-size:40px;
+      font-size:30px;
       margin-bottom:25px;
       color:#585858;
    }
-
+   .logo-user-load img{
+      width:200px;
+      height:200px;
+      margin:8px 8px;
+   }
    /********** End Content **********/
+
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .content-title{
+         height:100px;
+      }
+      .content-title img{
+         height:70px;
+         width:70px;
+      }
+      .content-title h3{
+         font-size:45px;
+      }
+      .profile-detail-container h3{
+         font-size:35px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:70px;
+         height:70px;
+      }
+      .main-menu-logo h3{
+         font-size: 30px;
+      }
+      .logo-user-load img{
+         width:150px;
+         height:150px;
+         margin:8px 8px;
+      }
+      .profile-edit h2{
+         font-size:30px;
+      }
+      .profile-edit a{
+         font-size:22px;
+      }
+      .hamberger-menu i{
+         display:none;
+      }
+      .profile-detail-container h3{
+         font-size:25px;
+         margin-left:-30px;
+      }
+      .logo-user, .logo-user img{
+         width:150px;
+         height:150px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .logo-user-load img{
+         width:120px;
+         height:120px;
+         margin:8px 8px;
+      }
+      .profile-edit a{
+         font-size:16px;
+      }
+      .profile-detail{
+         margin-left:0px;
+         margin-right:0px;;
+      }
+      .content-title{
+         margin-left:0px;
+         margin-right:0px;
+      }
+   }
+   /********** End 767px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .logo-user-load img{
+         width:150px;
+         height:150px;
+      }
+      .content-header-h h3{
+         font-size:25px;
+      }
+      .content-title-img img{
+         margin-left:-20px;
+      }
+   }
+   /********** End 576px screen **********/
 
 </style>
    
@@ -209,32 +346,37 @@
 <!---------- end header ---------->
 
 <!---------- start content ---------->
+
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
-         <div class="main-menu col-xl-4">
+         <div class="main-menu col-xl-4 col-md-4 col-sm-4">
             <div class="main-menu-logo d-flex">
                <img src="../img/menu-logo/online-booking.png" alt="">
                <h3 class="ml-3">FTU RRS</h>
             </div>
 
+            <!---------- start header profile ---------->
+
             <?php if(isset($_SESSION['us_prof'])){?>
                <div class="logo-user-load d-flex mt-2">                  
-                  <img style="width:200px;height:200px;margin:8px 8px;" class="shadow" id="logouser" src="../img/profiles/<?php echo $_SESSION['us_prof']; ?> ">                  
+                  <img class="shadow" id="logouser" src="../img/profiles/<?php echo $_SESSION['us_prof']; ?> ">                  
                </div>
             <?php }else{ ?>
                <?php if(isset($_SESSION['male'])){?>
                   <?php if($_SESSION['male'] == "male" ){?>
                      <div class="logo-user d-flex mt-2 shadow">                  
-                        <img style="width:150px;height:150px;margin:8px 8px;" id="logouser" src="../img/menu-logo/boy1.png">                  
+                        <img id="logouser" src="../img/menu-logo/boy1.png">                  
                      </div>
                   <?php }else{ ?>
                      <div class="logo-user d-flex mt-2">                  
-                        <img style="width:150px;height:150px;margin:8px 8px;" id="logouser" src="../img/menu-logo/gilr1.png">                  
+                        <img id="logouser" src="../img/menu-logo/gilr1.png">                  
                      </div>
                   <?php } ?>                      
                <?php } ?>                      
-            <?php } ?>                      
+            <?php } ?>      
+            <!---------- start header profile ---------->
+                           
             <div class="profile-edit mt-3">
                <h2 class="text-center"><?php echo "$name"; ?></h2>
                <p class="text-center mt-4"><a href="profileedit.php" onclick="return confirm('คุณแน่ใจที่จะแก้ไขข้อมูลส่วนตัว?')">แก้ไขข้อมูลส่วนตัว</a></p>  
@@ -252,7 +394,7 @@
 
          <!----------- Start Profile Detail ---------->
 
-         <div class="main-content col-xl-8">
+         <div class="main-content col-xl-8 col-md-8 col-sm-8">
             <div class="main-content-container">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">                     
@@ -262,6 +404,9 @@
                      <h3>ข้อมูลส่วนตัว</h3>
                   </div>
                </div>
+
+               <!---------- start edit profile success ---------->
+
                <?php if(isset($_SESSION['editprofilesuccess'])){ ?>
                   <div class="alert-primary mt-5 align-items-center d-flex pl-3" style="height:50px;font-size:20px;margin:0 30px;">
                      <?php echo $_SESSION['editprofilesuccess'];
@@ -269,23 +414,27 @@
                      ?>
                   </div>
                <?php } ?>
+               <!---------- End edit profile success ---------->
+
+               <!---------- start profile detail ---------->
+
                <div class="profile-detail">
                   <div class="profile-detail-container p-5">
                      <div class="profile-detail-name d-flex">
-                        <h3>ชื่อ - นามสกุล : </h3>
-                        <h3 class="ml-3"><?php echo $name; ?></h3>
+                        <h3>ชื่อ - นามสกุล: </h3>
+                        <h3 class="ml-2"><?php echo $name; ?></h3>
                      </div>
                      <div class="profile-detail-email d-flex">
-                        <h3>อีเมล : </h3>
-                        <h3 class="ml-3"><?php echo $email; ?></h3>
+                        <h3>อีเมล: </h3>
+                        <h3 class="ml-2"><?php echo $email; ?></h3>
                      </div>
                      <div class="profile-detail-password d-flex">
-                        <h3>Password : </h3>
-                        <h3 class="ml-3"><?php echo $password; ?></h3>
+                        <h3>Password: </h3>
+                        <h3 class="ml-2"><?php echo $password; ?></h3>
                      </div>
                      <div class="profile-detail-sex d-flex">
-                        <h3>เพศ : </h3>
-                        <h3 class="ml-3">
+                        <h3>เพศ: </h3>
+                        <h3 class="ml-2">
                            <?php if($sex == "male"){
                               echo "ชาย";
                            }else{
@@ -294,11 +443,13 @@
                         </h3>
                      </div>
                      <div class="profile-detail-phone d-flex">
-                        <h3>เบอร์โทร : </h3>
-                        <h3 class="ml-3"><?php echo $phone; ?></h3>
+                        <h3>เบอร์โทร: </h3>
+                        <h3 class="ml-2"><?php echo $phone; ?></h3>
                      </div>
                   </div>
                </div>
+               <!---------- end profile detail ---------->
+
             </div>
          </div>
          <!----------- End Profile Detail ---------->

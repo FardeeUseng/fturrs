@@ -20,7 +20,18 @@
       color:#585858;
    }
 
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      #page-link-number1, #page-link-number2{
+         display:none;
+      }
+   }
+   /********** End 576px screen **********/
+
 </style>
+
+<!---------- Start Page navigation ---------->
 
    <nav aria-label="Page navigation">
       <ul class="pagination mt-3">
@@ -51,8 +62,9 @@
                <span class="sr-only">Next</span>
             </a>
          </li>
-         <li class="page-item <?= $page >= $page_total ? 'disabled' : '' ?>">
+         <li class="page-item <?= $page >= $page_total ? 'disabled' : '' ?>" id="page-link-number2">
             <a class="page-link" id="page-link" href="?page=<?=$page_total?>">หน้าสุดท้าย</a>
          </li>
       </ul>
    </nav>
+<!---------- End Page navigation ---------->

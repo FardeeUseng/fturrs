@@ -85,17 +85,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -105,21 +105,7 @@
    .main-menu{
       background-color:#BAC9B8;
    }
-   .main-menu-logo{
-      height:160px;
-      width:100%;
-      justify-content:center;
-      align-items:center;
-   }
-   .main-menu-logo img{
-      width:100px;
-      height:100px;
-   }
-   .main-menu-logo h3{
-      font-size:45px;
-      font-weight: bold;
-      color:#585858;
-   }
+
    .main-manu-items li:nth-child(3){
       background-color:#3D5538;
       position:relative;
@@ -132,14 +118,14 @@
    /********** Start Content Title **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .content-title h3{
       font-size:45px;
@@ -151,12 +137,12 @@
 
    .room-detail{
       background-color:#D7E6D5;
-      width:1170px;
+      width:auto;
       margin:50px 0px;
       border-radius:3px;
    }
    .room-detail-container{
-      padding-left:150px;
+      padding-left:40px;
       padding-top: 40px;
       padding-bottom: 40px;
    }
@@ -173,10 +159,11 @@
    }
    .room-detail-image{
       position:relative;
-      width:900px;
+      width:auto;
       height:500px;
       padding-top:50px;
-      margin-left:130px;
+      margin-left:30px;
+      margin-right:30px;
       margin-bottom:20px;
    }
    .room-detail-image img{
@@ -209,7 +196,7 @@
       border-radius:5px;
    }
    .notImg{
-      width:900px;
+      width:auto;
       height:450px;
       background-color:#BAC9B8;
       border-radius:5px;
@@ -228,13 +215,156 @@
       font-size:25px;
    }
    .upload-img{
-      width:900px;
+      width:auto;
       height:450px;
       background-color:#BAC9B8;
       border-radius:5px;
    }
-
    /********** End Cintent detail **********/
+
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .content-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .room-detail{
+         padding-left:30px;
+         padding-right:30px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .notImg, .upload-img{
+         height:350px;
+      }
+      .room-detail-container{
+         margin-top:-70px;
+         margin-left:20px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-title-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .room-detail-image label{
+         margin:180px 140px;
+      }
+      .upload-img{
+         height:400px;
+      }
+      .room-detail-image button{
+         top:310px;
+         left:200px;
+      }
+      
+   }
+   /********** End 767px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .content-title{
+         height:55px;
+      }
+      .content-title-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .content-title h3{
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .notImg, .upload-img{
+         height:250px;
+         font-size:16px;
+      }
+      .notImg p{
+         font-size:16px;
+      }
+      .room-detail-container{
+         margin-left:0px;
+         margin-top:-200px;
+      }
+      .room-detail-container h3, .room-detail-container p{
+         font-size:20px;
+      }
+   }
+   /********** End 576px screen **********/
 
 </style>
 <!---------- End Style ---------->
@@ -269,7 +399,7 @@
 
          </div>
          <div class="main-content col-xl-9">
-            <div class="content-container mx-5 my-4">
+            <div class="content-container mt-4">
                
                <!---------- Start content-title ---------->
 
@@ -327,55 +457,55 @@
 
                   </div>
                   <div class="room-detail-container">
-                        <div class="room-detail-items1 row">
-                           <div class="room-detail-building d-flex col-xl-6">
-                              <h3>อาคาร : </h3>
+                     <div class="room-detail-items1 row">
+                           <div class="room-detail-building d-flex col-xl-6 ">
+                              <h3>อาคาร: </h3>
                               <p><?php echo $row['bd_name']; ?></p>
                            </div>
                            <div class="room-detail-name d-flex col-xl-6">
-                              <h3>ชื่อผู้ดูแล : </h3>
+                              <h3>ชื่อผู้ดูแล: </h3>
                               <p><?php echo $row['st_name']; ?></p>
                            </div>
+                     </div>
+                     <div class="room-detail-items2 row">
+                        <div class="room-detail-cideroom d-flex col-xl-6">
+                           <h3>ห้อง: </h3>
+                           <p><?php echo $row['r_code']; ?></p>
                         </div>
-                        <div class="room-detail-items2 row">
-                           <div class="room-detail-cideroom d-flex col-xl-6">
-                              <h3>ห้อง : </h3>
-                              <p><?php echo $row['r_code']; ?></p>
-                           </div>
-                           <div class="booking-detail-nameroom d-flex col-xl-6">
-                              <h3>ชื่อห้อง : </h3>
-                              <p><?php echo $row['r_name']; ?></p>
-                           </div>
+                        <div class="booking-detail-nameroom d-flex col-xl-6">
+                           <h3>ชื่อห้อง: </h3>
+                           <p><?php echo $row['r_name']; ?></p>
                         </div>
-                        <div class="room-detail-items3 row">
-                           <div class="room-detail-cap d-flex col-xl-6">
-                              <h3>ความจุ : </h3>
-                              <p><?php echo $row['r_capacity']; ?></p>
-                           </div>
-                           <div class="room-detail-status d-flex col-xl-6">
-                              <h3>สถานะ : </h3>
-                              <?php if($row['r_status'] == "available"){
-                                 echo "<p class='text-success'>ใช้งานได้</p>";
-                              }else{
-                                 echo "<p class='text-danger'>ปิดปรับปรุง</p>";
-                              } ?>
-                           </div>
+                     </div>
+                     <div class="room-detail-items3 row">
+                        <div class="room-detail-cap d-flex col-xl-6">
+                           <h3>ความจุ: </h3>
+                           <p><?php echo $row['r_capacity']; ?></p>
                         </div>
-                        <div class="room-detail-items4 d-flex row">
-                           <div class="addroom-floor d-flex col-xl-6">
-                              <h3>ชั้น : <?php echo $row['r_floor']; ?></h3>
-                           </div>
-                           <div class="room-detail-equip d-flex col-xl-6">
-                              <h3>อุปกรณ์: </h3>
-                              <p><?php echo $row['r_equipment']; ?></p>
-                           </div>
-                        </div> 
-                        <div class="room-detail-items5 d-flex row">
-                           <div class="room-detail-note d-flex col-xl">
-                              <h3>หมายเหตุ : </h3>
-                              <p><?php echo $row['r_note'] ?></p>
-                           </div>  
-                        </div>                             
+                        <div class="room-detail-status d-flex col-xl-6">
+                           <h3>สถานะ: </h3>
+                           <?php if($row['r_status'] == "available"){
+                              echo "<p class='text-success'>ใช้งานได้</p>";
+                           }else{
+                              echo "<p class='text-danger'>ปิดปรับปรุง</p>";
+                           } ?>
+                        </div>
+                     </div>
+                     <div class="room-detail-items4 d-flex row">
+                        <div class="addroom-floor d-flex col-xl-6">
+                           <h3>ชั้น: <?php echo $row['r_floor']; ?></h3>
+                        </div>
+                        <div class="room-detail-equip d-flex col-xl-6">
+                           <h3>อุปกรณ์: </h3>
+                           <p><?php echo $row['r_equipment']; ?></p>
+                        </div>
+                     </div> 
+                     <div class="room-detail-items5 d-flex row">
+                        <div class="room-detail-note d-flex col-xl">
+                           <h3>หมายเหตุ: </h3>
+                           <p><?php echo $row['r_note'] ?></p>
+                        </div>  
+                     </div>                             
                   </div>
                </div>
                <!---------- End Room detail Table ---------->

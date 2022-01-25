@@ -12,10 +12,10 @@
    
    // Start Show Table Users
 
-   $sql = "SELECT * FROM users";
+   $id = $_GET['id'];
+   $sql = "SELECT * FROM users WHERE users_Id = $id";
    $result = mysqli_query($connect,$sql);
    $row = mysqli_fetch_assoc($result);
-   $id = $_GET['id'];
    // ENd Show Table Users
 
    // If Post for update users
@@ -88,17 +88,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -114,17 +114,17 @@
    /********** Start Content **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
    .custom-select option{
@@ -136,12 +136,12 @@
 
    .edituser{
       background-color:#D7E6D5;
-      width:1170px;
+      width:auto;
       margin:50px 0px;
       border-radius:3px;
    }
    .edituser-container h3{
-      font-size:40px;
+      font-size:30px;
       margin-bottom:25px;
       color:#585858;
    }
@@ -150,23 +150,23 @@
       border: 2px solid #3D5538;
       border-radius:6px;
       height:60px;
-      width:690px;
+      width:630px;
       margin-bottom:25px;
       margin-left:10px;
       color:#585858;
       font-size:30px;
       padding-left:20px;
    }
-   .edituser-container select{
+   /* .edituser-container select{
       width:200px;
-   }
-   .edituser-equipment-items1,.addroom-equipment-items2{
+   } */
+   /* .edituser-equipment-items1,.addroom-equipment-items2{
       margin-left:102px;
-   }
-   #edituser-items{
+   } */
+   /* #edituser-items{
       width:25px;
       height:25px
-   }
+   } */
    .edituser-button button:nth-child(1){
       background-color:#FBA535;
    }
@@ -189,7 +189,232 @@
       color:#FAFCF9;
       font-size:30px;
    }
+   .edituser-email input{
+      margin-left:134px;
+   }
+   .edituser-password input{
+      margin-left:73px;
+   }
+   .edituser-confirmpassword input{
+      margin-left:23px;
+   }
+   .edituser-name input{
+      margin-left:45px;
+   }
+   .edituser-phone input{
+      margin-left:88px;
+   }
+   .edituser-sex select{
+      margin-left:147px;
+   }
    /********** End Edit Booking **********/
+
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .content-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .content-title{
+         height:100px;
+      }
+      .content-title img{
+         height:70px;
+         width:70px;
+      }
+      .content-title h3{
+         font-size:45px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .edituser-container h3{
+         font-size:40px;
+      }
+      .edituser-container input,.edituser-container select{
+         width:850px;
+         margin-left:20px;
+      }
+      .edituser-email input{
+         margin-left:187px;
+      }
+      .edituser-password input{
+         margin-left:106px;
+      }
+      .edituser-confirmpassword input{
+         margin-left:40px;
+      }
+      .edituser-name input{
+         margin-left:68px;
+      }
+      .edituser-phone input{
+         margin-left:127px;
+      }
+      .edituser-sex select{
+         margin-left:206px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .edituser-container h3{
+         font-size:30px;
+      }
+      .edituser-container input,.edituser-container select{
+         width:430px;
+         margin-left:20px;
+      }
+      .edituser-email input{
+         margin-left:122px;
+      }
+      .edituser-password input{
+         margin-left:62px;
+      }
+      .edituser-confirmpassword input{
+         margin-left:10px;
+      }
+      .edituser-name input{
+         margin-left:32px;
+      }
+      .edituser-phone input{
+         margin-left:75px;
+      }
+      .edituser-sex select{
+         margin-left:135px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:920px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:780px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:520px;
+         }
+      <?php } ?>
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-title-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .edituser-container input, .edituser-container select{
+         margin-left:0px;
+         width:500px;
+         margin-top:-20px;
+      }
+   }
+   /********** End 767px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .content-title{
+         height:55px;
+      }
+      .content-title-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .content-title h3{
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .edituser-container h3{
+         font-size: 25px;
+      }
+      .edituser-container input, .edituser-container select{
+         font-size:18px;
+         margin-left:0px;
+         width:300px;
+         margin-top:-20px;
+         height:43px;
+      }
+      .edituser-container textarea{
+         margin-left:0px;
+         width:300px;
+         margin-top:-20px;
+         font-size:18px;
+      }
+      .edituser-button button{
+         font-size:20px;
+         width:100px;
+         height:43px;
+      }
+   }
+   /********** End 576px screen **********/
 
 </style>
 <!---------- End Style ---------->
@@ -227,7 +452,7 @@
 
          </div>
          <div class="main-content col-xl-9">
-            <div class="content-container mx-5 my-4">
+            <div class="content-container mt-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
                      <img src="../img/menu-logo/team.png" alt="">
@@ -249,32 +474,32 @@
                <!---------- Start Edit User ---------->
 
                <div class="edituser">                  
-                  <div class="edituser-container p-5">
+                  <div class="edituser-container p-3 p-sm-5">
                      <form action="" method="post">
                         <input type="hidden" name="id" value="<?php echo $id ?>">
-                        <div class="edituser-email d-flex">
+                        <div class="edituser-email d-md-flex">
                            <h3>อีเมล : </h3>
-                           <input style="margin-left:181px;width:690px;" type="email" name="email" placeholder="Email" value="<?php echo $row['us_email']; ?>" require>
+                           <input type="email" name="email" placeholder="Email" value="<?php echo $row['us_email']; ?>" require>
                         </div>  
-                        <div class="edituser-password d-flex">
+                        <div class="edituser-password d-md-flex">
                            <h3>Password : </h3>
-                           <input style="margin-left:103px;width:690px;" type="text" name="password" placeholder="password" value="<?php echo $row['us_pass']; ?>" require>
+                           <input type="text" name="password" placeholder="password" value="<?php echo $row['us_pass']; ?>" require>
                         </div>
-                        <div class="edituser-confirmpassword d-flex">
+                        <div class="edituser-confirmpassword d-md-flex">
                            <h3>ยืนยันรหัสผ่าน : </h3>
-                           <input style="margin-left:35px;width:690px;" type="text" name="confirmpassword" placeholder="ยืนยันรหัสผ่าน" value="<?php echo $row['us_pass'] ?>" require>
+                           <input type="text" name="confirmpassword" placeholder="ยืนยันรหัสผ่าน" value="<?php echo $row['us_pass'] ?>" require>
                         </div>
-                        <div class="edituser-name d-flex">
+                        <div class="edituser-name d-md-flex">
                            <h3>ชื่อ-นามสกุล : </h3>
-                           <input style="margin-left:63px;width:690px;" type="text" name="name" value="<?php echo $row['us_name'] ?>" placeholder="ชื่อ-นามสกุล" require>
+                           <input type="text" name="name" value="<?php echo $row['us_name'] ?>" placeholder="ชื่อ-นามสกุล" require>
                         </div>                 
-                        <div class="edituser-phonenumber d-flex">
+                        <div class="edituser-phone d-md-flex">
                            <h3>เบอร์โทร : </h3>
-                           <input style="margin-left:123px;width:690px;padding-left:20px;" type="number" name="phonenumber" placeholder="เบอร์โทร" value="<?php echo $row['us_phone']; ?>" require>
+                           <input type="number" name="phonenumber" placeholder="เบอร์โทร" value="<?php echo $row['us_phone']; ?>" require>
                         </div>                          
-                        <div class="edituser-sex d-flex">
+                        <div class="edituser-sex d-md-flex">
                            <h3>เพศ : </h3>
-                           <select name="sex"  style="margin-left:200px;width:690px;">
+                           <select name="sex">
                            <?php
                            if($row['us_sex'] == "male"){
                               echo "<option value='male' selected>ชาย</option>
@@ -285,25 +510,7 @@
                            }                           
                            ?> 
                            </select>
-                        </div>    
-                        <!-- <div class="addroom-status d-flex">
-                           <h3>สถานะ : </h3>
-                           <select name="memberstatus"  style="margin-left:158px;width:690px;">
-                              <option>เลือกสถานะผู้ใช้งาน</option>
-                              <option value="staff">ผู้ดูแลห้องประชุม</option>
-                              <option value="user">ผู้ใช้งานทั่วไป</option>
-                           </select>
-                        </div>     -->
-                        <!-- <div class="addroom-building d-flex">
-                           <h3>ดูแลห้องประชุม : </h3>
-                           <select name="building"  style="margin-left:15px;width:690px;">
-                              <option select>เลือกอาคาร</option>
-                              <option value="11">วิทยาศาสตร์และเทคโนโลยี</option>
-                              <option value="12">ศิลปศาสตร์และสังคมศาสตร์</option>
-                              <option value="13">ศึกษาศาสตร์</option>
-                              <option value="14">อิสลามศึกษา</option>
-                           </select>
-                        </div>                     -->                        
+                        </div>                     
                         <div class="edituser-button mt-3">
                            <button onclick="return confirm('คุณแน่ใจที่จะแก้ไขข้อมูลชุดนี้?')" type="submit">แก้ไข</button>
                            <button type="reset">ยกเลิก</button>

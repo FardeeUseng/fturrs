@@ -152,6 +152,9 @@
                      <h3>รายละเอียดการจองห้อง</h3>
                   </div>
                </div>
+
+               <!---------- Start profile detail ---------->
+
                <div class="profile-detail">
                   <div class="profile-detail-container p-5">
                      <form action="" method="post">
@@ -185,6 +188,8 @@
                      </form>
                   </div>
                </div>
+               <!---------- End profile detail ---------->
+
             </div>
          </div>
       </div>  

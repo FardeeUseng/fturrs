@@ -3,7 +3,7 @@
    require("../dbconnect.php");
 
    $id = $_GET["id"];
-   $sql = "UPDATE reservation SET rserv_status = 'อนุมัติ' WHERE rserv_Id = $id";
+   $sql = "UPDATE reservation SET rserv_status = 'approve' WHERE rserv_Id = $id";
    $result = mysqli_query($connect, $sql);
 
    if($result){

@@ -158,17 +158,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -184,17 +184,17 @@
    /********** Start Content **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
    .custom-select option{
@@ -206,12 +206,12 @@
 
    .addmember{
       background-color:#D7E6D5;
-      width:1170px;
+      width:auto;
       margin:50px 0px;
       border-radius:3px;
    }
    .addmember-container h3{
-      font-size:40px;
+      font-size:30px;
       margin-bottom:25px;
       color:#585858;
    }
@@ -220,34 +220,12 @@
       border: 2px solid #3D5538;
       border-radius:6px;
       height:60px;
-      width:690px;
+      width:600px;
       margin-bottom:25px;
       margin-left:10px;
       color:#585858;
       font-size:30px;
       padding-left:20px;
-   }
-   .addmember-container select{
-      width:200px;
-   }
-   .addmember-equipment{
-      display:flex;
-   }
-   .addmember-equipment-items1,.addmember-equipment-items2{
-      margin-left:102px;
-   }
-   .addmember-equipment label{
-      font-size:30px;
-      margin:0 20px;
-      color:#585858;
-   }
-   #addmember-items{
-      width:25px;
-      height:25px
-   }
-   .addmember-roomimage input{
-      padding-left:5px;
-      padding-top:2.5px;
    }
    .addmember-button button:nth-child(1){
       background-color:#3D5538;
@@ -271,7 +249,242 @@
       color:#FAFCF9;
       font-size:30px;
    }
+   .addmember-email input{
+      margin-left:130px;
+   }
+   .addmember-password input{
+      margin-left:70px;
+   }
+   .addmember-cpassword input{
+      margin-left:20px;
+   }
+   .addmember-name input{
+      margin-left:40px;
+   }
+   .addmember-sex select{
+      margin-left:144px;
+      width:600px;
+   }
+   .addmember-phone input{
+      margin-left:85px;
+   }
+   .addroom-status select{
+      margin-left:110px;
+      
+   }
    /********** End Edit Booking **********/
+
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .content-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .content-title{
+         height:100px;
+      }
+      .content-title img{
+         height:70px;
+         width:70px;
+      }
+      .content-title h3{
+         font-size:45px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .addmember-container h3{
+         font-size:40px;
+      }
+      .addmember-container input,.addmember-container select{
+         width:850px;
+         margin-left:20px;
+      }
+      .addmember-email input{
+         margin-left:190px;
+      }
+      .addmember-password input{
+         margin-left:109px;
+      }
+      .addmember-cpassword input{
+         margin-left:42px;
+      }
+      .addmember-name input{
+         margin-left:70px;
+      }
+      .addmember-sex select{
+         margin-left:207px;
+      }
+      .addmember-phone input{
+         margin-left:128px;
+      }
+      .addroom-status select{
+         margin-left:163px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .addmember-container h3{
+         font-size:30px;
+      }
+      .addmember-container input,.addmember-container select{
+         width:420px;
+         margin-left:20px;
+      }
+      .addmember-email input{
+         margin-left:129px;
+      }
+      .addmember-password input{
+         margin-left:69px;
+      }
+      .addmember-name input{
+         margin-left:41px;
+      }
+      .addmember-sex select{
+         margin-left:145px;
+      }
+      .addmember-phone input{
+         margin-left:85px;
+      }
+      .addroom-status select{
+         margin-left:110px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:920px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:780px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:520px;
+         }
+      <?php } ?>
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-title-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .addmember-container input, .addmember-container select{
+         margin-left:0px;
+         width:500px;
+         margin-top:-20px;
+      }
+   }
+   /********** End 767px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .content-title{
+         height:55px;
+      }
+      .content-title-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .content-title h3{
+         margin-top:7px;
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .addmember-container h3{
+         font-size:25px;
+      }
+      .addmember-container input, .addmember-container select{
+         font-size:18px;
+         margin-left:0px;
+         width:300px;
+         margin-top:-25px;
+         height:43px;
+      }
+      .addmember-container textarea{
+         margin-left:0px;
+         width:300px;
+         margin-top:-20px;
+         font-size:18px;
+      }
+
+      .addmember-container button{
+         font-size:20px;
+         width:100px;
+         height:43px;
+      }
+   }
+   /********** End 576px screen **********/
 
 </style>
 <!---------- End style ---------->
@@ -309,7 +522,7 @@
 
          </div>
          <div class="main-content col-xl-9">
-            <div class="content-container mx-5 my-4">
+            <div class="content-container mt-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
                      <img src="../img/menu-logo/staff.png" alt="">
@@ -334,40 +547,40 @@
                <!---------- Start Add member ---------->
 
                <div class="addmember">
-                  <div class="addmember-container p-5">
+                  <div class="addmember-container p-3 p-sm-5">
                      <form action="" method="post">
-                        <div class="addmember-capacity d-flex">
-                           <h3>อีเมล : </h3>
-                           <input style="margin-left:181px;width:690px;" type="email" name="email" placeholder="Email" required>
+                        <div class="addmember-email d-md-flex">
+                           <h3>อีเมล: </h3>
+                           <input type="email" name="email" placeholder="Email" required>
                         </div>
-                        <div class="addmember-nameroom d-flex">
-                           <h3>Password : </h3>
-                           <input style="margin-left:103px;width:690px;" type="password" name="password" placeholder="password" required>
+                        <div class="addmember-password d-md-flex">
+                           <h3>Password: </h3>
+                           <input type="password" name="password" placeholder="password" required>
                         </div>
-                        <div class="addmember-nameroom d-flex">
-                           <h3>ยืนยันรหัสผ่าน : </h3>
-                           <input style="margin-left:35px;width:690px;" type="password" name="confirmpassword" placeholder="ยืนยันรหัสผ่าน" required>
+                        <div class="addmember-cpassword d-md-flex">
+                           <h3>ยืนยันรหัสผ่าน: </h3>
+                           <input type="password" name="confirmpassword" placeholder="ยืนยันรหัสผ่าน" required>
                         </div>
-                        <div class="addmember-coderoom d-flex">
-                           <h3>ชื่อ-นามสกุล : </h3>
-                           <input style="margin-left:63px;width:690px;" type="text" name="name" value="" placeholder="ชื่อ-นามสกุล"required>
+                        <div class="addmember-name d-md-flex">
+                           <h3>ชื่อ-นามสกุล: </h3>
+                           <input type="text" name="name" value="" placeholder="ชื่อ-นามสกุล"required>
                         </div>                   
-                        <div class="addmember-coderoom d-flex">
-                           <h3>เพศ :</h3>
-                           <select name="sex" style="margin-left:200px;width:200px;" required>
+                        <div class="addmember-sex d-md-flex">
+                           <h3>เพศ:</h3>
+                           <select name="sex" required>
                               <option selected disabled>เลือก</option>
                               <option value="male">ชาย</option>
                               <option value="female">หญิง</option>
                            </select>
                         </div>                   
-                        <div class="addmember-roomimage d-flex">
-                           <h3>เบอร์โทร : </h3>
-                           <input style="margin-left:123px;width:690px;padding-left:20px;" type="number" name="phonenumber" placeholder="เบอร์โทร" required>
+                        <div class="addmember-phone d-md-flex">
+                           <h3>เบอร์โทร: </h3>
+                           <input type="number" name="phonenumber" placeholder="เบอร์โทร" required>
                         </div>  
                         
-                        <div class="addroom-status d-flex disble" >
-                           <h3>สถานะ : </h3>
-                           <select id="addroom-status" name="memberstatus" style="margin-left:158px;width:690px;">
+                        <div class="addroom-status d-md-flex disble" >
+                           <h3>สถานะ: </h3>
+                           <select id="addroom-status" name="memberstatus">
                               <option value="" selected>เลือกสถานะผู้ใช้งาน</option>
                               <option value="staff">ผู้ดูแลห้องประชุม</option>
                               <option value="user">ผู้ใช้งานทั่วไป</option>
@@ -375,9 +588,9 @@
                            </select>
                         </div>    
                         <div id="addmember-building" class="addmember-building" style="display:none;">
-                           <div class="d-flex">
-                              <h3>ดูแลห้องประชุม : </h3>
-                              <select name="building"  style="margin-left:15px;width:690px;">
+                           <div class="d-md-flex">
+                              <h3>ดูแลห้องประชุม: </h3>
+                              <select name="building">
                                  <option value="" selected>เลือกอาคาร</option>
                               <?php
                                  foreach($result as $value){

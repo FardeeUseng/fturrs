@@ -84,17 +84,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -110,17 +110,17 @@
    /********** Start Content **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
    .custom-select option{
@@ -132,12 +132,12 @@
 
    .addroom{
       background-color:#D7E6D5;
-      width:1170px;
+      width:auto;
       margin:50px 0px;
       border-radius:3px;
    }
    .addroom-container h3{
-      font-size:40px;
+      font-size:30px;
       margin-bottom:25px;
       color:#585858;
    }
@@ -146,7 +146,7 @@
       border: 2px solid #3D5538;
       border-radius:6px;
       height:60px;
-      width:690px;
+      width:450px;
       margin-bottom:25px;
       margin-left:10px;
       color:#585858;
@@ -154,17 +154,17 @@
       padding-left:20px;
    }
    .addroom-container select{
-      width:200px;
+      width:450px;
    }
    .addroom-equipment{
       display:flex;
    }
    .addroom-equipment-items1,.addroom-equipment-items2{
-      margin-left:102px;
+      margin-left:95px;
    }
    .addroom-equipment label{
-      font-size:30px;
-      margin:0 20px;
+      font-size:20px;
+      margin:0 10px;
       color:#585858;
    }
    #addroom-items{
@@ -202,8 +202,248 @@
    textarea{
       height:100px;
    }
-
+   .addroom-floor input{
+      margin-left:162px;
+   }
+   .addroom-name select{
+      margin-left:90px;
+   }
+   .addroom-coderoom input{
+      margin-left:30px;
+   }
+   .addroom-building select{
+      margin-left:122px;
+   }
+   .addroom-nameroom input{
+      margin-left:110px;
+   }
+   .addroom-capacity input{
+      margin-left:118px;
+   }
+   .addroom-status select {
+      margin-left:116px;
+   }
+   .addroom-note textarea{
+      margin-left:78px;
+   }
    /********** End Edit Booking **********/
+
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .content-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .content-title{
+         height:100px;
+      }
+      .content-title img{
+         height:70px;
+         width:70px;
+      }
+      .content-title h3{
+         font-size:35px;
+         color:#585858;
+      }
+      .addroom-container h3{
+         font-size:35px;
+      }
+      .addroom-container input,.addroom-container select,textarea{
+         width:850px;
+      }
+      /* .addroom-container select{
+         width:850px;
+      } */
+      .addroom-floor input{
+         margin-left:170px;
+      }
+      .addroom-coderoom input{
+         margin-left:16px;
+      }
+      .addroom-name select{
+         margin-left:85px;
+      }
+      .addroom-equipment label{
+         font-size:30px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .addroom-container input,.addroom-container select,textarea{
+         width:370px;
+         font-size:25px;
+      }
+      .addroom-equipment-items label{
+         font-size:16px;
+      }
+      .addroom-container h3{
+         font-size:25px;
+      }
+      #addroom-items{
+         width:15px;
+         height:15px
+      }
+      .addroom-floor input{
+         margin-left:117px;
+      }
+      .addroom-name select{
+         margin-left:60px;
+      }
+      .addroom-coderoom input{
+         margin-left:10px;
+      }
+      .addroom-building select{
+         margin-left:87px;
+      }
+      .addroom-nameroom input{
+         margin-left:77px;
+      }
+      .addroom-capacity input{
+         margin-left:82px;
+      }
+      .addroom-status select {
+         margin-left:80px;
+      }
+      .addroom-note textarea{
+         margin-left:48px;
+      }
+      .addroom-equipment-items1, .addroom-equipment-items2{
+         margin-left:60px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:920px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:780px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:520px;
+         }
+      <?php } ?>
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-title-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .addroom-container input,.addroom-container select, .addroom-note textarea{
+         /* display:block; */
+         width:400px;
+         font-size:25px;
+         margin-left:0px;
+         margin-top:-20px;
+      }
+      .addroom-equipment{
+         display:block;
+      }
+      .addroom-equipment-items1, .addroom-equipment-items2{
+         margin-left:0px;
+      }
+   }
+   /********** End 767px screen **********/
+
+   /********** Start 567px screen **********/
+
+   @media screen and (max-width:576px){
+      .content-title{
+         height:55px;
+      }
+      .content-title-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .content-title h3{
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .addroom-container input,.addroom-container select, .addroom-note textarea{
+         width:300px;
+         height:43px;
+         font-size:23px;
+      }
+      .addroom-equipment-items label{
+         margin-left:0px;
+      }
+      .addroom-button button{
+         width:90px;
+         height:43px;
+         font-size:20px;
+      }
+   }
+   /********** End 567px screen **********/
 
 </style>
 <!---------- End style ---------->
@@ -241,7 +481,7 @@
             
          </div>
          <div class="main-content col-xl-9">
-            <div class="content-container mx-5 my-4">
+            <div class="content-container mt-4 my-md-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
                      <img src="../img/menu-logo/insert1.png" alt="">
@@ -266,11 +506,11 @@
                <!---------- Start Addroom --------->
 
                <div class="addroom">
-                  <div class="addroom-container p-5">
+                  <div class="addroom-container p-3 p-sm-5">
                      <form method="post">
-                        <div class="addroom-building d-flex">
-                           <h3>อาคาร : </h3>
-                           <select name="building" id="building" style="margin-left:135px;width:690px;" required>       
+                        <div class="addroom-building d-md-flex">
+                           <h3>อาคาร: </h3>
+                           <select name="building" id="building" required>       
                               <option selected disabled>เลือกอาคาร</option>                  
                               <?php
                                  foreach($result1 as $value){
@@ -279,37 +519,37 @@
                               ?>
                            </select>
                         </div>
-                        <div class="addroom-name d-flex">
-                           <h3>ชื่อผู้ดูแล : </h3>
-                           <select name="staff" id="staff" style="margin-left:92px;width:690px;">
+                        <div class="addroom-name d-md-flex">
+                           <h3>ชื่อผู้ดูแล: </h3>
+                           <select name="staff" id="staff" >
                            </select>                        
                         </div>
-                        <div class="addroom-nameroom d-flex">
-                           <h3>ชื่อห้อง : </h3>
-                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" required>
+                        <div class="addroom-nameroom d-md-flex">
+                           <h3>ชื่อห้อง: </h3>
+                           <input type="text" name="roomname" required>
                         </div>
-                        <div class="addroom-coderoom d-flex">
-                           <h3>หมายเลขห้อง : </h3>
-                           <input style="margin-left:15px;width:690px;" type="text" name="coderoom" required>
+                        <div class="addroom-coderoom d-md-flex">
+                           <h3>หมายเลขห้อง: </h3>
+                           <input type="text" name="coderoom" required>
                         </div>
-                        <div class="addroom-capacity d-flex">
-                           <h3>ความจุ : </h3>
-                           <input style="margin-left:130px;width:690px;" type="number" name="roomcapacity" required>
+                        <div class="addroom-capacity d-md-flex">
+                           <h3>ความจุ: </h3>
+                           <input type="number" name="roomcapacity" required>
                         </div>
-                        <div class="addroom-floor d-flex">
-                           <h3>ชั้น : </h3>
-                           <input style="margin-left:190px;width:690px;" type="number" name="roomfloor" required>
+                        <div class="addroom-floor d-md-flex">
+                           <h3>ชั้น: </h3>
+                           <input type="number" name="roomfloor" required>
                         </div>
-                        <div class="addroom-status d-flex">
-                           <h3>สถานะ : </h3>
-                           <select name="roomstatus"  style="margin-left:130px;width:690px;" required>
+                        <div class="addroom-status d-md-flex">
+                           <h3>สถานะ: </h3>
+                           <select name="roomstatus" required>
                               <option value="available">ใช้งานได้</option>
                               <option value="notavailable">ปิดปรับปรุง</option>
                            </select>
                         </div>
 
                         <div class="addroom-equipment">
-                           <h3>อุปกรณ์ :</h3>
+                           <h3>อุปกรณ์:</h3>
                            <div class="addroom-equipment-items">
                               <div class="addroom-equipment-items1 d-flex">
                                  <div class="">                       
@@ -341,9 +581,9 @@
                               </div>
                            </div>
                         </div>
-                        <div class="addroom-note d-flex">
-                           <h3>หมายเหตุ : </h3>
-                           <textarea style="margin-left:80px;width:690px;padding:10px;" name="note" placeholder="หมายเหตุ(ถ้ามี)"></textarea>
+                        <div class="addroom-note d-md-flex">
+                           <h3>หมายเหตุ: </h3>
+                           <textarea name="note" placeholder="หมายเหตุ(ถ้ามี)"></textarea>
                         </div>
                         <div class="addroom-button mt-3">
                            <button type="submit">ยืนยัน</button>

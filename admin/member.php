@@ -62,17 +62,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -88,17 +88,17 @@
    /********** Start Content **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
    .content-search{
@@ -121,10 +121,12 @@
    .content-table th{
       font-size:20px;
       font-weight: normal;
+      padding:20px 2px;
    }
    .content-table td{
-      font-size:15px;
+      font-size:16px;
       font-weight: normal;
+      padding:20px 1px;
    }
    .content-table thead{
       background-color:#BAC9B8;
@@ -136,6 +138,173 @@
    }
    /********** End table **********/
 
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .content-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .content-title{
+         height:100px;
+      }
+      .content-title img{
+         height:70px;
+         width:70px;
+      }
+      .content-title h3{
+         font-size:45px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .content-table th{
+         font-size:25px;
+         padding:25px 5px;
+      }
+      .content-table td{
+         font-size:20px;
+         padding:20px 5px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .content-table th{
+         font-size:18px;
+      }
+      .content-table td{
+         font-size:15px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:920px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:780px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:520px;
+         }
+      <?php } ?>
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-title-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .content-table th{
+         font-size:17px;
+      }
+      .content-table td{
+         font-size:14px;
+      }
+      .content-search select{
+         font-size:20px;
+         width:205px;
+         height:40px;
+      }
+   }
+   /********** End 767px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .content-title{
+         height:55px;
+      }
+      .content-title-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .content-title h3{
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .content-search form{
+         width:250px;
+      }
+      .content-table th{
+         font-size:14px;
+      }
+      .content-table td, .content-table a{
+         font-size:11px;
+      }
+      .content-table th:nth-child(5), .content-table td:nth-child(5){
+         display:none;
+      }
+   }
+   /********** End 5760px screen **********/
 </style>
 <!---------- End style ---------->
    
@@ -171,7 +340,7 @@
 
          </div>
          <div class="main-content col-xl-9">
-            <div class="content-container mx-5 my-4">
+            <div class="content-container mt-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
                      <img src="../img/menu-logo/team.png" alt="">
@@ -226,7 +395,6 @@
                         <tr>
                            <th>ลำดับ</th>
                            <th>อีเมล</th>
-                           <th>Password</th>
                            <th>ชื่อ-นามสกุล</th>
                            <th>เบอร์โทร</th>                           
                            <th>สถานะ</th>
@@ -239,12 +407,11 @@
                         <tr>
                            <td><?php echo $row['users_Id']; ?></td>                   
                            <td><?php echo $row['us_email']; ?></td>
-                           <td><?php echo $row['us_pass']; ?></td>
                            <td><?php echo $row['us_name']; ?></td>                           
                            <td><?php echo $row['us_phone']; ?></td>
                            <td>ผู้ใช้งานทั่วไป</td>
-                           <td><a href="deletememberuser.php?id=<?php echo $row['users_Id']; ?>" class="btn btn-danger px-3" onclick="return confirm('คุณต้องการลบผู้ใช้รายนี้ใช้รึไม่')">ลบ</a></td>
-                           <td><a href="editmemberuser.php?id=<?php echo $row['users_Id']; ?>" class="btn btn-warning" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูล')">แก้ไข</a></td>
+                           <td><a href="deletememberuser.php?id=<?php echo $row['users_Id']; ?>" class="btn btn-danger p-1 px-sm-3" onclick="return confirm('คุณต้องการลบผู้ใช้รายนี้ใช้รึไม่')">ลบ</a></td>
+                           <td><a href="editmemberuser.php?id=<?php echo $row['users_Id']; ?>" class="btn btn-warning p-1" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูล')">แก้ไข</a></td>
                         </tr>
                         <?php } ?>
                      </tbody>

@@ -5,8 +5,8 @@
 
    // Start select room
 
-   $id = $_GET['id'];
-   $sql = "SELECT * FROM room INNER JOIN staff ON room.staff_Id = staff.staff_Id INNER JOIN building ON room.bd_Id = building.bd_Id WHERE room_Id = $id";
+   $rid = $_GET['id'];
+   $sql = "SELECT * FROM room INNER JOIN staff ON room.staff_Id = staff.staff_Id INNER JOIN building ON room.bd_Id = building.bd_Id WHERE room_Id = $rid";
    $result = mysqli_query($connect, $sql);
    $row = mysqli_fetch_assoc($result);
    $equip_arr = array("โปรเจคเตอร์","ที่ฉายโปรเจคเตอร์","ไมค์","ลำโพง","จอมอนิเตอร์","จอLED");
@@ -84,17 +84,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -110,17 +110,17 @@
    /********** Start Content **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
-   .content-title img{
-      height:70px;
-      width:70px;
+   .content-title img{ 
+      height:60px;
+      width:60px;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
    .custom-select option{
@@ -132,12 +132,12 @@
 
    .editbooking{
       background-color:#D7E6D5;
-      width:1170px;
+      width:auto;
       margin:50px 0px;
       border-radius:3px;
    }
    .editbooking-container h3{
-      font-size:40px;
+      font-size:30px;
       margin-bottom:25px;
       color:#585858;
    }
@@ -146,9 +146,9 @@
       border: 2px solid #3D5538;
       border-radius:6px;
       height:60px;
-      width:690px;
+      width:470px;
       margin-bottom:25px;
-      margin-left:10px;
+      margin-left:5px;
       color:#585858;
       font-size:30px;
       padding-left:20px;
@@ -171,10 +171,10 @@
       width:25px;
       height:25px
    }
-   .editbooking-roomimage input{
+   /* .editbooking-roomimage input{
       padding-left:5px;
       padding-top:2.5px;
-   }
+   } */
    .editbooking-button button:nth-child(1){
       background-color:#FBA535;      
    }
@@ -197,11 +197,200 @@
       color:#FAFCF9;
       font-size:30px;
    }
-
+   .editbooking-building input{
+      margin-left:100px;
+   }
+   .editbooking-name input{
+      margin-left:70px;
+   }
+   .editbooking-nameroom input{
+      margin-left:90px;
+   }
+   .editbooking-coderoom input {
+      margin-left:80px;
+   }
+   .editbooking-capacity input{
+      margin-left:97px;
+   }
+   .addroom-floor input{
+      margin-left:142px;
+   }
+   .editbooking-status select{
+      margin-left:97px;
+      width:470px;
+   }
    textarea{
       height:100px;
+      margin-left:60px;
    }
    /********** End Edit Booking **********/
+
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .content-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .editbooking-container h3{
+         font-size:40px;
+      }
+      .editbooking-container input,.editbooking-container select,textarea{
+         width:900px;
+      }
+      .editbooking-container select{
+         width:900px;
+      }
+      .editbooking-building input{
+         margin-left:150px;
+      }
+      .editbooking-name input{
+         margin-left:108px;
+      }
+      .editbooking-nameroom input{
+         margin-left:135px;
+      }
+      .editbooking-coderoom input {
+         margin-left:122px;
+      }
+      .editbooking-capacity input{
+         margin-left:145px;
+      }
+      .addroom-floor input{
+         margin-left:205px;
+      }
+      .editbooking-status select{
+         margin-left:146px;
+         width:900px;
+      }
+      .editbooking-equipment-items1{
+         margin-left:105px;
+      }
+      .editbooking-equipment-items1 input{
+         margin-left:25px;
+      }
+      textarea{
+         margin-left:97px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .editbooking-container h3{
+         font-size:26px;
+      }
+      .editbooking-container input,.editbooking-container select{
+         width:290px;
+         font-size:26px;
+         height:60px;
+      }
+      textarea{
+         width:290px;
+         font-size:26px;
+      }
+      .addroom-floor input{
+         margin-left:135px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .content-title{
+         height:55px;
+      }
+      .content-title-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .content-title h3{
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .editbooking-container input, .editbooking-container select{
+         font-size:18px;
+         margin-left:0px;
+         width:300px;
+         margin-top:-20px;
+         height:43px;
+      }
+      .editbooking-container textarea{
+         margin-left:0px;
+         width:300px;
+         margin-top:-20px;
+         font-size:18px;
+      }
+      .editbooking-equipment{
+         display:block;
+      }
+      .editbooking-equipment-items1{
+         margin-left:0px;
+      }
+      .editbooking-equipment-items1 input{
+         margin:0 8px;
+      }
+      .editbooking-button button{
+         font-size:20px;
+         width:100px;
+         height:43px;
+      }
+   }
+   /********** End 576px screen **********/
 
 </style>
 <!---------- End style ---------->
@@ -239,7 +428,7 @@
 
          </div>
          <div class="main-content col-xl-9">
-            <div class="content-container mx-5 my-4">
+            <div class="content-container mt-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
                      <img src="../img/menu-logo/edit1.png" alt="">
@@ -249,7 +438,7 @@
                   </div>
                </div>
 
-               <!---------- Start error ---------->
+               <!---------- Start if error ---------->
 
                <?php if(count($errors) > 0): ?>
                   <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
@@ -259,41 +448,41 @@
                      <?php endforeach ?>
                   </div>
                <?php endif ?>
-               <!---------- End Error ---------->
+               <!---------- End if Error ---------->
 
                <!---------- Start Form Edit booking ---------->
                <div class="editbooking">
-                  <div class="editbooking-container p-5">
+                  <div class="editbooking-container p-3 p-sm-5">
                      <form action="" method="post">
-                        <input type="hidden" name="id" value="<?php echo $id ?>">
-                        <div class="editbooking-building d-flex">
-                           <h3>อาคาร : </h3>
-                           <input style="margin-left:135px;width:690px;" type="text" name="building" value="<?php echo $row['bd_name']; ?>" disabled>
+                        <input type="hidden" name="id" value="<?php echo $rid ?>">
+                        <div class="editbooking-building d-sm-flex">
+                           <h3>อาคาร: </h3>
+                           <input type="text" name="building" value="<?php echo $row['bd_name']; ?>" disabled>
                            </select>
                         </div>
-                        <div class="editbooking-name d-flex">
-                           <h3>ชื่อผู้ดูแล : </h3>
-                           <input style="margin-left:93px;width:690px;" type="text" name="name" value="<?php echo $row['st_name']; ?>" disabled>
+                        <div class="editbooking-name d-sm-flex">
+                           <h3>ชื่อผู้ดูแล: </h3>
+                           <input type="text" name="name" value="<?php echo $row['st_name']; ?>" disabled>
                         </div>
-                        <div class="editbooking-nameroom d-flex">
-                           <h3>ชื่อห้อง : </h3>
-                           <input style="margin-left:121px;width:690px;" type="text" name="roomname" value="<?php echo $row['r_name']; ?>">
+                        <div class="editbooking-nameroom d-sm-flex">
+                           <h3>ชื่อห้อง: </h3>
+                           <input type="text" name="roomname" value="<?php echo $row['r_name']; ?>">
                         </div>
-                        <div class="editbooking-coderoom d-flex">
-                           <h3>หมายเลขห้อง : </h3>
-                           <input style="margin-left:15px;width:690px;" type="text" name="coderoom" value="<?php echo $row['r_code']; ?>">
+                        <div class="editbooking-coderoom d-sm-flex">
+                           <h3>เลขห้อง: </h3>
+                           <input type="text" name="coderoom" value="<?php echo $row['r_code']; ?>">
                         </div>
-                        <div class="editbooking-capacity d-flex">
-                           <h3>ความจุ : </h3>
-                           <input style="margin-left:130px;width:690px;" type="number" name="roomcapacity" value="<?php echo $row['r_capacity']; ?>">
+                        <div class="editbooking-capacity d-sm-flex">
+                           <h3>ความจุ: </h3>
+                           <input type="number" name="roomcapacity" value="<?php echo $row['r_capacity']; ?>">
                         </div>
-                        <div class="addroom-floor d-flex">
-                           <h3>ชั้น : </h3>
-                           <input style="margin-left:190px;width:690px;" type="number" name="roomfloor" value="<?php echo $row['r_floor']; ?>">
+                        <div class="addroom-floor d-sm-flex">
+                           <h3>ชั้น: </h3>
+                           <input type="number" name="roomfloor" value="<?php echo $row['r_floor']; ?>">
                         </div>
-                        <div class="editbooking-status d-flex">
-                           <h3>สถานะ : </h3>
-                           <select name="roomstatus"  style="margin-left:130px;width:690px;">
+                        <div class="editbooking-status d-sm-flex">
+                           <h3>สถานะ: </h3>
+                           <select name="roomstatus">
                            <?php
                               if($row["r_status"] == "available"){
                                  echo "<option value='available' selected>ใช้งานได้</option>";
@@ -310,7 +499,7 @@
                            <input style="margin-left:126px;width:690px;" type="file" name="roomimage" value="">
                         </div>                         -->
                         <div class="editbooking-equipment">
-                           <h3>อุปกรณ์ :</h3>
+                           <h3>อุปกรณ์:</h3>
                            <div class="editbooking-equipment-items">
                               <div class="editbooking-equipment-items1 d-flex">
                                  <div class="">
@@ -353,9 +542,9 @@
                               </div> -->
                            </div>
                         </div>
-                        <div class="addroom-note d-flex">
-                           <h3>หมายเหตุ : </h3>
-                           <textarea style="margin-left:80px;width:690px;padding:10px;" name="r_note" value="" placeholder="หมายเหตุ(ถ้ามี)"><?php echo $row['r_note']; ?></textarea>
+                        <div class="addroom-note d-sm-flex">
+                           <h3>หมายเหตุ: </h3>
+                           <textarea name="r_note" value="" placeholder="หมายเหตุ(ถ้ามี)"><?php echo $row['r_note']; ?></textarea>
                         </div>
                         <div class="editbooking-button mt-3">
                            <button type="submit" onclick="return confirm('ยืนยันที่จะแก้ไขข้อมูลห้องนี้?')">แก้ไข</button>

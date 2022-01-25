@@ -87,7 +87,7 @@
       }else{
          $page = 1;  // เลขหน้าที่จะแสดง
       }         
-      $record_show = 1; // จำนวนข้อมูลที่จะแสดง
+      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
       $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
 
       // Query Total Product
@@ -107,7 +107,7 @@
          // Query Total Product
          $rservstatus = $_POST['rservstatus'];
          $page = 1;  // เลขหน้าที่จะแสดง
-         $record_show = 1; // จำนวนข้อมูลที่จะแสดง
+         $record_show = 12; // จำนวนข้อมูลที่จะแสดง
          $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
 
          $sql_total = "SELECT * FROM reservation LEFT JOIN building ON reservation.bd_Id = building.bd_Id LEFT JOIN room ON reservation.room_Id = room.room_Id WHERE rserv_status = '$rservstatus'";
@@ -157,17 +157,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -183,17 +183,17 @@
    /********** Start Content **********/
 
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
    .content-search-button{
@@ -204,7 +204,7 @@
       justify-content:flex-end;
    }
    .content-search-building form{
-      width:500px;
+      width:400px;
    }
    .custom-select option{
       background-color:#E9F1E6;
@@ -214,12 +214,14 @@
    /********** Start table **********/
 
    .content-table th{
-      font-size:25px;
+      font-size:20px;
       font-weight: normal;
+      padding:20px 2px;
    }
    .content-table td{
       font-size:16px;
       font-weight: normal;
+      padding:20px 1px;
    }
    .content-table thead{
       background-color:#BAC9B8;
@@ -230,6 +232,98 @@
       color:#585858;
    }
    /********** End table **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .content-table th{
+         font-size:17px;
+      }
+      .content-table td{
+         font-size:14px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:920px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:780px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:520px;
+         }
+      <?php } ?>
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-title-h h3{
+         font-size:30px;
+      }
+      .content-search form{
+         width:350px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .content-table th{
+         font-size:17px;
+      }
+      .content-table td{
+         font-size:14px;
+      }
+   }
+   /********** End 767px screen **********/
 
 </style>
 <!---------- End style ---------->
@@ -266,7 +360,7 @@
          </div>
 
          <div class="main-content col-xl-9">
-            <div class="content-container mx-5 my-4">
+            <div class="content-container mt-4">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
                      <img src="../img/menu-logo/edit.png" alt="">
@@ -276,7 +370,7 @@
                   </div>
                </div>
                <div class="content-search row d-flex mt-5 mb-4 ">
-                  <div class="content-search-status d-flex col-xl-5">
+                  <div class="content-search-status d-flex col-xl-5 col-md-5 col-sm-5">
 
                      <!---------- start search reservation status ---------->
 
@@ -315,7 +409,7 @@
                      <!---------- End search reservation status ---------->
 
                   </div>
-                  <div class="content-search-building d-flex col-xl-7">
+                  <div class="content-search-building d-flex col-xl-7 col-md-7 col-sm-7">
 
                      <!---------- Start search building ---------->
 
@@ -358,7 +452,6 @@
                            <th>เริ่ม</th>
                            <th>สิ้นสุด</th>
                            <th>อาคาร</th>
-                           <th>เลขห้อง</th>
                            <th>ห้องประชุม</th>
                            <th>เพิ่มเติม</th>
                            <th>สถานะ</th>
@@ -373,7 +466,6 @@
                            <td><?php echo date("d-m-y",strtotime($row["startdate"])). " / " .date("H:m",strtotime($row["starttime"])) ?></td>
                            <td><?php echo date("d-m-y",strtotime($row["enddate"])). " / " .date("H:m",strtotime($row["endtime"])) ?></td>
                            <td><?php echo $row['bd_name'] ?></td>
-                           <td><?php echo $row['r_code'] ?></td>
                            <td><?php echo $row['r_name'] ?></td>
                            <td><a href="peoplebookingdetail.php?id=<?php echo $row['rserv_Id']; ?>">ดูเพิ่มเติม</a></td>
                            <?php

@@ -127,17 +127,17 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -155,34 +155,38 @@
    .booking{
       background-color:#E9F1E6;
    }
+
    .booking-header{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
    }
    .booking-header img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .booking-header h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
    }
+   .booking-fill{
+      padding-left:15px;
+   }
    .booking-fill h4{
-      font-size:35px;
+      font-size:30px;
       color:#585858;
    }
    .booking-fill input,textarea{
       background-color:#BAC9B8;
       border:2px solid #3D5538;
       border-radius:5px;
-      width:500px;
+      width:400px;
       height:60px;
       padding:0 15px;
    }
    .booking-fill select{
-      width:500px;
+      width:400px;
       height:60px;
       background-color:#BAC9B8;
       border:2px solid #3D5538;
@@ -191,7 +195,7 @@
       color:#3D5538;
    }
    .booking-fill-items7 button{
-      width:220px;
+      width:200px;
       height:60px;
       border:none;
       background-color:#3D5538;
@@ -225,14 +229,237 @@
       color:#3D5538;
    }
    .booking-obj textarea{
-      width:1163px;
+      width:827px;
       height:100px;
       padding:10px;
    }
    /********** End Register **********/
 
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .booking-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+         font-weight: bold;
+         color:#585858;
+      }
+      .booking-header img{
+         height:70px;
+         width:70px;
+      }
+      .booking-header h3{
+         font-size:45px;
+      }
+      .booking-fill input,textarea{
+         width:500px;
+      }
+      .booking-fill select{
+         width:500px;
+      }
+      .booking-obj textarea{
+         width:1164px;
+      }
+      .booking-fill h4{
+         font-size:35px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1200px screen **********/
+
+   @media screen and (max-width:1200px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:970px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:830px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:411px;
+         }
+      <?php } ?>
+      .main{
+         position:relative;
+      }
+      .main-menu{
+         display:none;
+         position:absolute;
+         z-index:1;
+         width:280px;
+      }
+      .main-menu{
+         display:none;
+      }
+      .booking-header{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .booking-fill{
+         padding-left:50px;
+      }
+      .booking-fill input, .booking-fill select{
+         width:500px;
+         height:50px;
+      }
+      .booking-fill h4{
+         font-size:25px;
+      }
+      .booking-obj textarea{
+         width:665px;
+         height:100px;
+      }
+      .booking-fill-items7 button{
+         width:150px;
+         height:50px;
+         font-size:25px;
+      }
+      .booking-building, .booking-room, .booking-name, .booking-phone, .booking-numpeople, .booking-studentId, .booking-startdate, .booking-starttime, .booking-endtime, .booking-enddate{
+         display:flex;
+      }
+      .booking-building select{
+         margin-left: 100px;
+      }
+      .booking-room select{
+         margin-left: 123px;
+      }
+      .booking-name input{
+         margin-left: 80px;
+      }
+      .booking-phone input{
+         margin-left: 77px;
+      }
+      .booking-numpeople input{
+         margin-left: 10px;
+      }
+      .booking-studentId input{
+         margin-left: 33px;
+      }
+      .booking-startdate input{
+         margin-left: 53px;
+      }
+      .booking-starttime input{
+         margin-left: 51px;
+      }
+      .booking-enddate input{
+         margin-left: 75px;
+      }
+      .booking-endtime input{
+         margin-left: 55px;
+      }
+      .booking-org select, .booking-major select{
+         width:665px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      <?php if(isset($_SESSION['admin_login'])){ ?>
+         .main-content{
+            min-height:920px;
+         }
+      <?php }elseif(isset($_SESSION['staff_login'])){ ?>
+         .main-content{
+            min-height:780px;
+         }
+      <?php }else{ ?>
+         .main-content{
+            min-height:520px;
+         }
+      <?php } ?>
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-search form{
+         width:350px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size:30px;
+      }
+      .booking-fill input, .booking-fill select{
+         width:350px;
+      }
+      .booking-obj textarea{
+         width:530px;
+      }
+      .booking-org select, .booking-major select{
+         width:530px;
+      }
+   }
+   /********** End 767px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .booking-header{
+         height:55px;
+      }
+      .booking-header-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .booking-header-h h3{
+         margin-top:7px;
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .booking-fill{
+         padding-left:0px;
+      }
+      .booking-fill input, .booking-fill select, .booking-fill textarea{
+         margin-left:0px;
+         width:300px;
+      }
+      .booking-building, .booking-room, .booking-name, .booking-phone, .booking-numpeople, .booking-studentId, .booking-startdate, .booking-starttime, .booking-enddate, .booking-endtime{
+         display:block;
+      }
+      .booking-fill-items7 button{
+         font-size:20px;
+         width:100px;
+         height:43px;
+      }
+   }
+   /********** End 576px screen **********/
+   
 </style>
-<!---------- Start Style ---------->
+
+<!---------- End Style ---------->
    
 <!---------- start header ---------->
 
@@ -267,7 +494,7 @@
 
          </div>
          <div class="booking col-xl-9">
-            <div class="booking-container mx-5 my-4">
+            <div class="booking-container mt-4">
                <div class="booking-header d-flex">
                   <div class="booking-header-img ml-5">
                      <img src="../img/menu-logo/booking1.png" alt="">
@@ -280,14 +507,14 @@
 
                <!---------- Start error ---------->
 
-               <!-- <?php if(count($errors) > 0): ?>
+               <?php if(count($errors) > 0): ?>
                   <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="width:100%;height:50px;font-size:20px;">
                      <?php foreach($errors as $error): ?>
                         <?php echo $error; 
                         ?>
                      <?php endforeach ?>
                   </div>
-               <?php endif ?> -->
+               <?php endif ?>
                <!---------- End Error ---------->
 
                <!---------- Start Booking Form ---------->
@@ -296,7 +523,7 @@
                   <form action="" method="post">
                      <div class="booking-fill-items1 row">
                         <div class="booking-building col-xl-6 mb-4">
-                           <h4>อาคาร</h4>
+                           <h4>อาคาร:</h4>
                            <select name="building" id="building" class="pl-2" required>
                               <option selected disabled>เลือกอาคาร</option>
                               <?php  
@@ -307,42 +534,42 @@
                            </select>
                         </div>
                         <div class="booking-room col-xl-6 mb-4">
-                           <h4>ห้อง</h4>
+                           <h4>ห้อง:</h4>
                            <select name="room" id="room" class="pl-2" required>
                               <option selcted disable>เลือก</option>
                            </select>                              
                            
                         </div>
                      </div>
-                     <div class="booking-fill-items2 row mb-4">
-                        <div class="booking-name col-xl-6">
-                           <h4>ชื่อผู้จอง</h4>
+                     <div class="booking-fill-items2 row">
+                        <div class="booking-name col-xl-6 mb-4">
+                           <h4>ชื่อผู้จอง:</h4>
                            <input type="text" name="name" placeholder="ชื่อผู้จอง" required>
                         </div>
-                        <div class="booking-phone col-xl-6">
-                           <h4>เบอร์โทร</h4>
+                        <div class="booking-phone col-xl-6 mb-4">
+                           <h4>เบอร์โทร:</h4>
                            <input type="number" name="phonenumber" placeholder="เบอร์โทร" required>
                         </div>
                      </div>
-                     <div class="booking-fill-items3 row mb-4">
-                        <div class="booking-numpeople col-xl-6 ">
-                           <h4>จำนวนผู้เข้าร่วม</h4>
+                     <div class="booking-fill-items3 row">
+                        <div class="booking-numpeople col-xl-6 mb-4">
+                           <h4>จำนวนผู้เข้าร่วม:</h4>
                            <input type="number" name="numpeople" placeholder="จำนวนผู้เข้าร่วม" required>
                         </div>
-                        <div class="booking-studentId col-xl-6">
-                           <h4>รหัสนักศึกษา</h4>
+                        <div class="booking-studentId col-xl-6 mb-4">
+                           <h4>รหัสนักศึกษา:</h4>
                            <input type="number" name="peopleId" placeholder="รหัสนักศึกษา" required>
                         </div>
                      </div>
                      <div class="booking-fill-items4 row mb-4">
                         <div class="booking-obj col-xl ">
-                           <h4>จุดประสงค์การใช้ห้อง</h4>
+                           <h4>จุดประสงค์การใช้ห้อง:</h4>
                            <textarea name="obj" placeholder="จุดประสงค์การใช้ห้อง" required></textarea>
                         </div>
                      </div>
                      <div class="booking-fill-items1 row">
-                        <div class="booking-building col-xl-6 mb-4">
-                           <h4>สังกัดองค์กร/คณะ</h4>
+                        <div class="booking-org col-xl-6 mb-4">
+                           <h4>สังกัดองค์กร/คณะ:</h4>
                            <?php  
                               $sql2 = "SELECT * FROM organization";
                               $result2 = mysqli_query($connect,$sql2);
@@ -355,8 +582,8 @@
                               <option value="">อื่น ๆ</option>
                            </select>
                         </div>
-                        <div class="booking-room col-xl-6 mb-4">
-                           <h4>หน่วยงาย/สาขา/ชมรม/กลุ่ม</h4>
+                        <div class="booking-major col-xl-6 mb-4">
+                           <h4>หน่วยงาย/สาขา/ชมรม/กลุ่ม:</h4>
                            <?php  
                               $sql3 = "SELECT * FROM major";
                               $result3 = @mysqli_query($connect,$sql3); 
@@ -373,23 +600,23 @@
                            </select>
                         </div>
                      </div>
-                     <div class="booking-fill-items5 row mb-4">
-                        <div class="booking-startdate col-xl-6">
-                           <h4>วันที่เริ่มต้น</h4>
+                     <div class="booking-fill-items5 row">
+                        <div class="booking-startdate col-xl-6 mb-4">
+                           <h4>วันที่เริ่มต้น:</h4>
                            <input type="date" name="startdate" required>
                         </div>
-                        <div class="booking-starttime col-xl-6">
-                           <h4>เวลาเริ่มต้น</h4>
+                        <div class="booking-starttime col-xl-6 mb-4">
+                           <h4>เวลาเริ่มต้น:</h4>
                            <input type="time" name="starttime" required>
                         </div>
                      </div>
                      <div class="booking-fill-items6 row mb-5">
-                        <div class="booking-enddate col-xl-6">
-                           <h4>วันสิ้นสุด</h4>
+                        <div class="booking-enddate col-xl-6 mb-4">
+                           <h4>วันสิ้นสุด:</h4>
                            <input type="date" name="enddate" required>
                         </div>
                         <div class="booking-endtime col-xl-6">
-                           <h4>เวลาสิ้นสุด</h4>
+                           <h4>เวลาสิ้นสุด:</h4>
                            <input type="time" name="endtime" required>
                         </div>
                      </div>

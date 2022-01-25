@@ -58,6 +58,8 @@
 </head>
 <!---------- End head ---------->
 
+<!---------- start script ---------->
+
 <script>
    $(document).ready(function(){
 
@@ -70,6 +72,7 @@
       })
    })
 </script>
+<!---------- end script ---------->
 
 <body>
 <style>
@@ -83,17 +86,21 @@
       background-color:#BAC9B8;
    }
    .main-menu-logo{
-      height:160px;
+      height:130px;
       width:100%;
       justify-content:center;
       align-items:center;
    }
    .main-menu-logo img{
-      width:100px;
-      height:100px;
+      width:80px;
+      height:80px;
+   }
+   .logo-user-load img{
+      width:150px;
+      height:150px;
    }
    .main-menu-logo h3{
-      font-size:45px;
+      font-size:35px;
       font-weight: bold;
       color:#585858;
    }
@@ -118,8 +125,8 @@
       border-radius:50%;
    }
    .logo-user img{
-      width:200px;
-      height:200px;
+      width:180px;
+      height:180px;
    }
    .profile-edit{
       display:flex;
@@ -184,30 +191,27 @@
 
    /********** Start Content **********/
    .content-title{
-      height:100px;
+      height:80px;
       background-color:#BAC9B8;
       border-radius:10px;
       align-items:center;
       margin:30px;
    }
    .content-title img{
-      height:70px;
-      width:70px;
+      height:60px;
+      width:60px;
    }
    .content-title h3{
-      font-size:45px;
+      font-size:35px;
       color:#585858;
-   }
-   .main-content{
-      background-color:#E9F1E6;
    }
    .profile-detail{
       background-color:#D7E6D5;
-      width:1070px;
+      width:auto;
       margin:50px 30px;;
    }
    .profile-detail-container h3{
-      font-size:40px;
+      font-size:30px;
       margin-bottom:25px;
       color:#585858;
    }
@@ -216,18 +220,202 @@
       border: 2px solid #3D5538;
       border-radius:6px;
       height:60px;
-      width:690px;
+      width:450px;
       margin-bottom:25px;
       margin-left:10px;
       color:#585858;
       font-size:30px;
       padding-left:20px;
    }
-   .profile-detail-container select{
-      width:200px;
+   .profile-detail-email input {
+      margin-left:100px;
+   }
+   .profile-detail-password input {
+      margin-left:40px;
+   }
+   .profile-detail-sex select {
+      margin-left:115px;
+   }
+   .profile-detail-phone input {
+      margin-left:55px;
    }
 
    /********** End Content **********/
+
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .content-title{
+         height:100px;
+      }
+      .content-title img{
+         height:70px;
+         width:70px;
+      }
+      .content-title h3{
+         font-size:45px;
+      }
+      .profile-detail-container h3{
+         font-size:35px;
+      }
+      .profile-detail-container input,.profile-detail-container select{
+         width:700px;
+      }
+      .profile-detail-email input {
+         margin-left:112px;
+      }
+      .profile-detail-sex select {
+         margin-left:125px;
+      }
+   }
+   /********** End 1800px screen **********/
+
+   /********** Start 1800px screen **********/
+   @media screen and (max-width:1200px){
+      .content-title{
+         height:70px;
+      }
+      .content-title-img img{
+         width:50px;
+         height:50px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:70px;
+         height:70px;
+      }
+      .main-menu-logo h3{
+         font-size: 30px;
+      }
+      .logo-user-load img{
+         width:150px;
+         height:150px;
+         margin:8px 8px;
+      }
+      .hamberger-menu i{
+         display:none;
+      }
+      .profile-detail-container h3{
+         font-size:25px;
+         margin-left:-30px;
+      }
+      .logo-user, .logo-user img{
+         width:150px;
+         height:150px;
+      }
+      .upload-file label, .profile-edit button{
+         width:200px;
+         font-size:22px;
+      }
+      .profile-detail-container input, .profile-detail-container select{
+         width:350px;
+         font-size:25px;
+         height:50px;
+      }
+      .profile-detail-email input {
+         margin-left:-25px;
+         margin-top:-20px;
+      }
+      .profile-detail-password input {
+         margin-left:-25px;
+         margin-top:-20px;
+      }
+      .profile-detail-sex select {
+         margin-left:-25px;
+         margin-top:-20px;
+      }
+      .profile-detail-phone input {
+         margin-left:-25px;
+         margin-top:-20px;
+      }
+      .profile-detail-container h3{
+         font-size:28px;
+      }
+      .profile-detail-name input{
+         margin-left:-25px;
+         margin-top:-20px;
+      }
+   }
+   /********** End 1200px screen **********/
+
+   /********** Start 767px screen **********/
+
+   @media screen and (max-width:767px){
+      .content-title{
+         height:60px;
+      }
+      .content-title-img img{
+         width:40px;
+         height:40px;
+      }
+      .content-header-h h3{
+         font-size:30px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .logo-user-load img{
+         width:120px;
+         height:120px;
+         margin:8px 8px;
+      }
+      .profile-edit a{
+         font-size:16px;
+      }
+      .profile-detail{
+         margin-left:0px;
+         margin-right:0px;;
+      }
+      .content-title{
+         margin-left:0px;
+         margin-right:0px;
+      }
+      .upload-file label, .profile-edit button{
+         width:175px;
+         font-size:20px;
+      }
+   }
+   /********** End 576px screen **********/
+
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .profile-detail-container input, .profile-detail-container select{
+         width:300px;
+         font-size:20px;
+         height:50px;
+      }
+      .logo-user-load img{
+         width:150px;
+         height:150px;
+      }
+      .content-header-h h3{
+         font-size:25px;
+      }
+      .content-title-img img{
+         margin-left:-20px;
+      }
+      .profile-edit button{
+         margin-top:0px;
+      }
+   }
+   /********** End 576px screen **********/
 
 </style>
    
@@ -243,28 +431,32 @@
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
-         <div class="main-menu col-xl-4">
+         <div class="main-menu col-xl-4 col-md-4 col-sm-4">
             <div class="main-menu-logo d-flex">
                <img src="../img/menu-logo/online-booking.png" alt="">
                <h3 class="ml-3">FTU RRS</h>
             </div>
+
+            <!---------- start header profile ---------->
+
             <?php if(isset($_SESSION['us_prof'])){?>
                <div class="logo-user-load d-flex mt-2">                  
-                  <img style="width:200px;height:200px;margin:8px 8px;" class="shadow" id="logouser" src="../img/profiles/<?php echo $_SESSION['us_prof']; ?> ">                  
+                  <img class="shadow" id="logouser" src="../img/profiles/<?php echo $_SESSION['us_prof']; ?> ">                  
                </div>
             <?php }else{ ?>
                <?php if(isset($_SESSION['male'])){?>
                   <?php if($_SESSION['male'] == "male" ){?>
                      <div class="logo-user d-flex mt-2 shadow">                  
-                        <img style="width:150px;height:150px;margin:8px 8px;" id="logouser" src="../img/menu-logo/boy1.png">                  
+                        <img id="logouser" src="../img/menu-logo/boy1.png">                  
                      </div>
                   <?php }else{ ?>
                      <div class="logo-user d-flex mt-2">                  
-                        <img style="width:150px;height:150px;margin:8px 8px;" id="logouser" src="../img/menu-logo/gilr1.png">                  
+                        <img id="logouser" src="../img/menu-logo/gilr1.png">                  
                      </div>
                   <?php } ?>                      
                <?php } ?>                      
             <?php } ?>   
+            <!---------- end header profile ---------->
 
             <!----------- Start form Edit Profile ---------->
 
@@ -283,7 +475,7 @@
                <a class="text-center" href="../index.php">กลับสู่หน้าหลัก</a>
             </div>         
          </div>
-         <div class="main-content col-xl-8">
+         <div class="main-content col-xl-8 col-md-8 col-sm-8">
             <div class="main-content-container">
                <div class="content-title d-flex">
                   <div class="content-title-img ml-5">
@@ -293,6 +485,9 @@
                      <h3>แก้ไขข้อมูลส่วนตัว</h3>
                   </div>
                </div>
+
+               <!---------- start if edit profile error ---------->
+
                <?php if(isset($_SESSION['error_profile'])){ ?>
                   <div class="alert-danger mt-5 align-items-center d-flex pl-3" style="height:50px;font-size:20px;margin:0 30px;">
                      <?php echo $_SESSION['error_profile']; 
@@ -300,24 +495,28 @@
                      ?>
                   </div>
                <?php } ?>
+               <!---------- End if edit profile error ---------->
+
+               <!---------- start profile detail ---------->
+
                <div class="profile-detail">
                   <div class="profile-detail-container p-5">
                      <input type="hidden" name="id" value="<?php echo $id; ?>">
-                        <div class="profile-detail-name d-flex">
-                           <h3>ชื่อ-นามสกุล : </h3>
+                        <div class="profile-detail-name d-xl-flex">
+                           <h3>ชื่อ-นามสกุล: </h3>
                            <input type="text" name="name" value="<?php echo $name; ?>" require>
                         </div>
-                        <div class="profile-detail-email d-flex">
-                           <h3>อีเมล : </h3>
-                           <input style="margin-left:130px;" type="email" name="email" value="<?php echo $email; ?>" require>
+                        <div class="profile-detail-email d-xl-flex">
+                           <h3>อีเมล: </h3>
+                           <input type="email" name="email" value="<?php echo $email; ?>" require>
                         </div>
-                        <div class="profile-detail-password d-flex">
-                           <h3>Password : </h3>
-                           <input style="margin-left:48px;" type="text" name="password" value="<?php echo $password; ?>" require>
+                        <div class="profile-detail-password d-xl-flex">
+                           <h3>Password: </h3>
+                           <input type="text" name="password" value="<?php echo $password; ?>" require>
                         </div>
-                        <div class="profile-detail-sex d-flex">
-                           <h3>เพศ : </h3>
-                           <select name="sex"  style="margin-left:148px;">
+                        <div class="profile-detail-sex d-xl-flex">
+                           <h3>เพศ: </h3>
+                           <select name="sex">
                            <?php if($sex == "male"){
                               echo "<option value='male' select>ชาย</option>";
                               echo "<option value='female'>หญิง</option>";
@@ -327,19 +526,16 @@
                            } ?>
                            </select>
                         </div>
-                        <div class="profile-detail-phone d-flex">
-                           <h3>เบอร์โทร : </h3>
-                           <input style="margin-left:71px;" type="number" name="phonenum" value="<?php echo $phone; ?>" require>
+                        <div class="profile-detail-phone d-xl-flex">
+                           <h3>เบอร์โทร: </h3>
+                           <input type="number" name="phonenum" value="<?php echo $phone; ?>" require>
                         </div>
-                        <!-- <div class="profile-detail-image d-flex">
-                           <h3>รูปห้อง : </h3>
-                           <input type="hidden" name="MAX_FILE_SIZE" value="1048576">
-                           <input style="margin-left:103px;" type="file" name="file" accept="image/*">
-                        </div> -->
                      </form>
                      <!----------- End form Edit Profil ---------->
                   </div>
                </div>
+               <!---------- end profile detail ---------->
+
             </div>
          </div>
       </div>
