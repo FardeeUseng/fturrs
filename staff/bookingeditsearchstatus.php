@@ -171,6 +171,9 @@
       font-weight: bold;
       color:#585858;
    }
+   .main-menu-logo a{
+      text-decoration:none;
+   }
    .main-manu-items li:nth-child(7){
       background-color:#3D5538;
       position:relative;
@@ -230,6 +233,36 @@
    .content-table tbody{
       background-color:#CDD9CC;
       color:#585858;
+   }
+   /********** End table **********/
+
+   /********** Start 1800px screen **********/
+
+   @media screen and (min-width:1800px){
+      .content-container{
+         margin:30px 20px;
+      }
+      .main-menu-logo{
+         height:150px;
+      }
+      .main-menu-logo img{
+         width:100px;
+         height:100px;
+      }
+      .main-menu-logo h3{
+         font-size:45px;
+      }
+      .content-table th{
+         font-size:25px;
+         padding:25px 5px;
+      }
+      .content-table td{
+         font-size:20px;
+         padding:20px 5px;
+      }
+      .content-search-building form{
+         width:500px;
+      }
    }
    /********** End table **********/
 
@@ -325,6 +358,43 @@
    }
    /********** End 767px screen **********/
 
+   /********** Start 576px screen **********/
+
+   @media screen and (max-width:576px){
+      .content-title{
+         height:55px;
+      }
+      .content-title-img img{
+         margin-left:-25px;
+         width:35px;
+         height:35px;
+      }
+      .content-title h3{
+         font-size:22px;
+         margin-left:-10px;
+      }
+      .main-menu-logo img{
+         width:50px;
+         height:50px;
+      }
+      .main-menu-logo h3{
+         font-size: 25px;
+      }
+      .content-search form{
+         width:250px;
+      }
+      .content-table th{
+         font-size:14px;
+      }
+      .content-table td, .content-table a{
+         font-size:12px;
+      }
+      .content-table th:nth-child(3), .content-table td:nth-child(3), .content-table th:nth-child(4), .content-table td:nth-child(4){
+         display:none;
+      }
+   }
+   /********** End 576px screen **********/
+
 </style>
 <!---------- End style ---------->
    
@@ -341,8 +411,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -370,7 +440,7 @@
                   </div>
                </div>
                <div class="content-search row d-flex mt-5 mb-4 ">
-                  <div class="content-search-status d-flex col-xl-5 col-md-5 col-sm-5">
+                  <div class="content-search-status d-flex col-xl-5 col-md-5 col-sm-5 col-6">
 
                      <!---------- start search reservation status ---------->
 
@@ -409,7 +479,7 @@
                      <!---------- End search reservation status ---------->
 
                   </div>
-                  <div class="content-search-building d-flex col-xl-7 col-md-7 col-sm-7">
+                  <div class="content-search-building d-flex col-xl-7 col-md-7 col-sm-7 col-6">
 
                      <!---------- Start search building ---------->
 
@@ -467,7 +537,8 @@
                            <td><?php echo date("d-m-y",strtotime($row["enddate"])). " / " .date("H:m",strtotime($row["endtime"])) ?></td>
                            <td><?php echo $row['bd_name'] ?></td>
                            <td><?php echo $row['r_name'] ?></td>
-                           <td><a href="peoplebookingdetail.php?id=<?php echo $row['rserv_Id']; ?>">ดูเพิ่มเติม</a></td>
+                           <td><p class="bookingDetail text-primary" id="<?php echo $row['rserv_Id']; ?>" style="cursor:pointer;">ดูเพิ่มเติม</p></td>
+                           <!-- <td><a href="peoplebookingdetail.php?id=<?php echo $row['rserv_Id']; ?>">ดูเพิ่มเติม</a></td> -->
                            <?php
                               if($row["rserv_status"] === "approve"){
                                  echo "<td class='text-success'>อนุมัติ</td>";
@@ -479,7 +550,7 @@
 
                            ?>
                            
-                           <td><a href="../staff/editpeoplebooking.php?id=<?php echo $row['rserv_Id']; ?>" class="btn btn-warning" onclick="return confirm('ยืนยันที่จะแก้ไขการจองห้อง?')">แก้ไข</a></td>
+                           <td><a href="../staff/editpeoplebooking.php?id=<?php echo $row['rserv_Id']; ?>" class="btn btn-warning p-1" onclick="return confirm('ยืนยันที่จะแก้ไขการจองห้อง?')">แก้ไข</a></td>
                         </tr>
                      <?php } ?>                        
                      </tbody>
@@ -500,6 +571,8 @@
                      
                   </div>
                </div>
+
+               <?php include("../master/modal.php"); ?>
             </div>
          </div>
       </div>  
@@ -514,6 +587,26 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+<script>
+   $(document).ready(function(){
+      $('.bookingDetail').click(function(){
+         var id = $(this).attr('id')
+
+         $.ajax({
+            url:"../admin/process.php",
+            method:"post",
+            data:{
+               "bookingDetail":1,
+               "id":id
+            },
+            success:function(data){
+               $('#bookingDetail').html(data)
+               $('#bookingDetailModal').modal('show')
+            }
+         })
+      })
+   })
+</script>

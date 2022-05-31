@@ -75,6 +75,7 @@
 <!---------- end script ---------->
 
 <body>
+
 <style>
 
    /********** Start Main menu **********/
@@ -102,6 +103,10 @@
    .main-menu-logo h3{
       font-size:35px;
       font-weight: bold;
+      color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
       color:#585858;
    }
    .logo-user-load{
@@ -433,8 +438,8 @@
       <div class="main row">
          <div class="main-menu col-xl-4 col-md-4 col-sm-4">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h></a>
             </div>
 
             <!---------- start header profile ---------->
@@ -549,8 +554,6 @@
    <?php include('../master/footer-user.php'); ?>
 </footer>
 <!---------- end footer ---------->
-
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>

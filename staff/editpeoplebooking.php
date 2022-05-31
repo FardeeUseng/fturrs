@@ -42,6 +42,7 @@
 <!---------- End head ---------->
 
 <body>
+
 <style>
 
    /********** Start Main menu **********/
@@ -66,6 +67,9 @@
       font-size:35px;
       font-weight: bold;
       color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
    }
    .main-manu-items li:nth-child(7){
       background-color:#3D5538;
@@ -101,6 +105,7 @@
       width:auto;
       margin:50px 0px;
       border-radius:3px;
+      padding-top:30px;
    }
    .editbooking-container h3{
       font-size:40px;
@@ -187,6 +192,10 @@
       }
       .content-container{
          margin-left:20px;
+      }
+      .editbooking-container input,.editbooking-container select{
+         height:60px;
+         width:940px;
       }
    }
    /********** End 1800px screen **********/
@@ -371,8 +380,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -403,47 +412,47 @@
                      <form action="" method="post">
                         <input type="hidden" name="id" value="<?php echo $id; ?>">
                         <div class="editbooking-name d-md-flex">
-                           <h3>ชื่อ-นามสกุล : </h3>
+                           <h3>ชื่อ-นามสกุล: </h3>
                            <input type="text" name="name" value="<?php echo $row['peoplename'] ?>" disabled>
                         </div>
                         <div class="editbooking-building d-md-flex">
-                           <h3>อาคาร : </h3>
+                           <h3>อาคาร: </h3>
                            <select name="building">
                               <?php echo "<option value='{$row['bd_Id']}' selected disabled>{$row['bd_name']}</option>"; ?>
                            </select>
                         </div>
                         <div class="editbooking-room d-md-flex">
-                           <h3>ห้อง : </h3>
+                           <h3>ห้อง: </h3>
                            <select name="room">
                               <?php echo "<option value='{$row['room_Id']}' selected disabled>{$row['r_name']}</option>"; ?>
                            </select>
                         </div>
                         <div class="editbooking-startdate d-md-flex">
-                           <h3>เริ่มต้นวันที่ : </h3>
+                           <h3>เริ่มต้นวันที่: </h3>
                            <input type="date" name="startdate" value="<?php echo $row['startdate']; ?>" disabled>
                         </div>
                         <div class="editbooking-enddate d-md-flex">
-                           <h3>สิ้นสุดวันที่ : </h3>
+                           <h3>สิ้นสุดวันที่: </h3>
                            <input type="date" name="enddate" value="<?php echo $row['enddate']; ?>" disabled>
                         </div>
                         <div class="editbooking-starttime d-md-flex">
-                           <h3>เริ่มต้นเวลา : </h3>
+                           <h3>เริ่มต้นเวลา: </h3>
                            <input type="time" name="starttime" value="<?php echo $row['starttime']; ?>" disabled>
                         </div>
                         <div class="editbooking-endtime d-md-flex">
-                           <h3>สิ้นสุดเวลา : </h3>
+                           <h3>สิ้นสุดเวลา: </h3>
                            <input type="time" name="endtime" value="<?php echo $row['endtime'] ?>" disabled>
                         </div>
                         <div class="editbooking-email d-md-flex">
-                           <h3>อีเมล : </h3>
+                           <h3>อีเมล: </h3>
                            <input type="email" name="email" value="" disabled>
                         </div>
                         <div class="editbooking-phone d-md-flex">
-                           <h3>เบอร์โทร : </h3>
+                           <h3>เบอร์โทร: </h3>
                            <input type="number" name="phonenum" value="<?php echo $row['phone']; ?>" disabled>
                         </div>
                         <div class="editbooking-status d-md-flex">
-                           <h3>สถานะ * : </h3>
+                           <h3>สถานะ *: </h3>
                            <select name="rserv_status">
                               <?php
                                  if($row["rserv_status"] == "approve"){
@@ -492,8 +501,6 @@
    <?php include('../master/footer-user.php'); ?>
 </footer>
 <!---------- end footer ---------->
-
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>

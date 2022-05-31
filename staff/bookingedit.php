@@ -105,6 +105,9 @@
       font-weight: bold;
       color:#585858;
    }
+   .main-menu-logo a{
+      text-decoration:none;
+   }
    .main-manu-items li:nth-child(7){
       background-color:#3D5538;
       position:relative;
@@ -343,8 +346,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -446,7 +449,8 @@
                            <td><?php echo date("d-m-y",strtotime($row["enddate"])). " / " .date("H:m",strtotime($row["endtime"])) ?></td>
                            <td><?php echo $row['bd_name'] ?></td>
                            <td><?php echo $row['r_name'] ?></td>
-                           <td><a href="peoplebookingdetail.php?id=<?php echo $row['rserv_Id']; ?>">ดูเพิ่มเติม</a></td>
+                           <td><p class="bookingDetail text-primary" id="<?php echo $row['rserv_Id']; ?>" style="cursor:pointer;">ดูเพิ่มเติม</p></td>
+                           <!-- <td><a href="peoplebookingdetail.php?id=<?php //echo $row['rserv_Id']; ?>">ดูเพิ่มเติม</a></td> -->
                            <?php
                               if($row["rserv_status"] == "approve"){
                                  echo "<td class='text-success'>อนุมัติ</td>";
@@ -457,7 +461,7 @@
                               }
                            ?>
                            
-                           <td><a href="../staff/editpeoplebooking.php?id=<?php echo $row['rserv_Id']; ?>" class="btn btn-warning p-1" onclick="return confirm('ยืนยันที่จะแก้ไขการจองห้อง?')">แก้ไข</a></td>
+                           <td><a href="../staff/editpeoplebooking.php?id=<?php echo $row['rserv_Id']; ?>" class="btn btn-warning p-1" onclick="confirm('ยืนยันที่จะแก้ไขการจองห้อง?')">แก้ไข</a></td>
                         </tr>
                      <?php } ?>                        
                      </tbody>
@@ -478,6 +482,8 @@
 
                   </div>
                </div>
+
+               <?php include("../master/modal.php"); ?>
             </div>
          </div>
       </div>  
@@ -492,6 +498,26 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+<script>
+   $(document).ready(function(){
+      $('.bookingDetail').click(function(){
+         var id = $(this).attr('id')
+
+         $.ajax({
+            url:"../admin/process.php",
+            method:"post",
+            data:{
+               "bookingDetail":1,
+               "id":id
+            },
+            success:function(data){
+               $('#bookingDetail').html(data)
+               $('#bookingDetailModal').modal('show')
+            }
+         })
+      })
+   })
+</script>

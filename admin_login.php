@@ -44,12 +44,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!---------- Start head ---------->
+   <!---------- Start head ---------->
 
-<?php include("./master/head.php") ?>
-<!---------- End head ---------->
+   <?php include("./master/head.php") ?>
+   <script src="./bootstrap/js/bootstrap.min.js"></script>
+   <!---------- End head ---------->
 
 <body>
+
 <style>
 
    *{
@@ -283,7 +285,32 @@
          </div>
          <div class="image col-xl-8 p-0">
             <div class="image-container">
-               <img src="img/5302.jpg" alt="">
+               <div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel" style="width:95%;height:90%">
+                  <ol class="carousel-indicators">
+                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                     <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                  </ol>
+                  <div class="carousel-inner">
+                     <div class="carousel-item active">
+                        <img src="img/IMG_3351.JPG" class="d-block w-100" alt="...">
+                     </div>
+                     <div class="carousel-item">
+                        <img src="img/IMG_3344.JPG" class="d-block w-100" alt="...">
+                     </div>
+                     <div class="carousel-item">
+                        <img src="img/IMG_3318.JPG" class="d-block w-100" alt="...">
+                     </div>
+                  </div>
+                  <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
+                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                     <span class="sr-only">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
+                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                     <span class="sr-only">Next</span>
+                  </button>
+               </div>
             </div>
          </div>
       </div>
@@ -297,8 +324,6 @@
    <?php include("./master/footer.php") ?>
 </footer>
 <!---------- end footer ---------->
-
-<script src="../bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>

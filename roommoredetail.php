@@ -26,13 +26,14 @@
       }else{
 
          if($check){
-            $dir = "img/uploads/";
+            $dir = "img/roomimg/";
             $fileImage = $dir . basename($_FILES["file"]["name"]);
             if(move_uploaded_file($_FILES["file"]["tmp_name"], $fileImage)){
                $sql = "UPDATE room SET r_img = '$name' WHERE room_Id = $r_Id";
                $result = mysqli_query($connect, $sql);
                if($result){
                   array_push($success, "เพิ่มรูปห้องสำเร็จ");
+                  
                }
             }else {
                array_push($errors, "เกิดข้อผิดพลาด");
@@ -43,7 +44,6 @@
    // End if upload room image
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -97,6 +97,10 @@
    .main-menu-logo h3{
       font-size:35px;
       font-weight: bold;
+      color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
       color:#585858;
    }
    .main-content{
@@ -242,6 +246,9 @@
          padding-left:30px;
          padding-right:30px;
       }
+      .room-detail-image{
+         height:650px;
+      }
    }
    /********** End 1800px screen **********/
 
@@ -384,8 +391,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="index.php"><img src="img/menu-logo/online-booking.png" alt=""></a>
+               <a href="index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -437,7 +444,7 @@
                               </form>
                            </div>
                         <?php }else{ ?>
-                           <img src="./img/uploads/<?php echo $row['r_img']; ?>" alt="">
+                           <img src="./img/roomimg/<?php echo $row['r_img']; ?>" alt="">
                         <?php } ?>
                      <!---------- Start upload room image if user is staff ---------->
                      
@@ -450,7 +457,7 @@
                               <p>ไม่ได้อัพโหลดรูปห้อง</p>
                            </div>
                         <?php }else{ ?>
-                           <img src="./img/uploads/<?php echo $row['r_img']; ?>" alt="">
+                           <img src="./img/roomimg/<?php echo $row['r_img']; ?>" alt="">
                         <?php } ?>
                      <?php } ?>
                      <!---------- End show room image if have ---------->
@@ -524,6 +531,5 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="./bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

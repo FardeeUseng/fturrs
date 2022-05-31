@@ -194,6 +194,7 @@
 <!---------- End head ---------->
 
 <body>
+
 <style>
 
    /********** Start Main menu **********/
@@ -217,6 +218,10 @@
    .main-menu-logo h3{
       font-size:35px;
       font-weight: bold;
+      color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
       color:#585858;
    }
    .main-manu-items li:nth-child(4){
@@ -428,7 +433,7 @@
       .content-table th{
          font-size:14px;
       }
-      .content-table td{
+      .content-table td, .content-table a{
          font-size:12px;
       }
       .content-table th:nth-child(3), .content-table td:nth-child(3), .content-table th:nth-child(4), .content-table td:nth-child(4), .content-table th:nth-child(5), .content-table td:nth-child(5){
@@ -454,8 +459,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h></a>
             </div>
             
             <!---------- start main-manu-items ---------->
@@ -549,7 +554,7 @@
                               }
                            ?>
                            
-                           <td><a href="canclebooking.php?id=<?php echo $row["rserv_Id"] ?>" class="btn btn-danger" onclick="return confirm('ยืนยันที่ต้องการยกเลิกการจอง')">ยกเลิก</a></td>
+                           <td><a href="canclebooking.php?id=<?php echo $row["rserv_Id"] ?>" class="btn btn-danger p-1" onclick="return confirm('ยืนยันที่ต้องการยกเลิกการจอง')">ยกเลิก</a></td>
                         </tr>
                      <?php } ?>
                      </tbody>
@@ -584,6 +589,5 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

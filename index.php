@@ -28,10 +28,78 @@
 <!---------- start head ---------->
 
 <head>
-   <?php include('./master/head.php'); ?>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>ระบบจองห้องประชุมออนไลน์</title>
+   <link rel="icon" href="img/menu-logo/online-booking.png">
+   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+   <link rel="stylesheet" href="font/tahomo.ttf">
+   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+   <link rel="stylesheet" href="font/SukhumvitSet-Medium.ttf">
+   <link rel="stylesheet" href="./bootstrap/jquery.fancybox.css" type="text/css" media="screen" />
+   <link rel="stylesheet" href="./bootstrap/fullcalendar/fullcalendar.css" />
+   <link rel="stylesheet" href="./bootstrap/fullcalendar/fullcalendar.print.css" media='print' />
+   <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+   <script src="./bootstrap/js/jquery.min.js"></script>
+   <script src="./bootstrap/js/moment.min.js"></script>
+   <script src="./bootstrap/fullcalendar/fullcalendar.min.js"></script>
+   <script src="./bootstrap/jquery.fancybox.pack.js"></script>
 </head>
-<!---------- End head ---------->
 
+<!---------- End head ---------->
+<script>
+   $(document).ready(function() {
+
+      $('#calendar').fullCalendar({
+         header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+         },
+         eventLimit: true, 
+         defaultDate: new Date(),
+         timezone: 'Asia/Bangkok',
+         events: {
+            url: './dataEvents.php',
+         },
+         lang:'th',
+         loading: function(bool) {
+            $('#loading').toggle(bool);
+         },
+
+         eventClick: function(event) {
+            if (event.url) {
+               $.fancybox({
+                  'href': event.url,
+                  'type': 'iframe',
+                  'autoScale': false,
+                  'openEffect': 'elastic',
+                  'openSpeed': 'fast',
+                  'closeEffect': 'elastic',
+                  'closeSpeed': 'fast',
+                  'closeBtn': true,
+                  onClosed: function() {
+                     parent.location.reload(true);
+                  },
+                  helpers: {
+                     thumbs: {
+                        width: 50,
+                        height: 50
+                     }//,
+                     // overlay: {
+                     //    css: {
+                     //       'background': 'rgba(49, 176, 213, 0.7)'
+                     //    }
+                     // }
+                  }
+               });
+               return false;
+            }
+         },
+      });
+   });
+</script>
 <body>
 
 <!---------- Start Style ---------->
@@ -56,11 +124,16 @@
       width:80px;
       height:80px;
    }
+   .main-menu-logo a{
+      text-decoration: none;
+      color:#585858;
+   }
    .main-menu-logo h3{
       font-size:35px;
       font-weight: bold;
       color:#585858;
    }
+
    .main-manu-items li:nth-child(1){
       background-color:#3D5538;
    }
@@ -103,25 +176,32 @@
       align-items:center;
    }
    .content-footer-bottom img{
-      width:50px;
-      height:50px;
+      width:40px;
+      height:40px;
    }
    .content-footer-bottom p {
       margin:10px;
-      font-size:25px;
+      font-size:20px;
       color:#585858;
    }
    .bottom-green{
-      width:45px;
-      height:45px;
+      width:35px;
+      height:35px;
       border:3px solid green;
       border-radius: 5px;
    }
    .bottom-orange{
-      width:45px;
-      height:45px;
+      width:35px;
+      height:35px;
       border:3px solid orange;
       border-radius: 5px;
+   }
+   /* .content-footer-bottom img{
+      width:50px;
+   } */
+   #calendar{
+      position:relative;
+      z-index: 1;
    }
    /********** End Content **********/
 
@@ -295,10 +375,10 @@
 <div class="content">
    <div class="container-fluid">
       <div class="main row">
-         <div class="main-menu p-0 col-xl-3 col-8">
+         <div class="main-menu p-0 col-xl-3 col-8" style="z-index:2;">
             <div class="main-menu-logo d-flex">
-               <img src="img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="index.php"><img src="img/menu-logo/online-booking.png" alt=""></a>
+               <a href="index.php"><h3 class="ml-3">FTU RRS</h></a>
             </div>
 
             <!-- ทำหน้าlogin เป็นหน้าเดียวโดยส่งเลขผ่านurl ไปหน้า login สมมุติถ้าส่ง url = 1 user_Login , 2 = staff  -->
@@ -331,7 +411,7 @@
                   </div>
                </div>
                <div class="content-search d-flex mt-5 mb-4">
-                  <form method="post" class="input-group">                  
+                  <!-- <form method="post" class="input-group">                  
                      <select class="custom-select" id="">
                         <option value="allbuilding" selected>อาคารทั้งหมด</option>
                         <option value="scienceandit">วิทยาศาสตร์และเทคโนโลยี</option>
@@ -340,10 +420,18 @@
                         <option value="islamic">อิสลามศึกษา</option>
                      </select>
                      <button class="content-search-button px-2 rounded-right" type="submit">ค้นหา</button>
-                  </form>
+                  </form> -->
                </div>
-               <div class="content-table bg-dark">
+
+               <!---------- start Event calendar ---------->
+
+               <div class="event-calendar my-5">
+                  <div id='calendar'></div>
                </div>
+               <!---------- end Event calendar ---------->
+
+               <!---------- start Content footer ---------->
+
                <div class="content-footer row">
                   <div class="content-footer-top">
                      <div class="content-footer-left col-7">
@@ -360,6 +448,8 @@
                      <p>รออนุมัติ</p>
                   </div>
                </div>
+               <!---------- end content footer ---------->
+
             </div>
          </div>
          <!---------- End main-content ---------->
@@ -376,6 +466,5 @@
 </footer>
 <!---------- end footer ---------->
 
-<script src="./bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

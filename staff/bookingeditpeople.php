@@ -12,6 +12,7 @@
    // End Access permission Staff and Admin
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,6 +24,7 @@
 <!---------- End head ---------->
 
 <body>
+
 <style>
 
    /********** Start Main menu **********/
@@ -48,6 +50,9 @@
       font-weight: bold;
       color:#585858;
    } 
+   .main-menu-logo a{
+      text-decoration:none;
+   }
    .main-manu-items li:nth-child(7){
       background-color:#3D5538;
    }
@@ -132,8 +137,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
             
             <!---------- Start main-manu-items ---------->
@@ -203,8 +208,6 @@
    <?php include('../master/footer-user.php'); ?>
 </footer>
 <!---------- end footer ---------->
-
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>

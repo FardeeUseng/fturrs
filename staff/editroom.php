@@ -107,6 +107,9 @@
       font-weight: bold;
       color:#585858;
    }
+   .main-menu-logo a{
+      text-decoration:none;
+   }
    .main-manu-items li:nth-child(9){
       background-color:#3D5538;
       position:relative;
@@ -355,8 +358,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -398,7 +401,7 @@
                               }else{
                                  echo "<option value='allbuilding'>อาคารทั้งหมด</option>";
                                  foreach($result2 as $value){
-                                    echo "<option name='building' value='{$value['bd_name']}'>{$value['bd_name']}</option>";
+                                    echo "<option value='{$value['bd_name']}'>{$value['bd_name']}</option>";
                                  }
                               }
                            ?>
@@ -482,6 +485,5 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

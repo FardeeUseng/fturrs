@@ -2,6 +2,7 @@
    session_start();
    require("./dbconnect.php");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,19 +41,23 @@
       font-weight: bold;
       color:#585858;
    }
+   .main-menu-logo a{
+      text-decoration:none;
+      color:#585858;
+   }
    <?php if(isset($_SESSION['admin_login'])){ ?>
-   .main-manu-items li:nth-child(12){
+   .main-manu-items li:nth-child(13){
       position:relative;
       background-color:#3D5538;
    }
-   .main-manu-items li:nth-child(12) h3{
+   .main-manu-items li:nth-child(13) h3{
       color:#F0F8FF;
    }
    <?php }elseif(isset($_SESSION['staff_login'])){ ?>
-   .main-manu-items li:nth-child(10){
+   .main-manu-items li:nth-child(11){
       background-color:#3D5538;
    }
-   .main-manu-items li:nth-child(10) h3{
+   .main-manu-items li:nth-child(11) h3{
       color:#F0F8FF;
    }
    <?php }elseif(isset($_SESSION['user_login'])){ ?>
@@ -369,8 +374,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="./img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="index.php"><img src="./img/menu-logo/online-booking.png" alt=""></a>
+               <a href="index.php"><h3 class="ml-3">FTU RRS</h></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -403,7 +408,7 @@
                   <div class="aboutus-container">
                      <div class="aboutus-top d-flex row my-3">
                         <div class="aboutus-left col-xl-6 col-md-12">
-                           <img src="./img/5302.jpg" class="shadow">
+                           <img src="./img/IMG_3351.JPG" class="shadow">
                         </div>
                         <div class="aboutus-right col-xl-6 col-md">
                            <div class="aboutus-right1">
@@ -464,6 +469,5 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="./bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

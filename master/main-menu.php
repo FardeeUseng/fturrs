@@ -11,7 +11,9 @@
 <!---------- End if click hamberger-menu ---------->
 
 <style>
-
+   .main-manu-items{
+      z-index: 100;
+   }
    .main-manu-items li img{
       width:40px;
       height:40px;
@@ -142,6 +144,7 @@
       <li><a href="./staff/editroom.php"><img src="img/menu-logo/edit1.png" alt=""><h3>แก้ไขห้องประชุม</h3></a></li>
       <li><a href="./admin/addmember.php"><img src="img/menu-logo/staff.png" alt=""><h3>เพิ่มสมาชิก</h3></a></li>
       <li><a href="./admin/member.php"><img src="img/menu-logo/team.png" alt=""><h3>สมาชิก</h3></a></li>
+      <li><a href="./admin/dashbord.php"><img src="img/menu-logo/business-report.png" alt=""><h3>แดชบอร์ด</h3></a></li>
 <?php }elseif(isset($_SESSION['staff_login'])){ ?>
       <li><a href="index.php"><img src="img/menu-logo/calendar.png" alt=""><h3>ปฎิทินการจองห้อง</h3></a></li>
       <li><a href="bookingdetail.php"><img src="img/menu-logo/booking.png" alt=""><h3>ข้อมูลการจองห้อง</h3></a></li>
@@ -152,6 +155,7 @@
       <li><a href="./staff/bookingedit.php"><img src="img/menu-logo/edit.png" alt=""><h3>แก้ไขการจองห้อง</h3></a></li>
       <li><a href="./staff/addroom.php"><img src="img/menu-logo/insert1.png" alt=""><h3>เพิ่มห้องประชุม</h3></a></li>
       <li><a href="./staff/editroom.php"><img src="img/menu-logo/edit1.png" alt=""><h3>แก้ไขห้องประชุม</h3></a></li>
+      <li><a href="./admin/dashbord.php"><img src="img/menu-logo/business-report.png" alt=""><h3>แดชบอร์ด</h3></a></li>
 <?php }elseif(isset($_SESSION['user_login'])){ ?>
       <li><a href="index.php"><img src="img/menu-logo/calendar.png" alt=""><h3>ปฎิทินการจองห้อง</h3></a></li>
       <li><a href="bookingdetail.php"><img src="img/menu-logo/booking.png" alt=""><h3>ข้อมูลการจองห้อง</h3></a></li>

@@ -26,18 +26,18 @@
 
    $errors = array();
 
-   if($_POST){
+   if($_POST){ 
 
-      $building = $_POST['building'];
-      $staff = $_POST['staff'];
-      $room = $_POST['roomname'];
-      $coderoom = $_POST['coderoom'];
-      $capacity = $_POST['roomcapacity'];
-      $floor = $_POST['roomfloor'];
-      $status = $_POST['roomstatus'];
-      $roomimage = $_POST['roomimage'];
+      $building = mysqli_real_escape_string($connect, $_POST['building']);
+      $staff = mysqli_real_escape_string($connect, $_POST['staff']);
+      $room = mysqli_real_escape_string($connect, $_POST['roomname']);
+      $coderoom = mysqli_real_escape_string($connect, $_POST['coderoom']);
+      $capacity = mysqli_real_escape_string($connect, $_POST['roomcapacity']);
+      $floor = mysqli_real_escape_string($connect, $_POST['roomfloor']);
+      $status = mysqli_real_escape_string($connect, $_POST['roomstatus']);
+      $roomimage = mysqli_real_escape_string($connect, $_POST['roomimage']);
       isset($_POST['equipment']) ? $equipment = implode(",",$_POST["equipment"]) : $equipment = '';
-      $note = $_POST['note'];
+      $note = mysqli_real_escape_string($connect, $_POST['note']);
 
       if(empty($building)){
          array_push($errors, "กรุณาเลือกอาคาร");
@@ -94,9 +94,12 @@
       height:80px;
    }
    .main-menu-logo h3{
-      font-size:35px;
+      font-size:45px;
       font-weight: bold;
       color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
    }
    .main-manu-items li:nth-child(8){
       background-color:#3D5538;
@@ -463,8 +466,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -614,7 +617,6 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
 

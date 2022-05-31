@@ -22,14 +22,14 @@
 
    $errors = array();
    if($_POST){
-      $id = $_POST['id'];
-      $building = $_POST['building'];
-      $email = $_POST['email'];
-      $password = $_POST['password'];
-      $cpassword = $_POST['confirmpassword'];
-      $name = $_POST['name'];
-      $phone = $_POST['phonenumber'];
-      $sex = $_POST['sex'];
+      $id = mysqli_real_escape_string($connect, $_POST['id']);
+      $building = mysqli_real_escape_string($connect, $_POST['building']);
+      $email = mysqli_real_escape_string($connect, $_POST['email']);
+      $password = mysqli_real_escape_string($connect, $_POST['password']);
+      $cpassword = mysqli_real_escape_string($connect, $_POST['confirmpassword']);
+      $name = mysqli_real_escape_string($connect, $_POST['name']);
+      $phone = mysqli_real_escape_string($connect, $_POST['phonenumber']);
+      $sex = mysqli_real_escape_string($connect, $_POST['sex']);
 
       if(empty($building)){
          array_push($errors, "กรุณาเลือกอาคาร");
@@ -48,7 +48,8 @@
       }elseif(empty($sex)){
          array_push($error,"กรุณาเลือกเพศ");
       }elseif(count($errors) == 0){
-         $query = "UPDATE staff SET bd_Id = '$building', st_pass = '$password', st_name = '$name', st_sex = '$sex',st_email = '$email', st_phone = '$phone' WHERE staff_Id = $id";
+         $rpassword = md5($password);
+         $query = "UPDATE staff SET bd_Id = '$building', st_pass = '$rpassword', st_name = '$name', st_sex = '$sex',st_email = '$email', st_phone = '$phone' WHERE staff_Id = $id";
          mysqli_query($connect,$query);
          $_SESSION['success1'] = "เพิ่มข้อมูลเรียบร้อย";
          header('location:memberstaff.php');
@@ -104,6 +105,9 @@
       font-size:35px;
       font-weight: bold;
       color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
    }
    .main-manu-items li:nth-child(11){
       background-color:#3D5538;
@@ -440,8 +444,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -489,9 +493,7 @@
                               <?php
                                  foreach($buildings as $value){
                                     if($value == $row['bd_name']){
-                                       echo "<option value='$value' selected>$value</option>";
-                                    }else{
-                                       echo "<option value='$value'>$value</option>";
+                                       echo "<option value='{$row['bd_Id']}' selected>{$row['bd_name']}</option>";
                                     }
                                  }
                               ?>
@@ -559,6 +561,5 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

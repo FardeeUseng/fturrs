@@ -39,6 +39,9 @@
       font-weight:bold;
       margin-left:20px;
    }
+   .header-logo-right a{
+      text-decoration: none;
+   }
    .header-signup-name a{
       color:#585858;
       font-size:16px;
@@ -270,11 +273,11 @@
                <i class="fas fa-bars"></i>
             </div>
             <div class="header-logo-left col-xl-2 col-md-2 col-sm-3 col-3 pl-5 ">
-               <img src="../img/Ftu_logo.png" class="shadow">
+               <a href="../index.php"><img src="../img/Ftu_logo.png" class="shadow"></a>
             </div>
             <div class="header-logo-right col-xl-10 col-md-8 col-sm-7 col-5 d-none d-sm-block">
-               <h1 class="header-logo-right-h1">FTU Room Reservation System</h1>
-               <h1 class="header-logo-right-h2 d-none d-sm-block d-xl-none">FTU RRS</h1>
+               <a href="../index.php"><h1 class="header-logo-right-h1">FTU Room Reservation System</h1></a>
+               <a href="../index.php"><h1 class="header-logo-right-h2 d-none d-sm-block d-xl-none">FTU RRS</h1></a>
             </div>
          </div>
          <?php if(isset($_SESSION['name'])){?>
@@ -300,7 +303,7 @@
                <?php } ?>
             </div>
             <div class="header-signup-logout d-none d-sm-flex align-items-center col-xl-4 col-md-7 col-sm-8 col-6">
-               <a href="../index.php?logout='1'" class="btn btn-danger" onclick="return confirm('ยืนยันออกจากระบบ?')">ออกจากระบบ</a>
+               <a href="../index.php?logout='1'" class="btn btn-danger px-1" onclick="return confirm('ยืนยันออกจากระบบ?')">ออกจากระบบ</a>
             </div>
             <div class="header-signup-logout-2 d-flex d-sm-none align-items-center col-xl-4 col-md-7 col-sm-8 col-6">
                <a href="index.php?logout='1'" onclick="return confirm('ยืนยันออกจากระบบ?')"><i class="fas fa-sign-out-alt"></i></a>

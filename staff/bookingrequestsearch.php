@@ -124,6 +124,9 @@
       font-weight: bold;
       color:#585858;
    }
+   .main-menu-logo a{
+      text-decoration:none;
+   }
    .main-manu-items li:nth-child(6){
       background-color:#3D5538;
    }
@@ -362,8 +365,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -448,7 +451,8 @@
                            <td><?php echo $row["enddate"] . " / " . $row["endtime"]; ?></td>
                            <td><?php echo $row["r_code"]; ?></td>
                            <td><?php echo $row["r_name"]; ?></td>
-                           <td><a href="../staff/peoplebookingdetail.php?id=<?php echo $row['rserv_Id'] ?>">ดูเพิ่มเติม</a></td>
+                           <td><p class="bookingDetail text-primary" id="<?php echo $row['rserv_Id']; ?>" style="cursor:pointer;">ดูเพิ่มเติม</p></td>
+                           <!-- <td><a href="../staff/peoplebookingdetail.php?id=<?php echo $row['rserv_Id'] ?>">ดูเพิ่มเติม</a></td> -->
                            <td><a href="approvebooking.php?id=<?php echo $row['rserv_Id']; ?>" class="btn btn-success p-1" onclick="return confirm('ยืนยันที่จะอนุมัติใช้ห้องนี้?')">อนุมัติ</a></td>
                            <td><a href="notapprovebooking.php?id=<?php echo $row['rserv_Id']; ?>" class="btn btn-danger p-1" onclick="return confirm('ยืนยันที่จะไม่อนุมัติใช้ห้องนี้?')">ยกเลิก</a></td>
                         </tr>
@@ -471,6 +475,8 @@
 
                   </div>
                </div>
+
+               <?php include("../master/modal.php"); ?>
             </div>
          </div>
       </div>  
@@ -484,8 +490,27 @@
    <?php include('../master/footer-user.php'); ?>
 </footer>
 <!---------- end footer ---------->
-
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
    
 </body>
 </html>
+
+<script>
+   $(document).ready(function(){
+      $('.bookingDetail').click(function(){
+         var id = $(this).attr('id')
+
+         $.ajax({
+            url:"../admin/process.php",
+            method:"post",
+            data:{
+               "bookingDetail":1,
+               "id":id
+            },
+            success:function(data){
+               $('#bookingDetail').html(data)
+               $('#bookingDetailModal').modal('show')
+            }
+         })
+      })
+   })
+</script>

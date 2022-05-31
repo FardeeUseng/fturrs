@@ -26,19 +26,19 @@
    // Start if booking room
    if($_POST){
 
-      $building = $_POST["building"];
-      $room = $_POST["room"];
-      $name = $_POST["name"];
-      $phone = $_POST["phonenumber"];
-      $numpeople = $_POST["numpeople"];
-      $peopleId = $_POST["peopleId"];
-      $obj = $_POST["obj"];
-      $org = $_POST["organization"];
-      $major = $_POST["major"];
-      $startdate = $_POST["startdate"];
-      $starttime = $_POST["starttime"];
-      $enddate = $_POST["enddate"];
-      $endtime = $_POST["endtime"];
+      $building = mysqli_real_escape_string($connect, $_POST["building"]);
+      $room = mysqli_real_escape_string($connect, $_POST["room"]);
+      $name = mysqli_real_escape_string($connect, $_POST["name"]);
+      $phone = mysqli_real_escape_string($connect, $_POST["phonenumber"]);
+      $numpeople = mysqli_real_escape_string($connect, $_POST["numpeople"]);
+      $peopleId = mysqli_real_escape_string($connect, $_POST["peopleId"]);
+      $obj = mysqli_real_escape_string($connect, $_POST["obj"]);
+      $org = mysqli_real_escape_string($connect, $_POST["organization"]);
+      $major = mysqli_real_escape_string($connect, $_POST["major"]);
+      $startdate = mysqli_real_escape_string($connect, $_POST["startdate"]);
+      $starttime = mysqli_real_escape_string($connect, $_POST["starttime"]);
+      $enddate = mysqli_real_escape_string($connect, $_POST["enddate"]);
+      $endtime = mysqli_real_escape_string($connect, $_POST["endtime"]);
 
       // Start Insert data for users, staff, admin
 
@@ -102,6 +102,7 @@
    }
    // End if booking room
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -139,6 +140,10 @@
    .main-menu-logo h3{
       font-size:35px;
       font-weight: bold;
+      color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
       color:#585858;
    }
    .main-manu-items li:nth-child(5){
@@ -476,8 +481,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h></a>
             </div>
             
             <!---------- start main-manu-items ---------->
@@ -557,8 +562,8 @@
                            <input type="number" name="numpeople" placeholder="จำนวนผู้เข้าร่วม" required>
                         </div>
                         <div class="booking-studentId col-xl-6 mb-4">
-                           <h4>รหัสนักศึกษา:</h4>
-                           <input type="number" name="peopleId" placeholder="รหัสนักศึกษา" required>
+                           <h4>รหัสนักศึกษา/บุคลากร:</h4>
+                           <input type="number" name="peopleId" placeholder="รหัสนักศึกษา/บุคลากร" required>
                         </div>
                      </div>
                      <div class="booking-fill-items4 row mb-4">
@@ -570,35 +575,43 @@
                      <div class="booking-fill-items1 row">
                         <div class="booking-org col-xl-6 mb-4">
                            <h4>สังกัดองค์กร/คณะ:</h4>
+                           <input type="text" name="organization" id="" placeholder="สังกัดองค์กร/คณะ" required>
+                        </div>
+                        <div class="booking-major colo-xl-6 mb-4 ml-3">
+                           <h4>หน่วยงาย/สาขา/ชมรม/กลุ่ม:</h4>
+                           <input type="text" name="major" id="" placeholder="หน่วยงาย/สาขา/ชมรม/กลุ่ม" required>
+                        </div>
+                        <!-- <div class="booking-org col-xl-6 mb-4">
+                           <h4>สังกัดองค์กร/คณะ:</h4>
                            <?php  
-                              $sql2 = "SELECT * FROM organization";
-                              $result2 = mysqli_query($connect,$sql2);
+                              // $sql2 = "SELECT * FROM organization";
+                              // $result2 = mysqli_query($connect,$sql2);
                            ?>
                            <select name="organization" class="pl-2" required>
                               <option selected disabled>เลือก</option>
-                              <?php foreach($result2 as $value){
-                                 echo "<option value='{$value['org_Id']}'>{$value['org_name']}</option>";
-                              } ?>
+                              <?php //foreach($result2 as $value){
+                                 //echo "<option value='{$value['org_Id']}'>{$value['org_name']}</option>";
+                              //} ?>
                               <option value="">อื่น ๆ</option>
                            </select>
                         </div>
                         <div class="booking-major col-xl-6 mb-4">
                            <h4>หน่วยงาย/สาขา/ชมรม/กลุ่ม:</h4>
                            <?php  
-                              $sql3 = "SELECT * FROM major";
-                              $result3 = @mysqli_query($connect,$sql3); 
+                              // $sql3 = "SELECT * FROM major";
+                              // $result3 = @mysqli_query($connect,$sql3); 
                            ?>
                            <select name="major" class="pl-2" required>                              
                               <option selected disabled>เลือก</option>
                               <?php
-                                 foreach($result3 as $value){
-                                    echo "<option value='{$value['major_Id']}'>{$value['major_name']}</option>";
-                                 }
+                                 // foreach($result3 as $value){
+                                 //    echo "<option value='{$value['major_Id']}'>{$value['major_name']}</option>";
+                                 // }
                               ?>
                               
                               <option value="">อื่นๆ</option>
                            </select>
-                        </div>
+                        </div> -->
                      </div>
                      <div class="booking-fill-items5 row">
                         <div class="booking-startdate col-xl-6 mb-4">
@@ -642,25 +655,23 @@
 </footer>
 <!---------- end footer ---------->
 
-<script src="../bootstrap/js/bootstrap.min.js"></script>
-
 </body>
 </html>
 
 <!---------- Start Scipt ---------->
 
 <script type="text/javascript">
-  $('#building').change(function() {
-    var id_building = $(this).val();
+   $('#building').change(function() {
+      var id_building = $(this).val();
 
-      $.ajax({
-      type: "POST",
-      url: "aj_booking.php",
-      data: {id:id_building,function:'building'},
-      success: function(data){
-          $('#room').html(data); 
-      }
-    });
-  });
+         $.ajax({
+         type: "POST",
+         url: "aj_booking.php",
+         data: {id:id_building,function:'building'},
+         success: function(data){
+            $('#room').html(data); 
+         }
+      });
+   });
 </script>
 <!---------- Start Scipt ---------->

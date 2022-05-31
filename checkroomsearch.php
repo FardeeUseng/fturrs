@@ -21,7 +21,7 @@
 
    if(isset($_GET['page'])){
       $building = $_SESSION['building'];
-      $record_show = 1; // จำนวนข้อมูลที่จะแสดง
+      $record_show = 10; // จำนวนข้อมูลที่จะแสดง
       $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
    
       // Query Total Product
@@ -43,7 +43,7 @@
       $building = $_POST['building'];
       $page = 1;  // เลขหน้าที่จะแสดง
    
-      $record_show = 12; // จำนวนข้อมูลที่จะแสดง
+      $record_show = 10; // จำนวนข้อมูลที่จะแสดง
       $offset = ($page - 1) * $record_show;  //เลขเริ่มต้น
       
       // Query Total Product
@@ -108,6 +108,10 @@
    .main-menu-logo h3{
       font-size:35px;
       font-weight: bold;
+      color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
       color:#585858;
    }
    .main-manu-items li:nth-child(3){
@@ -353,8 +357,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="index.php"><img src="img/menu-logo/online-booking.png" alt=""></a>
+               <a href="index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
             
             <!---------- Start main-manu-items ---------->
@@ -472,6 +476,5 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="./bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

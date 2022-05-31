@@ -102,11 +102,11 @@
          </div>
          <div class="footer-buttom">
             <ul class="footer-link d-flex">
-               <li><a href="#"><img src="img/menu-logo/globe-grid.png" class="shadow"></a></li>
-               <li><a href="#"><img src="img/menu-logo/facebook.png" class="shadow"></a></li>
-               <li><a href="#"><img src="img/menu-logo/instagram.png" class="shadow"></a></li>
-               <li><a href="#"><img src="img/menu-logo/twitter.png" class="shadow"></a></li>
-               <li><a href="#"><img src="img/menu-logo/youtube.png" class="shadow"></a></li>
+               <li><a href="http://www.ftu.ac.th/2019/index.php/th/" target="_blank"><img src="img/menu-logo/globe-grid.png" class="shadow"></a></li>
+               <li><a href="https://web.facebook.com/FatoniUniversity" target="_blank"><img src="img/menu-logo/facebook.png" class="shadow"></a></li>
+               <li><a href="#" target="_blank"><img src="img/menu-logo/instagram.png" class="shadow"></a></li>
+               <li><a href="#" target="_blank"><img src="img/menu-logo/twitter.png" class="shadow"></a></li>
+               <li><a href="#" target="_blank"><img src="img/menu-logo/youtube.png" class="shadow"></a></li>
             </ul>
          </div>
          </div>

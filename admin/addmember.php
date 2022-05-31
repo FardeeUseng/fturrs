@@ -21,14 +21,14 @@
 
    $errors = array();
    if($_POST){
-      $email = $_POST['email'];
-      $password = $_POST['password'];
-      $cpassword = $_POST['confirmpassword'];
-      $name = $_POST['name'];
-      $sex = $_POST['sex'];
-      $phone = $_POST['phonenumber'];
-      $building = $_POST['building'];
-      $memberstatus = $_POST['memberstatus'];
+      $email = mysqli_real_escape_string($connect, $_POST['email']);
+      $password = mysqli_real_escape_string($connect, $_POST['password']);
+      $cpassword = mysqli_real_escape_string($connect, $_POST['confirmpassword']);
+      $name = mysqli_real_escape_string($connect, $_POST['name']);
+      $sex = mysqli_real_escape_string($connect, $_POST['sex']);
+      $phone = mysqli_real_escape_string($connect, $_POST['phonenumber']);
+      $building = mysqli_real_escape_string($connect, $_POST['building']);
+      $memberstatus = mysqli_real_escape_string($connect, $_POST['memberstatus']);
 
       if(empty($email)){
          array_push($errors,"กรุณากรอกอีเมล");
@@ -63,8 +63,8 @@
                array_push($errors, "กรุณาเลือกอาคาร");
 
             }elseif (count($errors) == 0) {
-               // $rpassword = md5($password);
-               $sql = "INSERT INTO staff(bd_Id,st_pass,st_name,st_sex,st_email,st_phone) VALUES($building,'$password','$name','$sex','$email','$phone')";
+               $rpassword = md5($password);
+               $sql = "INSERT INTO staff(bd_Id,st_pass,st_name,st_sex,st_email,st_phone) VALUES($building,'$rpassword','$name','$sex','$email','$phone')";
                mysqli_query($connect,$sql);
                $_SESSION['success'] = "คุณได้เพิ่ม " . $name . " สำเร็จ !!";
                header('location:memberstaff.php');
@@ -81,8 +81,8 @@
                   array_push($errors, "มีอีเมลนี้ในระบบแล้ว");
                }
             }elseif (count($errors) == 0) {
-               // $rpassword = md5($password);
-               $sql = "INSERT INTO admin(ad_email, ad_pass, ad_name, ad_sex, ad_phone) VALUES('$email','$password','$name','$sex','$phone')";
+               $rpassword = md5($password);
+               $sql = "INSERT INTO admin(ad_email, ad_pass, ad_name, ad_sex, ad_phone) VALUES('$email','$rpassword','$name','$sex','$phone')";
                mysqli_query($connect,$sql);
                // $_SESSION['success'] = "คุณได้เพิ่ม " . $name . " สำเร็จ !!";
                header('location:memberstaff.php');
@@ -99,8 +99,8 @@
                   array_push($errors, "มีอีเมลนี้ในระบบแล้ว");
                }
             }elseif (count($errors) == 0) {
-               // $rpassword = md5($password);
-               $sql = "INSERT INTO users(us_email, us_pass, us_name, us_sex, us_phone) VALUES('$email','$password','$name','$sex','$phone')";
+               $rpassword = md5($password);
+               $sql = "INSERT INTO users(us_email, us_pass, us_name, us_sex, us_phone) VALUES('$email','$rpassword','$name','$sex','$phone')";
                mysqli_query($connect,$sql);
                $_SESSION['success'] = "คุณได้เพิ่ม " . $name . " สำเร็จ !!";
                header('location:member.php');
@@ -171,6 +171,9 @@
       font-size:35px;
       font-weight: bold;
       color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
    }
    .main-manu-items li:nth-child(10){
       background-color:#3D5538;
@@ -504,8 +507,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
             
                <!---------- start main-menu ---------->
@@ -630,6 +633,5 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>

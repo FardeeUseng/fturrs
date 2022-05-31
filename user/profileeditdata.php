@@ -12,12 +12,12 @@
 
    // Post data from Profileedit.php
 
-   $id = $_POST['id'];
-   $password = $_POST['password'];
-   $name = $_POST['name'];
-   $email = $_POST['email'];
-   $sex = $_POST['sex'];
-   $phone = $_POST['phonenum'];
+   $id = mysqli_real_escape_string($connect, $_POST['id']);
+   $password = mysqli_real_escape_string($connect, $_POST['password']);
+   $name = mysqli_real_escape_string($connect, $_POST['name']);
+   $email = mysqli_real_escape_string($connect, $_POST['email']);
+   $sex = mysqli_real_escape_string($connect, $_POST['sex']);
+   $phone = mysqli_real_escape_string($connect, $_POST['phonenum']);
    $pname = $_FILES['file']['name'];
 
    // Check Post

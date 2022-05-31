@@ -24,14 +24,14 @@
 
    $errors = array();
    if($_POST){
-      $room_id = $_POST["id"];
-      $roomname = $_POST["roomname"];
-      $coderoom = $_POST["coderoom"];
-      $roomcapacity = $_POST["roomcapacity"];
-      $roomfloor = $_POST["roomfloor"];
-      $roomstatus = $_POST["roomstatus"];
+      $room_id = mysqli_real_escape_string($connect, $_POST["id"]);
+      $roomname = mysqli_real_escape_string($connect, $_POST["roomname"]);
+      $coderoom = mysqli_real_escape_string($connect, $_POST["coderoom"]);
+      $roomcapacity = mysqli_real_escape_string($connect, $_POST["roomcapacity"]);
+      $roomfloor = mysqli_real_escape_string($connect, $_POST["roomfloor"]);
+      $roomstatus = mysqli_real_escape_string($connect, $_POST["roomstatus"]);
       $equipment = implode(",",$_POST["equipment"]);
-      $r_note = $_POST["r_note"];
+      $r_note = mysqli_real_escape_string($connect, $_POST["r_note"]);
 
       if(empty($roomname)){
          array_push($errors, "กรุณากรอกชื่อห้อง");
@@ -97,6 +97,9 @@
       font-size:35px;
       font-weight: bold;
       color:#585858;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
    }
    .main-manu-items li:nth-child(9){
       background-color:#3D5538;
@@ -402,7 +405,6 @@
 </header>
 <!---------- end header ---------->
 
-
 <!---------- start content ---------->
 
 <div class="content">
@@ -410,8 +412,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h3></a>
             </div>
 
             <!---------- Start main-manu-items ---------->
@@ -576,6 +578,4 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
-</body>
 </html>

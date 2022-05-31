@@ -108,6 +108,7 @@
 <!---------- End head ---------->
 
 <body>
+
 <style>
 
    /********** Start Main menu **********/
@@ -127,6 +128,10 @@
    .main-menu-logo img{
       width:80px;
       height:80px;
+   }
+   .main-menu-logo a{
+      text-decoration:none;
+      color:#585858;
    }
    .main-menu-logo h3{
       font-size:35px;
@@ -342,7 +347,7 @@
       .content-table th{
          font-size:14px;
       }
-      .content-table td{
+      .content-table td, .content-table a{
          font-size:12px;
       }
       .content-table th:nth-child(3), .content-table td:nth-child(3), .content-table th:nth-child(4), .content-table td:nth-child(4), .content-table th:nth-child(5), .content-table td:nth-child(5){
@@ -359,7 +364,6 @@
 </header>
 <!---------- end header ---------->
 
-
 <!---------- start content ---------->
 
 <div class="content">
@@ -367,8 +371,8 @@
       <div class="main row">
          <div class="main-menu p-0 col-xl-3">
             <div class="main-menu-logo d-flex">
-               <img src="../img/menu-logo/online-booking.png" alt="">
-               <h3 class="ml-3">FTU RRS</h>
+               <a href="../index.php"><img src="../img/menu-logo/online-booking.png" alt=""></a>
+               <a href="../index.php"><h3 class="ml-3">FTU RRS</h></a>
             </div>
             
             <!---------- start main-manu-items ---------->
@@ -443,16 +447,16 @@
                            <td><?php echo $row["r_code"] ?></td>
                            <td><?php echo $row["r_name"] ?></td>                           
                            <?php
-                              if($row["rserv_status"] == "อนุมัติ"){
+                              if($row["rserv_status"] == "approve"){
                                  echo "<td class='text-success'>อนุมัติ</td>";
-                              }elseif($row["rserv_status"] == "ไม่อนุมัติ"){
+                              }elseif($row["rserv_status"] == "disapproved"){
                                  echo "<td class='text-danger'>ไม่อนุมัติ</td>";
                               }else{
                                  echo "<td class='text-primary'>รอการอนุมัติ</td>";
                               }
                            ?>
                            
-                           <td><a href="canclebooking.php?id=<?php echo $row["rserv_Id"] ?>" class="btn btn-danger" onclick="return confirm('ยืนยันที่ต้องการยกเลิกการจอง')">ยกเลิก</a></td>
+                           <td><a href="canclebooking.php?id=<?php echo $row["rserv_Id"] ?>" class="btn btn-danger p-1" onclick="return confirm('ยืนยันที่ต้องการยกเลิกการจอง')">ยกเลิก</a></td>
                         </tr>
                      <?php } ?>
                      </tbody>
@@ -487,7 +491,6 @@
 </footer>
 <!---------- end footer ---------->
 
-   <script src="../bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
 

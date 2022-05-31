@@ -38,7 +38,7 @@
 
       if(count($errors) == 0){
          $rpassword = md5($password);
-         $sql = "INSERT INTO users (us_pass,us_name,us_sex,us_email,us_phone) VALUES('$password','$name','$sex','$email','$phone')";
+         $sql = "INSERT INTO users (us_pass,us_name,us_sex,us_email,us_phone) VALUES('$rpassword','$name','$sex','$email','$phone')";
          mysqli_query($connect, $sql);
 
          $_SESSION['username'] = $name;
@@ -425,8 +425,6 @@
    <?php include("./master/footer.php") ?>
 </footer>
 <!---------- end footer ---------->
-
-<script src="../bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>
